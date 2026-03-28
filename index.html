@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AION2 Check List v1.02</title>
+    <title>AION2 Check List v1.03</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,16 +20,9 @@
         }
 
         body {
-            background-image: 
-                linear-gradient(rgba(13, 17, 23, 0.85), rgba(13, 17, 23, 0.85)), 
-                url('pic/background.jpg'); 
-            background-size: cover; 
-            background-position: center; 
-            background-attachment: fixed; 
-            color: var(--text-main);
-            font-family: 'Prompt', sans-serif;
-            margin: 0;
-            padding: 20px;
+            background-image: linear-gradient(rgba(13, 17, 23, 0.85), rgba(13, 17, 23, 0.85)), url('pic/background.jpg'); 
+            background-size: cover; background-position: center; background-attachment: fixed; 
+            color: var(--text-main); font-family: 'Prompt', sans-serif; margin: 0; padding: 20px;
         }
 
         .header-container { text-align: center; margin-bottom: 30px; }
@@ -37,14 +30,9 @@
         h1 { color: var(--neon-blue); text-transform: uppercase; letter-spacing: 2px; margin: 0; text-shadow: 0 0 10px rgba(0, 243, 255, 0.5); }
 
         .id-container {
-            background-color: var(--panel-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 25px;
-            box-shadow: 0 4px 15px rgba(0, 243, 255, 0.1);
-            position: relative; 
-            backdrop-filter: blur(5px);
+            background-color: var(--panel-bg); border: 1px solid var(--border-color); border-radius: 8px;
+            padding: 20px; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(0, 243, 255, 0.1);
+            position: relative; backdrop-filter: blur(5px);
         }
 
         .id-header { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid var(--border-color); }
@@ -54,18 +42,17 @@
         }
 
         .vip-check { display: flex; align-items: center; gap: 5px; color: #ffcc00; font-weight: bold; }
-        
-        input[type="checkbox"] {
-            accent-color: #00ff00;
-            width: 18px; height: 18px; cursor: pointer;
-        }
+        input[type="checkbox"] { accent-color: #00ff00; width: 18px; height: 18px; cursor: pointer; }
 
-        .btn-reset-id {
-            position: absolute; top: 20px; right: 20px; background-color: transparent; color: var(--bonus-color);
-            border: 1px solid var(--bonus-color); padding: 6px 12px; font-size: 0.9rem; border-radius: 4px;
-            cursor: pointer; transition: 0.2s; font-weight: bold; font-family: 'Prompt', sans-serif;
+        /* ระบบ Tabs */
+        .tab-container { display: flex; gap: 10px; margin-bottom: 15px; }
+        .tab-btn {
+            background: rgba(33, 38, 45, 0.8); color: var(--text-main); border: 1px solid var(--border-color);
+            padding: 8px 16px; border-radius: 4px; cursor: pointer; transition: 0.3s;
         }
-        .btn-reset-id:hover { background-color: var(--bonus-color); color: #000; }
+        .tab-btn.active { background: var(--neon-blue); color: #000; border-color: var(--neon-blue); }
+
+        .btn-reset-id { position: absolute; top: 20px; right: 20px; background-color: transparent; color: var(--bonus-color); border: 1px solid var(--bonus-color); padding: 6px 12px; font-size: 0.9rem; border-radius: 4px; cursor: pointer; transition: 0.2s; font-weight: bold; }
 
         table { width: 100%; border-collapse: collapse; text-align: center; font-size: 0.9rem; }
         th, td { border: 1px solid var(--border-color); padding: 8px 4px; }
@@ -73,38 +60,23 @@
 
         input[type="number"], input[type="text"] {
             background: rgba(13, 17, 23, 0.8); color: white; border: 1px solid #444; border-radius: 4px;
-            padding: 4px; width: 45px; text-align: center; font-family: 'Prompt', sans-serif; transition: 0.3s;
+            padding: 4px; width: 55px; text-align: center; font-family: 'Prompt', sans-serif;
         }
-        input[type="text"].char-name { width: 120px; text-align: left; padding-left: 8px; }
-        .split-input { display: flex; align-items: center; justify-content: center; gap: 4px; white-space: nowrap; }
-        .bonus-text { color: var(--bonus-color); font-size: 0.85rem; }
-        input[type="number"].bonus-input { color: var(--bonus-color); border-color: #664400; }
-
-        button {
-            background-color: transparent; color: var(--neon-blue); border: 1px solid var(--neon-blue);
-            padding: 6px 12px; cursor: pointer; border-radius: 4px; transition: all 0.2s; font-weight: bold; font-family: 'Prompt', sans-serif;
-        }
-        button:hover { background-color: var(--neon-blue); color: #000; }
-        .btn-danger { color: #ff4444; border-color: #ff4444; }
-        .btn-danger:hover { background-color: #ff4444; color: white; }
+        .item-img-cell img { width: 32px; height: 32px; object-fit: contain; }
+        .total-val { font-weight: bold; color: var(--neon-blue); }
 
         .glow-red { border-color: #ff3333 !important; box-shadow: 0 0 8px #ff3333; }
         .glow-green { border-color: #00ff00 !important; box-shadow: 0 0 8px #00ff00; }
-        
-        #loading {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(13, 17, 23, 0.9); display: flex; justify-content: center; align-items: center;
-            color: var(--neon-blue); font-size: 1.5rem; z-index: 1000;
-        }
+        #loading { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(13, 17, 23, 0.9); display: flex; justify-content: center; align-items: center; color: var(--neon-blue); font-size: 1.5rem; z-index: 1000; }
     </style>
 </head>
 <body>
 
-    <div id="loading">กำลังซิงค์ข้อมูลกับเซิร์ฟเวอร์ และคำนวณเวลา...</div>
+    <div id="loading">กำลังซิงค์ข้อมูล v1.03...</div>
 
     <div class="header-container">
         <img src="pic/logo.png" alt="AION 2 Logo" class="logo-img">
-        <h1>AION2 Check List version 1.02 by VANS</h1>
+        <h1>AION2 Check List version 1.03 by VANS</h1>
     </div>
 
     <div id="main-wrapper"></div>
@@ -134,16 +106,28 @@
 
         let appData = { ids: [] };
 
-        // ==========================================
-        // แก้เวลาตรงนี้ !!!
-        // ==========================================
+        const inventoryItems = [
+            { id: "kinah", name: "Kinah", img: "kinah.png" },
+            { id: "shorn", name: "Wrathful Mind (เขาเล็ก)", img: "shorn.png" },
+            { id: "mhorn", name: "Wrathful Will (เขากลาง)", img: "mhorn.png" },
+            { id: "lhorn", name: "Wrathful Ego (เขาใหญ่)", img: "lhorn.png" },
+            { id: "whorn", name: "Wrathful Wish (เขาทองแดง)", img: "whorn.png" },
+            { id: "wshorn", name: "Wrathful Sublimation (เขาทองฟ้า)", img: "wshorn.png" },
+            { id: "rhorn", name: "Maddened Wrathful Curse (เขาแดงมังกร)", img: "rhorn.png" },
+            { id: "ystone", name: "Artisan's Ultimate Refining Stone (ลูกแก้วเหลือง)", img: "ystone.png" },
+            { id: "yamp", name: "Amplify Stone (Ampทอง)", img: "yamp.png" },
+            { id: "ramp", name: "Amplify Stone (Ampแดง)", img: "ramp.png" },
+            { id: "yampf", name: "Amplify Stone Fragment (เศษAmpทอง)", img: "yampf.png" },
+            { id: "rampf", name: "Amplify Stone Fragment (เศษAmpแดง)", img: "rampf.png" }
+        ];
+
         function getThaiTime() {
-            // Timezone +7 เวลาไทย
             const now = new Date();
             const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
             return new Date(utc + (3600000 * 7)); 
         }
 
+        // --- Time Logic ---
         function getBase4AM(date) {
             let d = new Date(date);
             if (d.getHours() < 4) d.setDate(d.getDate() - 1);
@@ -153,11 +137,9 @@
 
         function getRecentWednesday4AM(date) {
             let d = new Date(date);
-            let day = d.getDay(); // 0=Sun, 1=Mon, ..., 3=Wed
-            if (day === 3 && d.getHours() >= 4) {
-
-            } else {
-
+            let day = d.getDay();
+            if (day === 3 && d.getHours() >= 4) {} 
+            else {
                 let diff = (day < 3) ? (day + 4) : (day - 3);
                 d.setDate(d.getDate() - diff);
             }
@@ -174,79 +156,38 @@
             data.ids.forEach(id => {
                 id.characters.forEach(char => {
                     let lastUpdate = char.lastUpdate || nowTime;
-                    
-                    // 1. Weekly Reset
                     if (lastUpdate < currentWed4AM) {
-                        char.raid = 3;
-                        char.ascension = 3;
-                        char.daily = 7;
-                        char.finalBoss = 35;
-                        char.duty = false;
-                        char.buyEnergy = false;
-                        char.craftEnergy = false;
+                        char.raid = 3; char.ascension = 3; char.daily = 7; char.finalBoss = 35;
+                        char.duty = char.buyEnergy = char.craftEnergy = false;
                     }
-
-                    // 2. Daily Reset (ทุกวัน ตี 4)
                     if (lastUpdate < current4AM) {
                         let daysPassed = Math.floor((current4AM - getBase4AM(new Date(lastUpdate))) / (24 * 3600000));
-                        if (daysPassed > 0) {
-                            char.nightmare = Math.min(14, (parseInt(char.nightmare) || 0) + (2 * daysPassed));
-                        }
+                        if (daysPassed > 0) char.nightmare = Math.min(14, (parseInt(char.nightmare) || 0) + (2 * daysPassed));
                     }
-
-                    // 3. Stamina Regen
                     let last4AMForStamina = getBase4AM(new Date(lastUpdate));
-                    let intervalsNow = Math.floor((nowTime - current4AM) / (3 * 3600000));
-                    let intervalsLast = Math.floor((lastUpdate - last4AMForStamina) / (3 * 3600000));
+                    let totalIntervalsPassed = (Math.floor((current4AM - last4AMForStamina) / (24 * 3600000)) * 8) + Math.floor((nowTime - current4AM) / (3 * 3600000)) - Math.floor((lastUpdate - last4AMForStamina) / (3 * 3600000));
+                    if (totalIntervalsPassed > 0) char.stamina = Math.min(840, (parseInt(char.stamina) || 0) + (totalIntervalsPassed * (id.isVIP ? 15 : 10)));
                     
-                    let daysDiffStam = Math.floor((current4AM - last4AMForStamina) / (24 * 3600000));
-                    let totalIntervalsPassed = (daysDiffStam * 8) + intervalsNow - intervalsLast;
-
-                    if (totalIntervalsPassed > 0) {
-                        let regenAmount = id.isVIP ? 15 : 10;
-                        char.stamina = Math.min(840, (parseInt(char.stamina) || 0) + (totalIntervalsPassed * regenAmount));
-                    }
-
-                    // 4. Reward Count Regen
-                    let intervalsNowRew = Math.floor((nowTime - current4AM) / (8 * 3600000));
-                    let intervalsLastRew = Math.floor((lastUpdate - last4AMForStamina) / (8 * 3600000));
-                    let totalIntervalsPassedRew = (daysDiffStam * 3) + intervalsNowRew - intervalsLastRew;
-
-                    if (totalIntervalsPassedRew > 0) {
-                        char.rewardCount = Math.min(21, (parseInt(char.rewardCount) || 0) + (totalIntervalsPassedRew * 1));
-                    }
-
+                    let totalIntervalsPassedRew = (Math.floor((current4AM - last4AMForStamina) / (24 * 3600000)) * 3) + Math.floor((nowTime - current4AM) / (8 * 3600000)) - Math.floor((lastUpdate - last4AMForStamina) / (8 * 3600000));
+                    if (totalIntervalsPassedRew > 0) char.rewardCount = Math.min(21, (parseInt(char.rewardCount) || 0) + (totalIntervalsPassedRew * 1));
                     char.lastUpdate = nowTime;
                 });
             });
             return data;
         }
 
-        // ==========================================
-        // แก้ UI ตรงนี้
-        // ==========================================
-        
-        // Firebase code ไว้ตรงนี้
-        function saveData() {
-            set(dbRef, appData).catch(error => console.error("Error saving data:", error));
-        }
+        // --- Firebase & UI ---
+        function saveData() { set(dbRef, appData).catch(e => console.error(e)); }
 
         window.syncDataFromUI = function() {
-            appData.ids = [];
             const idBlocks = document.querySelectorAll('.id-container');
-            
-            idBlocks.forEach((block, idIndex) => {
-                let idObj = {
+            appData.ids = Array.from(idBlocks).map((block, idIndex) => {
+                const oldIdData = appData.ids[idIndex] || {};
+                return {
                     idName: block.querySelector('.id-name-input').value,
                     isVIP: block.querySelector('.vip-input').checked,
-                    characters: []
-                };
-
-                const rows = block.querySelectorAll('tbody tr');
-                rows.forEach((row, charIndex) => {
-                    let oldCharData = (appData.ids[idIndex] && appData.ids[idIndex].characters[charIndex]) || {};
-                    
-                    idObj.characters.push({
+                    activeTab: block.dataset.activeTab || 'chars',
+                    characters: Array.from(block.querySelectorAll('tbody.char-body tr')).map((row, charIndex) => ({
                         name: row.querySelector('.char-name').value,
                         stamina: row.querySelector('.stam-main').value,
                         staminaBonus: row.querySelector('.stam-bonus').value,
@@ -262,157 +203,104 @@
                         craftEnergy: row.querySelector('.craft-check').checked,
                         finalBoss: row.querySelector('.fb-main').value,
                         rewardCount: row.querySelector('.rc-main').value,
-                        lastUpdate: oldCharData.lastUpdate || getThaiTime().getTime()
-                    });
-                });
-                appData.ids.push(idObj);
+                        lastUpdate: (oldIdData.characters && oldIdData.characters[charIndex]) ? oldIdData.characters[charIndex].lastUpdate : getThaiTime().getTime()
+                    })),
+                    inventory: Array.from(block.querySelectorAll('tbody.inv-body tr')).map(row => ({
+                        trade: parseInt(row.querySelector('.inv-trade').value) || 0,
+                        nonTrade: parseInt(row.querySelector('.inv-non').value) || 0
+                    }))
+                };
             });
-            saveData(); // เซฟ Firebase
+            saveData();
         };
 
-        window.updateGlow = function(inputElement) {
-            let val = parseInt(inputElement.value);
-            inputElement.classList.remove('glow-red', 'glow-green');
-            if (val === 0) inputElement.classList.add('glow-green');
-            else inputElement.classList.add('glow-red');
+        window.switchTab = function(idIndex, tab) {
+            appData.ids[idIndex].activeTab = tab;
+            renderUI();
+            saveData();
+        };
+
+        window.updateGlow = function(el) {
+            el.classList.remove('glow-red', 'glow-green');
+            el.classList.add(parseInt(el.value) === 0 ? 'glow-green' : 'glow-red');
             window.syncDataFromUI();
         };
 
         function renderUI() {
             const wrapper = document.getElementById('main-wrapper');
             wrapper.innerHTML = '';
-
             appData.ids.forEach((idData, idIndex) => {
+                const isChars = idData.activeTab !== 'inv';
                 const idBlock = document.createElement('div');
                 idBlock.className = 'id-container';
-                idBlock.id = `id-block-${idIndex}`;
+                idBlock.dataset.activeTab = idData.activeTab;
                 
-                let tbodyHTML = '';
-                idData.characters.forEach((char, charIndex) => {
-                    const getGlow = (val) => parseInt(val) === 0 ? 'glow-green' : 'glow-red';
+                let charRows = idData.characters.map((char, charIdx) => `
+                    <tr>
+                        <td><input type="text" class="char-name" value="${char.name}" oninput="window.syncDataFromUI()"></td>
+                        <td><div class="split-input"><input type="number" class="stam-main" min="0" max="840" value="${char.stamina}" oninput="window.syncDataFromUI()"><span class="bonus-text">(+</span><input type="number" class="bonus-input stam-bonus" value="${char.staminaBonus}" oninput="window.syncDataFromUI()"><span class="bonus-text">)</span></div></td>
+                        <td><input type="checkbox" class="duty-check" ${char.duty ? 'checked' : ''} onchange="window.syncDataFromUI()"></td>
+                        <td><div class="split-input"><input type="number" class="target-glow raid-main ${parseInt(char.raid)===0?'glow-green':'glow-red'}" min="0" max="3" value="${char.raid}" oninput="window.updateGlow(this)"><span class="bonus-text">(+</span><input type="number" class="bonus-input raid-bonus" value="${char.raidBonus}" oninput="window.syncDataFromUI()"><span class="bonus-text">)</span></div></td>
+                        <td><div class="split-input"><input type="number" class="target-glow asc-main ${parseInt(char.ascension)===0?'glow-green':'glow-red'}" min="0" max="3" value="${char.ascension}" oninput="window.updateGlow(this)"><span class="bonus-text">(+</span><input type="number" class="bonus-input asc-bonus" value="${char.ascensionBonus}" oninput="window.syncDataFromUI()"><span class="bonus-text">)</span></div></td>
+                        <td><input type="number" class="target-glow daily-main ${parseInt(char.daily)===0?'glow-green':'glow-red'}" min="0" max="7" value="${char.daily}" oninput="window.updateGlow(this)"></td>
+                        <td><div class="split-input"><input type="number" class="nm-main" min="0" max="14" value="${char.nightmare}" oninput="window.syncDataFromUI()"><span class="bonus-text">(+</span><input type="number" class="bonus-input nm-bonus" value="${char.nightmareBonus}" oninput="window.syncDataFromUI()"><span class="bonus-text">)</span></div></td>
+                        <td><input type="checkbox" class="buy-check" ${char.buyEnergy ? 'checked' : ''} onchange="window.syncDataFromUI()"></td>
+                        <td><input type="checkbox" class="craft-check" ${char.craftEnergy ? 'checked' : ''} onchange="window.syncDataFromUI()"></td>
+                        <td><input type="number" class="fb-main" min="0" max="35" value="${char.finalBoss}" oninput="window.syncDataFromUI()"></td>
+                        <td><input type="number" class="rc-main" min="0" max="21" value="${char.rewardCount}" oninput="window.syncDataFromUI()"></td>
+                        <td><button class="btn-danger" onclick="window.removeCharacter(${idIndex}, ${charIdx})">-</button></td>
+                    </tr>`).join('');
 
-                    tbodyHTML += `
-                        <tr>
-                            <td><input type="text" class="char-name" placeholder="ชื่อตัวละคร" value="${char.name || ''}" oninput="window.syncDataFromUI()"></td>
-                            <td><div class="split-input"><input type="number" class="stam-main" min="0" max="840" value="${char.stamina}" oninput="window.syncDataFromUI()"><span class="bonus-text">(+</span><input type="number" class="bonus-input stam-bonus" placeholder="0" value="${char.staminaBonus}" oninput="window.syncDataFromUI()"><span class="bonus-text">)</span></div></td>
-                            <td><input type="checkbox" class="duty-check" ${char.duty ? 'checked' : ''} onchange="window.syncDataFromUI()"></td>
-                            <td><div class="split-input"><input type="number" class="target-glow raid-main ${getGlow(char.raid)}" min="0" max="3" value="${char.raid}" oninput="window.updateGlow(this)"><span class="bonus-text">(+</span><input type="number" class="bonus-input raid-bonus" placeholder="0" value="${char.raidBonus}" oninput="window.syncDataFromUI()"><span class="bonus-text">)</span></div></td>
-                            <td><div class="split-input"><input type="number" class="target-glow asc-main ${getGlow(char.ascension)}" min="0" max="3" value="${char.ascension}" oninput="window.updateGlow(this)"><span class="bonus-text">(+</span><input type="number" class="bonus-input asc-bonus" placeholder="0" value="${char.ascensionBonus}" oninput="window.syncDataFromUI()"><span class="bonus-text">)</span></div></td>
-                            <td><input type="number" class="target-glow daily-main ${getGlow(char.daily)}" min="0" max="7" value="${char.daily}" oninput="window.updateGlow(this)"></td>
-                            <td><div class="split-input"><input type="number" class="nm-main" min="0" max="14" value="${char.nightmare}" oninput="window.syncDataFromUI()"><span class="bonus-text">(+</span><input type="number" class="bonus-input nm-bonus" placeholder="0" value="${char.nightmareBonus}" oninput="window.syncDataFromUI()"><span class="bonus-text">)</span></div></td>
-                            <td><input type="checkbox" class="buy-check" ${char.buyEnergy ? 'checked' : ''} onchange="window.syncDataFromUI()"></td>
-                            <td><input type="checkbox" class="craft-check" ${char.craftEnergy ? 'checked' : ''} onchange="window.syncDataFromUI()"></td>
-                            <td><input type="number" class="fb-main" min="0" max="35" value="${char.finalBoss}" oninput="window.syncDataFromUI()"></td>
-                            <td><input type="number" class="rc-main" min="0" max="21" value="${char.rewardCount}" oninput="window.syncDataFromUI()"></td>
-                            <td><button class="btn-danger" onclick="window.removeCharacter(${idIndex}, ${charIndex})">-</button></td>
-                        </tr>
-                    `;
-                });
+                let invRows = inventoryItems.map((item, i) => {
+                    const d = (idData.inventory && idData.inventory[i]) ? idData.inventory[i] : {trade:0, nonTrade:0};
+                    return `
+                    <tr>
+                        <td class="item-img-cell"><img src="pic/${item.img}" alt="${item.name}"></td>
+                        <td style="text-align:left; padding-left:10px;">${item.name}</td>
+                        <td><input type="number" class="inv-trade" value="${d.trade}" oninput="window.syncDataFromUI()"></td>
+                        <td><input type="number" class="inv-non" value="${d.nonTrade}" oninput="window.syncDataFromUI()"></td>
+                        <td class="total-val">${d.trade + d.nonTrade}</td>
+                    </tr>`; }).join('');
 
                 idBlock.innerHTML = `
                     <button class="btn-reset-id" onclick="window.resetIDToMax(${idIndex})">🔄 Reset Max</button>
                     <div class="id-header">
-                        <label class="vip-check">
-                            <input type="checkbox" class="vip-input" ${idData.isVIP ? 'checked' : ''} onchange="window.syncDataFromUI()"> VIP
-                        </label>
-                        <span>ID:</span>
-                        <input type="text" class="id-name-input" value="${idData.idName}" oninput="window.syncDataFromUI()">
-                        <button onclick="window.addCharacter(${idIndex})">+ เพิ่มตัวละคร</button>
+                        <label class="vip-check"><input type="checkbox" class="vip-input" ${idData.isVIP?'checked':''} onchange="window.syncDataFromUI()"> VIP</label>
+                        <span>ID:</span><input type="text" class="id-name-input" value="${idData.idName}" oninput="window.syncDataFromUI()">
+                        ${isChars ? `<button onclick="window.addCharacter(${idIndex})">+ เพิ่มตัวละคร</button>` : ''}
                         <button class="btn-danger" onclick="window.removeID(${idIndex})">ลบ ID นี้</button>
                     </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Character Name</th><th>Stamina<br><small>(Max 840)</small></th><th>Duty<br>Mission</th>
-                                <th>Raid<br><small>(Max 3)</small></th><th>Ascension<br><small>(Max 3)</small></th><th>Daily<br><small>(Max 7)</small></th>
-                                <th>Nightmare<br><small>(Max 14)</small></th><th>Buy<br>Energy</th><th>Craft<br>Energy</th>
-                                <th>Final Boss<br><small>(Max 35)</small></th><th>Reward Count<br><small>(Max 21)</small></th><th>จัดการ</th>
-                            </tr>
-                        </thead>
-                        <tbody>${tbodyHTML}</tbody>
+                    <div class="tab-container">
+                        <button class="tab-btn ${isChars?'active':''}" onclick="window.switchTab(${idIndex}, 'chars')">👥 จัดการตัวละคร</button>
+                        <button class="tab-btn ${!isChars?'active':''}" onclick="window.switchTab(${idIndex}, 'inv')">📦 คลังไอเทม</button>
+                    </div>
+                    <table style="display: ${isChars?'table':'none'}">
+                        <thead><tr><th>Character Name</th><th>Stamina</th><th>Duty</th><th>Raid</th><th>Ascension</th><th>Daily</th><th>Nightmare</th><th>Buy</th><th>Craft</th><th>Boss</th><th>Reward</th><th>จัดการ</th></tr></thead>
+                        <tbody class="char-body">${charRows}</tbody>
                     </table>
-                `;
+                    <table style="display: ${!isChars?'table':'none'}">
+                        <thead><tr><th style="width:50px">รูป</th><th>ชื่อไอเทม</th><th>Tradable</th><th>Non-Tradable</th><th>Total</th></tr></thead>
+                        <tbody class="inv-body">${invRows}</tbody>
+                    </table>`;
                 wrapper.appendChild(idBlock);
             });
         }
 
-        // ==========================================
-        // ส่วนตารางแก้ตรงนี้
-        // ==========================================
-        function createDefaultChar() {
-            return {
-                name: "", stamina: 840, staminaBonus: 0, duty: false, raid: 3, raidBonus: 0,
-                ascension: 3, ascensionBonus: 0, daily: 7, nightmare: 14, nightmareBonus: 0,
-                buyEnergy: false, craftEnergy: false, finalBoss: 35, rewardCount: 21, lastUpdate: getThaiTime().getTime()
-            };
-        }
-
-        window.addNewID = function() {
-            appData.ids.push({
-                idName: `ID_${appData.ids.length + 1}`,
-                isVIP: false,
-                characters: [createDefaultChar(), createDefaultChar(), createDefaultChar()]
-            });
-            saveData();
-            renderUI();
+        // --- Utils ---
+        window.addNewID = () => {
+            appData.ids.push({ idName: `ID_${appData.ids.length+1}`, isVIP: false, activeTab: 'chars', characters: [createDefChar(),createDefChar(),createDefChar()], inventory: inventoryItems.map(()=>({trade:0, nonTrade:0})) });
+            saveData(); renderUI();
         };
+        function createDefChar() { return { name:"", stamina:840, staminaBonus:0, duty:false, raid:3, raidBonus:0, ascension:3, ascensionBonus:0, daily:7, nightmare:14, nightmareBonus:0, buyEnergy:false, craftEnergy:false, finalBoss:35, rewardCount:21, lastUpdate:getThaiTime().getTime() }; }
+        window.addCharacter = (idx) => { if(appData.ids[idx].characters.length<8) { appData.ids[idx].characters.push(createDefChar()); saveData(); renderUI(); } };
+        window.removeCharacter = (idx, cIdx) => { if(appData.ids[idx].characters.length>1) { appData.ids[idx].characters.splice(cIdx,1); saveData(); renderUI(); } };
+        window.removeID = (idx) => { if(confirm("ลบ ID?")) { appData.ids.splice(idx,1); saveData(); renderUI(); } };
+        window.resetIDToMax = (idx) => { if(confirm("Reset?")) { appData.ids[idx].characters.forEach(c => { c.stamina=840; c.raid=3; c.ascension=3; c.daily=7; c.nightmare=14; c.finalBoss=35; c.rewardCount=21; }); saveData(); renderUI(); } };
 
-        window.addCharacter = function(idIndex) {
-            if (appData.ids[idIndex].characters.length >= 8) {
-                alert("เพิ่มตัวละครได้สูงสุด 8 ตัว"); return;
-            }
-            appData.ids[idIndex].characters.push(createDefaultChar());
-            saveData();
-            renderUI();
-        };
-
-        window.removeCharacter = function(idIndex, charIndex) {
-            if (appData.ids[idIndex].characters.length <= 1) {
-                alert("ต้องมีตัวละครอย่างน้อย 1"); return;
-            }
-            appData.ids[idIndex].characters.splice(charIndex, 1);
-            saveData();
-            renderUI();
-        };
-
-        window.removeID = function(idIndex) {
-            if(confirm("ต้องการลบ ID นี้?")) {
-                appData.ids.splice(idIndex, 1);
-                saveData();
-                renderUI();
-            }
-        };
-
-        window.resetIDToMax = function(idIndex) {
-            if(confirm("Reset รอบทั้งหมด ?")) {
-                appData.ids[idIndex].characters.forEach(char => {
-                    char.stamina = 840; char.raid = 3; char.ascension = 3; char.daily = 7;
-                    char.nightmare = 14; char.finalBoss = 35; char.rewardCount = 21;
-                });
-                saveData();
-                renderUI();
-            }
-        };
-
-
-        get(dbRef).then((snapshot) => {
-            if (snapshot.exists()) {
-                appData = snapshot.val();
-                if (!appData.ids) appData.ids = [];
-
-                appData = processTimeLogic(appData); 
-                saveData();
-            } else {
-
-                window.addNewID(); 
-            }
-            renderUI();
-            document.getElementById('loading').style.display = 'none';
-        }).catch((error) => {
-            console.error(error);
-            alert("ไม่สามารถเชื่อมต่อฐานข้อมูลได้");
+        get(dbRef).then(snap => {
+            if(snap.exists()){ appData = processTimeLogic(snap.val()); saveData(); } else { window.addNewID(); }
+            renderUI(); document.getElementById('loading').style.display = 'none';
         });
-
     </script>
 </body>
 </html>
