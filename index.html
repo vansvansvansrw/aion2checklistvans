@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AION2 Check List v1.04</title>
+    <title>AION2 Check List v1.091</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,16 +20,9 @@
         }
 
         body {
-            background-image: 
-                linear-gradient(rgba(13, 17, 23, 0.85), rgba(13, 17, 23, 0.85)), 
-                url('pic/background.jpg'); 
-            background-size: cover; 
-            background-position: center; 
-            background-attachment: fixed; 
-            color: var(--text-main);
-            font-family: 'Prompt', sans-serif;
-            margin: 0;
-            padding: 20px;
+            background-image: linear-gradient(rgba(13, 17, 23, 0.85), rgba(13, 17, 23, 0.85)), url('pic/background.jpg'); 
+            background-size: cover; background-position: center; background-attachment: fixed; 
+            color: var(--text-main); font-family: 'Prompt', sans-serif; margin: 0; padding: 20px;
         }
 
         .header-container { text-align: center; margin-bottom: 30px; }
@@ -37,106 +30,93 @@
         h1 { color: var(--neon-blue); text-transform: uppercase; letter-spacing: 2px; margin: 0; text-shadow: 0 0 10px rgba(0, 243, 255, 0.5); }
 
         .id-container {
-            background-color: var(--panel-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 25px;
-            box-shadow: 0 4px 15px rgba(0, 243, 255, 0.1);
-            position: relative; 
-            backdrop-filter: blur(5px);
+            background-color: var(--panel-bg); border: 1px solid var(--border-color); border-radius: 8px;
+            padding: 20px; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(0, 243, 255, 0.1);
+            position: relative; backdrop-filter: blur(5px);
         }
 
-        .id-header { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid var(--border-color); }
-        .id-header input[type="text"] {
+        .id-header { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid var(--border-color); flex-wrap: wrap; }
+        .id-header input[type="text"].id-name-input {
             background: transparent; border: none; color: var(--neon-blue); font-size: 1.4rem; font-weight: bold;
-            outline: none; border-bottom: 1px dashed var(--border-color); width: 200px; font-family: 'Prompt', sans-serif;
+            outline: none; border-bottom: 1px dashed var(--border-color); width: 150px; font-family: 'Prompt', sans-serif;
         }
 
-        .vip-check { display: flex; align-items: center; gap: 5px; color: #ffcc00; font-weight: bold; }
-        
-        input[type="checkbox"] {
-            accent-color: #00ff00;
-            width: 18px; height: 18px; cursor: pointer;
+        .kinah-id-wrapper { margin-left: auto; margin-right: 90px; display: flex; align-items: center; gap: 8px; }
+        .kinah-total-id {
+            background: rgba(13, 17, 23, 0.8); border: 1px solid var(--neon-blue); color: #fff; font-size: 1.1rem;
+            padding: 5px 10px; border-radius: 4px; width: 170px; text-align: right; font-family: 'Prompt', sans-serif;
         }
+
+        .vip-status { font-size: 0.9rem; font-weight: bold; width: 100%; margin-top: 5px; }
+        .vip-green { color: #00ff00; }
+        .vip-red { color: #ff4444; }
+
+        .btn-reset-id { position: absolute; top: 20px; right: 20px; background-color: transparent; color: var(--bonus-color); border: 1px solid var(--bonus-color); padding: 6px 12px; font-size: 0.9rem; border-radius: 4px; cursor: pointer; transition: 0.2s; font-weight: bold; }
 
         .tab-controls { display: flex; gap: 10px; margin-bottom: 15px; }
-
         .btn-tab {
-            background: rgba(33, 38, 45, 0.8);
-            color: var(--text-main);
-            border: 1px solid var(--border-color);
-            padding: 8px 16px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-family: 'Prompt', sans-serif;
-            transition: 0.2s;
+            background: rgba(33, 38, 45, 0.8); color: var(--text-main); border: 1px solid var(--border-color);
+            padding: 8px 16px; border-radius: 4px; cursor: pointer; font-family: 'Prompt', sans-serif;
         }
+        .btn-tab.active { background: var(--neon-blue); color: #000; font-weight: bold; }
 
-        .btn-tab.active {
-            background: var(--neon-blue);
-            color: #000;
-            border-color: var(--neon-blue);
-            font-weight: bold;
-        }
-
-        .btn-reset-id {
-            position: absolute; top: 20px; right: 20px; background-color: transparent; color: var(--bonus-color);
-            border: 1px solid var(--bonus-color); padding: 6px 12px; font-size: 0.9rem; border-radius: 4px;
-            cursor: pointer; transition: 0.2s; font-weight: bold; font-family: 'Prompt', sans-serif;
-        }
-        .btn-reset-id:hover { background-color: var(--bonus-color); color: #000; }
-
-        table { width: 100%; border-collapse: collapse; text-align: center; font-size: 0.9rem; }
+        table { width: 100%; border-collapse: collapse; text-align: center; font-size: 0.85rem; margin-bottom: 15px; }
         th, td { border: 1px solid var(--border-color); padding: 8px 4px; }
-        th { background-color: rgba(33, 38, 45, 0.8); color: #ffffff; font-weight: 600; }
+        th { background-color: rgba(33, 38, 45, 0.8); color: #ffffff; }
 
-        input[type="number"], input[type="text"] {
-            background: rgba(13, 17, 23, 0.8); color: white; border: 1px solid #444; border-radius: 4px;
-            padding: 4px; width: 45px; text-align: center; font-family: 'Prompt', sans-serif; transition: 0.3s;
+        input[type="number"], input[type="text"], select {
+            background: rgba(13, 17, 23, 0.8); color: white; border: 1px solid #444; border-radius: 4px; padding: 4px; text-align: center; font-family: 'Prompt', sans-serif;
         }
-        input[type="text"].char-name { width: 120px; text-align: left; padding-left: 8px; }
-        .split-input { display: flex; align-items: center; justify-content: center; gap: 4px; white-space: nowrap; }
-        .bonus-text { color: var(--bonus-color); font-size: 0.85rem; }
-        input[type="number"].bonus-input { color: var(--bonus-color); border-color: #664400; }
+        
+        .split-input { display: flex; align-items: center; justify-content: flex-end; gap: 2px; }
+        .total-white { color: #fff; font-weight: bold; min-width: 45px; text-align: right; padding-left: 5px; }
+        input[type="number"].bonus-input { color: var(--bonus-color); border-color: #664400; width: 40px; padding: 2px; }
+        
+        /* ขยายช่องกรอกให้รองรับหลักหมื่น (v1.09) */
+        input[type="number"].standard-num { width: 60px; } 
 
-        /* ปรับแต่งพิเศษสำหรับ Kinah */
-        .kinah-input { width: 120px !important; text-align: right !important; padding-right: 8px !important; }
-        .item-icon { width: 32px; height: 32px; object-fit: contain; vertical-align: middle; }
-        .total-glow { color: var(--neon-blue); font-weight: bold; }
-
-        button {
-            background-color: transparent; color: var(--neon-blue); border: 1px solid var(--neon-blue);
-            padding: 6px 12px; cursor: pointer; border-radius: 4px; transition: all 0.2s; font-weight: bold; font-family: 'Prompt', sans-serif;
+        input[type="checkbox"] {
+            accent-color: #00ff00; width: 18px; height: 18px; cursor: pointer; appearance: none;
+            border: 2px solid #ff4444; border-radius: 3px; position: relative; background: rgba(255,0,0,0.1);
         }
+        input[type="checkbox"]:checked { background-color: #00ff00; border-color: #00ff00; appearance: auto; }
+        input[type="checkbox"]:not(:checked) { box-shadow: 0 0 5px #ff4444; }
+
+        /* ตารางสรุปกึ่งกลางแบบ Clean Layout (v1.09) */
+        .summary-table-container { display: flex; justify-content: center; width: 100%; margin-top: 15px; }
+        .summary-table { width: 480px !important; border: 1px solid var(--border-color); }
+        .summary-table td { text-align: left; padding: 10px 15px; }
+        .summary-table input { width: 80px; text-align: center; }
+        .summary-val { color: var(--neon-blue); font-weight: bold; text-align: center !important; }
+
+        button { background-color: transparent; color: var(--neon-blue); border: 1px solid var(--neon-blue); padding: 6px 12px; cursor: pointer; border-radius: 4px; font-weight: bold; font-family: 'Prompt', sans-serif; }
         button:hover { background-color: var(--neon-blue); color: #000; }
         .btn-danger { color: #ff4444; border-color: #ff4444; }
-        .btn-danger:hover { background-color: #ff4444; color: white; }
 
-        .glow-red { border-color: #ff3333 !important; box-shadow: 0 0 8px #ff3333; }
-        .glow-green { border-color: #00ff00 !important; box-shadow: 0 0 8px #00ff00; }
-        
-        #loading {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(13, 17, 23, 0.9); display: flex; justify-content: center; align-items: center;
-            color: var(--neon-blue); font-size: 1.5rem; z-index: 1000;
-        }
+        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); justify-content: center; align-items: center; }
+        .modal-content { background: var(--bg-color); padding: 25px; border-radius: 8px; border: 1px solid var(--neon-blue); width: 320px; text-align: center; }
+        #loading { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(13, 17, 23, 0.9); display: flex; justify-content: center; align-items: center; color: var(--neon-blue); font-size: 1.5rem; z-index: 3000; }
     </style>
 </head>
 <body>
 
-    <div id="loading">กำลังซิงค์ข้อมูล v1.04...</div>
+    <div id="loading">กำลังซิงค์ข้อมูล v1.091...</div>
+
+    <div id="vipModal" class="modal">
+        <div class="modal-content">
+            <h3>ตั้งค่า VIP คงเหลือ</h3>
+            <div>วัน <input type="number" id="vDay" value="0"> ชม. <input type="number" id="vHour" value="0"> นาที <input type="number" id="vMin" value="0"></div>
+            <div style="margin-top:20px;"><button onclick="confirmVIP()">ตกลง</button> <button class="btn-danger" onclick="closeVIP()">ยกเลิก</button></div>
+        </div>
+    </div>
 
     <div class="header-container">
         <img src="pic/logo.png" alt="AION 2 Logo" class="logo-img">
-        <h1>AION2 Check List version 1.04 by VANS</h1>
+        <h1>AION2 Check List version 1.091 by VANS</h1>
     </div>
 
     <div id="main-wrapper"></div>
-
-    <div style="text-align: center; margin-top: 20px;">
-        <button onclick="window.addNewID()">+ เพิ่ม ID ใหม่</button>
-    </div>
+    <div style="text-align: center; margin-top: 20px;"><button onclick="window.addNewID()">+ เพิ่ม ID ใหม่</button></div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
@@ -158,257 +138,155 @@
         const dbRef = ref(db, 'userData/vans');
 
         let appData = { ids: [] };
+        let currentEditingVIP = -1;
 
         const inventoryList = [
-            { img: "kinah.png", name: "Kinah", isKinah: true },
-            { img: "shorn.png", name: "Wrathful Mind (เขาเล็ก)" },
-            { img: "mhorn.png", name: "Wrathful Will (เขากลาง)" },
-            { img: "lhorn.png", name: "Wrathful Ego (เขาใหญ่)" },
-            { img: "whorn.png", name: "Wrathful Wish (เขาทองแดง)" },
-            { img: "wshorn.png", name: "Wrathful Sublimation (เขาทองฟ้า)" },
-            { img: "rhorn.png", name: "Maddened Wrathful Curse (เขาแดงมังกร)" },
-            { img: "ystone.png", name: "Artisan's Ultimate Refining Stone (ลูกแก้วเหลือง)" },
-            { img: "yamp.png", name: "Amplify Stone (Ampทอง)" },
-            { img: "ramp.png", name: "Amplify Stone (Ampแดง)" },
-            { img: "yampf.png", name: "Amplify Stone Fragment (เศษAmpทอง)" },
-            { img: "rampf.png", name: "Amplify Stone Fragment (เศษAmpแดง)" }
+            { img: "shorn.png", name: "Wrathful Mind (เขาเล็ก)" }, { img: "mhorn.png", name: "Wrathful Will (เขากลาง)" }, 
+            { img: "lhorn.png", name: "Wrathful Ego (เขาใหญ่)" }, { img: "whorn.png", name: "Wrathful Wish (เขาทองแดง)" }, 
+            { img: "wshorn.png", name: "Wrathful Sublimation (เขาทองฟ้า)" }, { img: "rhorn.png", name: "Maddened Curse (เขาแดงมังกร)" }, 
+            { img: "ystone.png", name: "ลูกแก้วเหลือง" }, { img: "yamp.png", name: "Ampทอง" }, 
+            { img: "ramp.png", name: "Ampแดง" }, { img: "yampf.png", name: "เศษAmpทอง" }, { img: "rampf.png", name: "เศษAmpแดง" }
         ];
 
         function getThaiTime() {
             const now = new Date();
-            const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
-            return new Date(utc + (3600000 * 7)); 
-        }
-
-        function getBase4AM(date) {
-            let d = new Date(date);
-            if (d.getHours() < 4) d.setDate(d.getDate() - 1);
-            d.setHours(4, 0, 0, 0);
-            return d.getTime();
-        }
-
-        function getRecentWednesday4AM(date) {
-            let d = new Date(date);
-            let day = d.getDay();
-            if (day === 3 && d.getHours() >= 4) { } else {
-                let diff = (day < 3) ? (day + 4) : (day - 3);
-                d.setDate(d.getDate() - diff);
-            }
-            d.setHours(4, 0, 0, 0);
-            return d.getTime();
-        }
-
-        function processTimeLogic(data) {
-            const now = getThaiTime();
-            const nowTime = now.getTime();
-            const current4AM = getBase4AM(now);
-            const currentWed4AM = getRecentWednesday4AM(now);
-
-            data.ids.forEach(id => {
-                id.characters.forEach(char => {
-                    let lastUpdate = char.lastUpdate || nowTime;
-                    if (lastUpdate < currentWed4AM) {
-                        char.raid = 3; char.ascension = 3; char.daily = 7; char.finalBoss = 35;
-                        char.duty = char.buyEnergy = char.craftEnergy = false;
-                    }
-                    if (lastUpdate < current4AM) {
-                        let daysPassed = Math.floor((current4AM - getBase4AM(new Date(lastUpdate))) / (24 * 3600000));
-                        if (daysPassed > 0) char.nightmare = Math.min(14, (parseInt(char.nightmare) || 0) + (2 * daysPassed));
-                    }
-                    let last4AMForStamina = getBase4AM(new Date(lastUpdate));
-                    let totalIntervalsPassed = (Math.floor((current4AM - last4AMForStamina) / (24 * 3600000)) * 8) + Math.floor((nowTime - current4AM) / (3 * 3600000)) - Math.floor((lastUpdate - last4AMForStamina) / (3 * 3600000));
-                    if (totalIntervalsPassed > 0) {
-                        let regenAmount = id.isVIP ? 15 : 10;
-                        char.stamina = Math.min(840, (parseInt(char.stamina) || 0) + (totalIntervalsPassed * regenAmount));
-                    }
-                    let totalIntervalsPassedRew = (Math.floor((current4AM - last4AMForStamina) / (24 * 3600000)) * 3) + Math.floor((nowTime - current4AM) / (8 * 3600000)) - Math.floor((lastUpdate - last4AMForStamina) / (8 * 3600000));
-                    if (totalIntervalsPassedRew > 0) char.rewardCount = Math.min(21, (parseInt(char.rewardCount) || 0) + (totalIntervalsPassedRew * 1));
-                    char.lastUpdate = nowTime;
-                });
-            });
-            return data;
-        }
-
-        function saveData() {
-            set(dbRef, appData).catch(error => console.error("Error saving data:", error));
+            return new Date(now.getTime() + (now.getTimezoneOffset() * 60000) + (3600000 * 7)); 
         }
 
         window.syncDataFromUI = function() {
             const idBlocks = document.querySelectorAll('.id-container');
-            appData.ids = Array.from(idBlocks).map((block, idIndex) => {
-                const charRows = block.querySelectorAll('.char-table tbody tr');
-                const invRows = block.querySelectorAll('.inv-table tbody tr');
-                
+            appData.ids = Array.from(idBlocks).map((block, idx) => {
                 return {
                     idName: block.querySelector('.id-name-input').value,
+                    kinahTotal: block.querySelector('.kinah-total-id').value,
                     isVIP: block.querySelector('.vip-input').checked,
-                    // แก้ไข: ไม่บันทึก activeTab เพื่อให้ reset เป็น 'char' ทุกครั้งที่เข้าเว็บใหม่
-                    characters: Array.from(charRows).map((row, charIndex) => ({
+                    vipExpiry: appData.ids[idx]?.vipExpiry || 0,
+                    trans: block.querySelector('.in-trans')?.value || 0,
+                    conq: block.querySelector('.in-conq')?.value || 0,
+                    setTotal: block.querySelector('.in-set-total')?.value || 0,
+                    characters: Array.from(block.querySelectorAll('.char-table tbody tr')).map(row => ({
                         name: row.querySelector('.char-name').value,
+                        class: row.querySelector('.class-select').value,
                         stamina: row.querySelector('.stam-main').value,
                         staminaBonus: row.querySelector('.stam-bonus').value,
                         duty: row.querySelector('.duty-check').checked,
-                        raid: row.querySelector('.raid-main').value,
-                        raidBonus: row.querySelector('.raid-bonus').value,
-                        ascension: row.querySelector('.asc-main').value,
-                        ascensionBonus: row.querySelector('.asc-bonus').value,
-                        daily: row.querySelector('.daily-main').value,
-                        nightmare: row.querySelector('.nm-main').value,
-                        nightmareBonus: row.querySelector('.nm-bonus').value,
-                        buyEnergy: row.querySelector('.buy-check').checked,
-                        craftEnergy: row.querySelector('.craft-check').checked,
-                        finalBoss: row.querySelector('.fb-main').value,
-                        rewardCount: row.querySelector('.rc-main').value,
-                        lastUpdate: (appData.ids[idIndex] && appData.ids[idIndex].characters[charIndex]) ? appData.ids[idIndex].characters[charIndex].lastUpdate : getThaiTime().getTime()
+                        raid: row.querySelector('.raid-check').checked,
+                        asc: row.querySelector('.asc-check').checked,
+                        daily: row.querySelector('.daily-check').checked,
+                        nm: row.querySelector('.nm-main').value,
+                        nmBonus: row.querySelector('.nm-bonus').value,
+                        buy: row.querySelector('.buy-check').checked,
+                        craft: row.querySelector('.craft-check').checked,
+                        fb: row.querySelector('.fb-main').value,
+                        rc: row.querySelector('.rc-main').value,
+                        rcBonus: row.querySelector('.rc-bonus').value
                     })),
-                    inventory: Array.from(invRows).map(row => ({
+                    inventory: Array.from(block.querySelectorAll('.inv-table tbody tr')).map(row => ({
                         trade: parseInt(row.querySelector('.inv-trade').value) || 0,
                         nonTrade: parseInt(row.querySelector('.inv-non').value) || 0
                     }))
                 };
             });
-            saveData();
+            set(dbRef, appData);
         };
 
-        window.switchTab = function(btn, tabName) {
-            const container = btn.closest('.id-container');
-            container.dataset.activeTab = tabName;
-            container.querySelectorAll('.btn-tab').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            
-            container.querySelector('.char-table').style.display = tabName === 'char' ? 'table' : 'none';
-            container.querySelector('.inv-table').style.display = tabName === 'inv' ? 'table' : 'none';
-            container.querySelector('.btn-add-char').style.display = tabName === 'char' ? 'inline-block' : 'none';
-            // syncDataFromUI() จะเซฟข้อมูลแต่ไม่เปลี่ยน activeTab ใน DB
-        };
-
-        window.updateGlow = function(inputElement) {
-            let val = parseInt(inputElement.value);
-            inputElement.classList.remove('glow-red', 'glow-green');
-            inputElement.classList.add(val === 0 ? 'glow-green' : 'glow-red');
-            window.syncDataFromUI();
-        };
-
-        window.updateInvTotal = function(input) {
-            const row = input.closest('tr');
-            const trade = parseInt(row.querySelector('.inv-trade').value) || 0;
-            const nonTrade = parseInt(row.querySelector('.inv-non').value) || 0;
-            row.querySelector('.inv-total').innerText = (trade + nonTrade).toLocaleString();
-            window.syncDataFromUI();
+        window.openVIP = (idx) => { currentEditingVIP = idx; document.getElementById('vipModal').style.display = 'flex'; };
+        window.closeVIP = () => { document.getElementById('vipModal').style.display = 'none'; };
+        window.confirmVIP = () => {
+            const d = parseInt(document.getElementById('vDay').value) || 0, h = parseInt(document.getElementById('vHour').value) || 0, m = parseInt(document.getElementById('vMin').value) || 0;
+            appData.ids[currentEditingVIP].vipExpiry = getThaiTime().getTime() + (d*86400000) + (h*3600000) + (m*60000);
+            closeVIP(); window.syncDataFromUI(); renderUI();
         };
 
         function renderUI() {
-            const wrapper = document.getElementById('main-wrapper');
+            const wrapper = document.getElementById('main-wrapper'), now = getThaiTime().getTime();
             wrapper.innerHTML = '';
-
-            appData.ids.forEach((idData, idIndex) => {
+            appData.ids.forEach((id, idx) => {
                 const idBlock = document.createElement('div');
                 idBlock.className = 'id-container';
-                // บังคับหน้าแรกเสมอ
-                idBlock.dataset.activeTab = 'char';
-                
-                let charRowsHTML = idData.characters.map((char, charIndex) => {
-                    const getGlow = (val) => parseInt(val) === 0 ? 'glow-green' : 'glow-red';
-                    return `
-                        <tr>
-                            <td><input type="text" class="char-name" value="${char.name || ''}" oninput="window.syncDataFromUI()"></td>
-                            <td><div class="split-input"><input type="number" class="stam-main" min="0" max="840" value="${char.stamina}" oninput="window.syncDataFromUI()"><span class="bonus-text">(+</span><input type="number" class="bonus-input stam-bonus" value="${char.staminaBonus}" oninput="window.syncDataFromUI()"><span class="bonus-text">)</span></div></td>
-                            <td><input type="checkbox" class="duty-check" ${char.duty ? 'checked' : ''} onchange="window.syncDataFromUI()"></td>
-                            <td><div class="split-input"><input type="number" class="target-glow raid-main ${getGlow(char.raid)}" min="0" max="3" value="${char.raid}" oninput="window.updateGlow(this)"><span class="bonus-text">(+</span><input type="number" class="bonus-input raid-bonus" value="${char.raidBonus}" oninput="window.syncDataFromUI()"><span class="bonus-text">)</span></div></td>
-                            <td><div class="split-input"><input type="number" class="target-glow asc-main ${getGlow(char.ascension)}" min="0" max="3" value="${char.ascension}" oninput="window.updateGlow(this)"><span class="bonus-text">(+</span><input type="number" class="bonus-input asc-bonus" value="${char.ascensionBonus}" oninput="window.syncDataFromUI()"><span class="bonus-text">)</span></div></td>
-                            <td><input type="number" class="target-glow daily-main ${getGlow(char.daily)}" min="0" max="7" value="${char.daily}" oninput="window.updateGlow(this)"></td>
-                            <td><div class="split-input"><input type="number" class="nm-main" min="0" max="14" value="${char.nightmare}" oninput="window.syncDataFromUI()"><span class="bonus-text">(+</span><input type="number" class="bonus-input nm-bonus" value="${char.nightmareBonus}" oninput="window.syncDataFromUI()"><span class="bonus-text">)</span></div></td>
-                            <td><input type="checkbox" class="buy-check" ${char.buyEnergy ? 'checked' : ''} onchange="window.syncDataFromUI()"></td>
-                            <td><input type="checkbox" class="craft-check" ${char.craftEnergy ? 'checked' : ''} onchange="window.syncDataFromUI()"></td>
-                            <td><input type="number" class="fb-main" min="0" max="35" value="${char.finalBoss}" oninput="window.syncDataFromUI()"></td>
-                            <td><input type="number" class="rc-main" min="0" max="21" value="${char.rewardCount}" oninput="window.syncDataFromUI()"></td>
-                            <td><button class="btn-danger" onclick="window.removeCharacter(${idIndex}, ${charIndex})">-</button></td>
-                        </tr>`;
-                }).join('');
-
-                let invRowsHTML = inventoryList.map((item, i) => {
-                    const data = (idData.inventory && idData.inventory[i]) ? idData.inventory[i] : { trade: 0, nonTrade: 0 };
-                    const inputClass = item.isKinah ? 'inv-trade kinah-input' : 'inv-trade';
-                    const inputClassNon = item.isKinah ? 'inv-non kinah-input' : 'inv-non';
-                    return `
-                        <tr>
-                            <td><img src="pic/${item.img}" class="item-icon"></td>
-                            <td style="text-align:left; padding-left:15px;">${item.name}</td>
-                            <td><input type="number" class="${inputClass}" value="${data.trade}" oninput="window.updateInvTotal(this)"></td>
-                            <td><input type="number" class="${inputClassNon}" value="${data.nonTrade}" oninput="window.updateInvTotal(this)"></td>
-                            <td class="inv-total total-glow">${(data.trade + data.nonTrade).toLocaleString()}</td>
-                        </tr>`;
-                }).join('');
+                let vipStr = "", vipCls = "vip-red";
+                if (id.vipExpiry > now) {
+                    const diff = id.vipExpiry - now, d = Math.floor(diff/86400000), h = Math.floor((diff%86400000)/3600000), m = Math.floor((diff%3600000)/60000);
+                    vipStr = `VIP คงเหลือ ${d} วัน ${h} ชม. ${m} นาที`;
+                    if (d >= 7) vipCls = "vip-green";
+                }
 
                 idBlock.innerHTML = `
-                    <button class="btn-reset-id" onclick="window.resetIDToMax(${idIndex})">🔄 Reset Max</button>
+                    <button class="btn-reset-id" onclick="window.resetIDToMax(${idx})">reset</button>
                     <div class="id-header">
-                        <label class="vip-check"><input type="checkbox" class="vip-input" ${idData.isVIP ? 'checked' : ''} onchange="window.syncDataFromUI()"> VIP</label>
-                        <span>ID:</span><input type="text" class="id-name-input" value="${idData.idName}" oninput="window.syncDataFromUI()">
-                        <button class="btn-add-char" onclick="window.addCharacter(${idIndex})">+ เพิ่มตัวละคร</button>
-                        <button class="btn-danger" onclick="window.removeID(${idIndex})">ลบ ID นี้</button>
+                        <label><input type="checkbox" class="vip-input" ${id.isVIP?'checked':''} onchange="window.syncDataFromUI()"> VIP</label>
+                        <input type="text" class="id-name-input" value="${id.idName}" oninput="window.syncDataFromUI()">
+                        <button onclick="window.addCharacter(${idx})">+ เพิ่มตัวละคร</button>
+                        <button class="btn-danger" onclick="window.removeID(${idx})">ลบ ID นี้</button>
+                        <button onclick="openVIP(${idx})">ตั้งค่า vip</button>
+                        <div class="kinah-id-wrapper">เงินรวม <input type="text" class="kinah-total-id" placeholder="0" value="${id.kinahTotal||0}" oninput="window.syncDataFromUI()"></div>
+                        <span class="vip-status ${vipCls}">${vipStr}</span>
                     </div>
-                    <div class="tab-controls">
-                        <button class="btn-tab active" onclick="window.switchTab(this, 'char')">👥 จัดการตัวละคร</button>
-                        <button class="btn-tab" onclick="window.switchTab(this, 'inv')">📦 คลังไอเทม</button>
-                    </div>
+                    <div class="tab-controls"><button class="btn-tab active" onclick="window.switchTab(this, 'char')">👥 จัดการตัวละคร</button><button class="btn-tab" onclick="window.switchTab(this, 'inv')">📦 คลังไอเทม</button></div>
+                    
                     <table class="char-table">
-                        <thead><tr><th>Character Name</th><th>Stamina</th><th>Duty</th><th>Raid</th><th>Ascension</th><th>Daily</th><th>Nightmare</th><th>Buy</th><th>Craft</th><th>Boss</th><th>Reward</th><th>จัดการ</th></tr></thead>
-                        <tbody>${charRowsHTML}</tbody>
+                        <thead><tr><th>ชื่อ</th><th>อาชีพ</th><th>Stamina</th><th>Duty</th><th>Raid</th><th>Asc</th><th>Daily</th><th>Nightmare</th><th>Buy Stamina</th><th>Craft Stamina</th><th>Final Boss</th><th>Reward Count</th><th>รอบดันที่ลงได้</th><th>จัดการ</th></tr></thead>
+                        <tbody>${id.characters.map((c, cIdx) => {
+                            const totalStam = (parseInt(c.stamina)||0) + (parseInt(c.staminaBonus)||0);
+                            const totalRC = (parseInt(c.rc)||0) + (parseInt(c.rcBonus)||0);
+                            const runs = Math.floor(totalStam/80);
+                            return `<tr>
+                                <td><input type="text" class="char-name" value="${c.name}" oninput="window.syncDataFromUI()"></td>
+                                <td><select class="class-select" onchange="window.syncDataFromUI()"><option value="">เลือกอาชีพ</option>${['Templar','Gladiator','Assassin','Sorceror','Elementalist','Cleric','Ranger','Chanter'].map(cls=>`<option value="${cls}" ${c.class===cls?'selected':''}>${cls}</option>`).join('')}</select></td>
+                                <td><div class="split-input"><input type="number" class="standard-num stam-main" value="${c.stamina}" oninput="window.syncDataFromUI()"><span class="bonus-text">+(</span><input type="number" class="bonus-input stam-bonus" value="${c.staminaBonus||0}" oninput="window.syncDataFromUI()"><span class="bonus-text">)</span><span class="total-white">${totalStam}</span></div></td>
+                                <td><input type="checkbox" class="duty-check" ${c.duty?'checked':''} onchange="window.syncDataFromUI()"></td>
+                                <td><input type="checkbox" class="raid-check" ${c.raid?'checked':''} onchange="window.syncDataFromUI()"></td>
+                                <td><input type="checkbox" class="asc-check" ${c.asc?'checked':''} onchange="window.syncDataFromUI()"></td>
+                                <td><input type="checkbox" class="daily-check" ${c.daily?'checked':''} onchange="window.syncDataFromUI()"></td>
+                                <td><div class="split-input"><input type="number" class="standard-num nm-main" value="${c.nm}" oninput="window.syncDataFromUI()"><span class="bonus-text">+(</span><input type="number" class="bonus-input nm-bonus" value="${c.nmBonus||0}" oninput="window.syncDataFromUI()"><span class="bonus-text">)</span></div></td>
+                                <td><input type="checkbox" class="buy-check" ${c.buy?'checked':''} onchange="window.syncDataFromUI()"></td>
+                                <td><input type="checkbox" class="craft-check" ${c.craft?'checked':''} onchange="window.syncDataFromUI()"></td>
+                                <td><input type="number" class="standard-num fb-main" value="${c.fb}" oninput="window.syncDataFromUI()"></td>
+                                <td><div class="split-input"><input type="number" class="standard-num rc-main" value="${c.rc}" oninput="window.syncDataFromUI()"><span class="bonus-text">+(</span><input type="number" class="bonus-input rc-bonus" value="${c.rcBonus||0}" oninput="window.syncDataFromUI()"><span class="bonus-text">)</span><span class="total-white">${totalRC}</span></div></td>
+                                <td class="${runs===0?'red-text':''}">${runs}</td>
+                                <td><button class="btn-danger" onclick="window.removeCharacter(${idx}, ${cIdx})">ลบ</button></td>
+                            </tr>`;
+                        }).join('')}</tbody>
                     </table>
+
                     <table class="inv-table" style="display:none">
-                        <thead><tr><th style="width:60px">รูป</th><th>ชื่อไอเทม</th><th>Tradable</th><th>Non-Tradable</th><th>Total</th></tr></thead>
-                        <tbody>${invRowsHTML}</tbody>
+                        <thead><tr><th>รูป</th><th>ชื่อไอเทม</th><th>Tradable</th><th>Non-Tradable</th><th>Total</th></tr></thead>
+                        <tbody>${inventoryList.map((item,i)=>`<tr><td><img src="pic/${item.img}" width="28"></td><td style="text-align:left">${item.name}</td><td><input type="number" style="width:120px; text-align:right" class="inv-trade" value="${id.inventory[i]?.trade||0}" oninput="window.syncDataFromUI()"></td><td><input type="number" style="width:120px; text-align:right" class="inv-non" value="${id.inventory[i]?.nonTrade||0}" oninput="window.syncDataFromUI()"></td><td class="total-glow">${((id.inventory[i]?.trade||0)+(id.inventory[i]?.nonTrade||0)).toLocaleString()}</td></tr>`).join('')}</tbody>
                     </table>
-                `;
+
+                    <div class="summary-table-container">
+                        <table class="summary-table">
+                            <tr><td>รอบ transcendence</td><td><input type="number" class="in-trans" value="${id.trans||0}" oninput="window.syncDataFromUI()"></td></tr>
+                            <tr><td>รอบ conquest</td><td><input type="number" class="in-conq" value="${id.conq||0}" oninput="window.syncDataFromUI()"></td></tr>
+                            <tr><td>รอบรวมที่ตั้งไว้</td><td><input type="number" class="in-set-total" value="${id.setTotal||0}" oninput="window.syncDataFromUI()"></td></tr>
+                            <tr><td>รอบรวมปัจจุบัน</td><td class="summary-val">${(parseInt(id.trans)||0)+(parseInt(id.conq)||0)}</td></tr>
+                            <tr><td>คงเหลือที่ต้องลง</td><td class="summary-val">${(parseInt(id.setTotal)||0)-((parseInt(id.trans)||0)+(parseInt(id.conq)||0))}</td></tr>
+                        </table>
+                    </div>`;
                 wrapper.appendChild(idBlock);
             });
         }
 
-        window.addNewID = function() {
-            appData.ids.push({
-                idName: `New_ID_${appData.ids.length + 1}`, isVIP: false,
-                characters: [createDefaultChar(), createDefaultChar(), createDefaultChar()],
-                inventory: inventoryList.map(() => ({ trade: 0, nonTrade: 0 }))
-            });
-            saveData(); renderUI();
+        window.addNewID = () => { appData.ids.push({ idName: "New ID", kinahTotal: 0, isVIP: false, characters: [], inventory: inventoryList.map(()=>({trade:0, nonTrade:0})) }); renderUI(); };
+        window.addCharacter = (idx) => { appData.ids[idx].characters.push({ name:"", class:"", stamina:840, staminaBonus:0, rc:21, rcBonus:0, nm:14, nmBonus:0, fb:35 }); renderUI(); };
+        window.removeCharacter = (idx, cIdx) => { if(confirm("ลบตัวละคร?")) { appData.ids[idx].characters.splice(cIdx,1); renderUI(); } };
+        window.removeID = (idx) => { if(confirm("ลบ ID?")) { appData.ids.splice(idx,1); renderUI(); } };
+        window.switchTab = (btn, tab) => {
+            const c = btn.closest('.id-container');
+            c.querySelectorAll('.btn-tab').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            c.querySelector('.char-table').style.display = tab==='char'?'table':'none';
+            c.querySelector('.inv-table').style.display = tab==='inv'?'table':'none';
         };
-
-        window.addCharacter = (idx) => {
-            if (appData.ids[idx].characters.length >= 8) return alert("สูงสุด 8 ตัวครับ");
-            appData.ids[idx].characters.push(createDefaultChar()); saveData(); renderUI();
-        };
-
-        window.removeCharacter = (idIdx, charIdx) => {
-            if (appData.ids[idIdx].characters.length <= 1) return alert("ต้องมีอย่างน้อย 1 ตัวครับ");
-            appData.ids[idIdx].characters.splice(charIdx, 1); saveData(); renderUI();
-        };
-
-        window.removeID = (idx) => { if (confirm("ลบ ID นี้?")) { appData.ids.splice(idx, 1); saveData(); renderUI(); } };
-
         window.resetIDToMax = (idx) => {
-            if (confirm("Reset ค่าทั้งหมดเป็น Max?")) {
-                appData.ids[idx].characters.forEach(char => {
-                    char.stamina = 840; char.raid = 3; char.ascension = 3; char.daily = 7;
-                    char.nightmare = 14; char.finalBoss = 35; char.rewardCount = 21;
-                });
-                saveData(); renderUI();
+            if(confirm("Reset ID?")) {
+                appData.ids[idx].characters.forEach(c => { c.stamina=840; c.nm=14; c.fb=35; c.rc=21; c.duty=c.raid=c.asc=c.daily=c.buy=c.craft=false; });
+                renderUI();
             }
         };
 
-        function createDefaultChar() {
-            return { name: "", stamina: 840, staminaBonus: 0, duty: false, raid: 3, raidBonus: 0, ascension: 3, ascensionBonus: 0, daily: 7, nightmare: 14, nightmareBonus: 0, buyEnergy: false, craftEnergy: false, finalBoss: 35, rewardCount: 21, lastUpdate: getThaiTime().getTime() };
-        }
-
-        get(dbRef).then((snapshot) => {
-            if (snapshot.exists()) {
-                appData = processTimeLogic(snapshot.val());
-                if (!appData.ids) appData.ids = [];
-                saveData();
-            } else { window.addNewID(); }
-            renderUI();
-            document.getElementById('loading').style.display = 'none';
-        }).catch((e) => { console.error(e); alert("เชื่อมต่อไม่ได้ครับ"); });
+        get(dbRef).then(snap => { if(snap.exists()) appData = snap.val(); else window.addNewID(); renderUI(); document.getElementById('loading').style.display = 'none'; });
+        setInterval(renderUI, 30000);
     </script>
 </body>
 </html>
