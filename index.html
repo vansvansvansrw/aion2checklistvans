@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AION2 Check List v1.25</title>
+    <title>AION2 Check List v1.29 (Dungeon Master Fix)</title>
     <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        :root { --bg-color: #0d1117; --panel-bg: rgba(22, 27, 34, 0.85); --neon-blue: #00f3ff; --text-main: #c9d1d9; --border-color: #30363d; --bonus-color: #ffb000; }
+        :root { --bg-color: #0d1117; --panel-bg: rgba(22, 27, 34, 0.85); --neon-blue: #00f3ff; --text-main: #c9d1d9; --border-color: #30363d; --bonus-color: #ffb000; --danger-red: #ff4444; }
         body { background-image: linear-gradient(rgba(13, 17, 23, 0.85), rgba(13, 17, 23, 0.85)), url('pic/background.jpg'); background-size: cover; background-position: center; background-attachment: fixed; color: var(--text-main); font-family: 'Prompt', sans-serif; margin: 0; padding: 20px; }
         .header-container { text-align: center; margin-bottom: 20px; }
         .logo-img { max-width: 200px; height: auto; margin-bottom: 10px; }
@@ -16,6 +16,8 @@
         .id-container { background-color: var(--panel-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 20px; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(0, 243, 255, 0.1); position: relative; backdrop-filter: blur(5px); }
         .id-header { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid var(--border-color); flex-wrap: wrap; }
         .id-header input[type="text"].id-name-input { background: transparent; border: none; color: var(--neon-blue); font-size: 1.4rem; font-weight: bold; outline: none; border-bottom: 1px dashed var(--border-color); width: 150px; font-family: 'Prompt', sans-serif; }
+        .stamina-alert-icon { display: none; background: var(--danger-red); color: white; width: 22px; height: 22px; border-radius: 50%; font-weight: bold; align-items: center; justify-content: center; font-size: 14px; box-shadow: 0 0 10px var(--danger-red); animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.2); opacity: 0.8; } 100% { transform: scale(1); opacity: 1; } }
         .kinah-id-wrapper { margin-left: auto; margin-right: 90px; display: flex; align-items: center; gap: 8px; }
         .kinah-total-id { background: rgba(13, 17, 23, 0.8); border: 1px solid var(--neon-blue); color: #fff; font-size: 1.1rem; padding: 5px 10px; border-radius: 4px; width: 170px; text-align: right; font-family: 'Prompt', sans-serif; }
         .vip-status { font-size: 0.9rem; font-weight: bold; width: 100%; margin-top: 5px; }
@@ -28,6 +30,7 @@
         th, td { border: 1px solid var(--border-color); padding: 8px 4px; }
         th { background-color: rgba(33, 38, 45, 0.8); color: #ffffff; }
         input[type="number"], input[type="text"], select { background: rgba(13, 17, 23, 0.8); color: white; border: 1px solid #444; border-radius: 4px; padding: 4px; text-align: center; font-family: 'Prompt', sans-serif; }
+        .stam-main.glow-red { border-color: var(--danger-red) !important; box-shadow: 0 0 8px var(--danger-red); color: #fff; font-weight: bold; }
         .split-input { display: flex; align-items: center; justify-content: flex-end; gap: 2px; }
         .total-white { color: #fff; font-weight: bold; min-width: 45px; text-align: right; padding-left: 5px; }
         input[type="number"].bonus-input { color: var(--bonus-color); border-color: #664400; width: 40px; padding: 2px; }
@@ -43,20 +46,22 @@
         button { background-color: transparent; color: var(--neon-blue); border: 1px solid var(--neon-blue); padding: 8px 12px; cursor: pointer; border-radius: 4px; font-weight: bold; font-family: 'Prompt', sans-serif; }
         button:hover { background-color: var(--neon-blue); color: #000; }
         .btn-danger { color: #ff4444; border-color: #ff4444; }
-        .red-text { color: #ff4444; font-weight: bold; }
         .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); justify-content: center; align-items: center; }
         .modal-content { background: #161b22; padding: 25px; border-radius: 10px; border: 2px solid var(--neon-blue); width: 320px; text-align: center; box-shadow: 0 0 30px rgba(0,243,255,0.2); }
-        .vip-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding: 0 20px; }
-        .vip-row label { font-size: 1.1rem; color: #fff; width: 60px; text-align: left; }
-        .vip-row input { width: 120px; font-size: 1.1rem; }
+        .modal-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding: 0 20px; }
+        .modal-row label { font-size: 1.1rem; color: #fff; width: 80px; text-align: left; }
+        .modal-row input { width: 120px; font-size: 1.1rem; }
         #loading { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0d1117; display: flex; justify-content: center; align-items: center; color: var(--neon-blue); font-size: 1.5rem; z-index: 3000; }
     </style>
 </head>
 <body>
-    <div id="loading">กำลังซิงค์ข้อมูล v1.25...</div>
-    <div id="vipModal" class="modal"><div class="modal-content"><h3>ตั้งค่า VIP คงเหลือ</h3><div class="vip-row"><label>วัน</label><input type="number" id="vDay" value="0"></div><div class="vip-row"><label>ชม.</label><input type="number" id="vHour" value="0"></div><div class="vip-row"><label>นาที</label><input type="number" id="vMin" value="0"></div><div style="margin-top:20px;"><button onclick="confirmVIP()">ตกลง</button> <button class="btn-danger" onclick="closeVIP()">ยกเลิก</button></div></div></div>
-    <div id="userModal" class="modal"><div class="modal-content"><h3>เพิ่ม User ใหม่</h3><div class="vip-row"><label>ชื่อ</label><input type="text" id="newUserName" placeholder="..."></div><div style="margin-top:20px;"><button onclick="confirmAddUser()">ตกลง</button> <button class="btn-danger" onclick="closeUserModal()">ยกเลิก</button></div></div></div>
-    <div class="header-container"><img src="pic/logo.png" alt="AION 2 Logo" class="logo-img"><h1>AION2 Check List v1.25 by VANS</h1></div>
+    <div id="loading">กำลังซิงค์ข้อมูล v1.29...</div>
+
+    <div id="vipModal" class="modal"><div class="modal-content"><h3>ตั้งค่า VIP คงเหลือ</h3><div class="modal-row"><label>วัน</label><input type="number" id="vDay" value="0"></div><div class="modal-row"><label>ชม.</label><input type="number" id="vHour" value="0"></div><div class="modal-row"><label>นาที</label><input type="number" id="vMin" value="0"></div><div style="margin-top:20px;"><button onclick="confirmVIP()">ตกลง</button> <button class="btn-danger" onclick="closeVIP()">ยกเลิก</button></div></div></div>
+    <div id="userModal" class="modal"><div class="modal-content"><h3>เพิ่ม User ใหม่</h3><div class="modal-row"><label>ชื่อ</label><input type="text" id="newUserName" placeholder="..."></div><div style="margin-top:20px;"><button onclick="confirmAddUser()">ตกลง</button> <button class="btn-danger" onclick="closeUserModal()">ยกเลิก</button></div></div></div>
+    <div id="dunModal" class="modal"><div class="modal-content"><h3>ลงดันเจี้ยน</h3><div class="modal-row"><label>จำนวนรอบ</label><input type="number" id="dunCount" value="1" min="1"></div><div style="margin-top:20px;"><button onclick="window.confirmDun()">ตกลง</button> <button class="btn-danger" onclick="window.closeDun()">ยกเลิก</button></div></div></div>
+
+    <div class="header-container"><img src="pic/logo.png" alt="AION 2 Logo" class="logo-img"><h1>AION2 Check List v1.29 by VANS</h1></div>
     <div class="user-menu-bar">
         <select id="userDropdown" class="user-select" onchange="window.switchUser(this.value)"></select>
         <button onclick="window.openUserModal()">+ เพิ่ม User</button>
@@ -73,6 +78,8 @@
         const app = initializeApp(firebaseConfig); const db = getDatabase(app); 
 
         let currentUser = ""; let appData = { ids: [] }; let currentEditingVIP = -1;
+        let curDunID = -1, curDunChar = -1;
+
         const inventoryList = [{ img: "shorn.png", name: "Wrathful Mind (เขาเล็ก)" }, { img: "mhorn.png", name: "Wrathful Will (เขากลาง)" }, { img: "lhorn.png", name: "Wrathful Ego (เขาใหญ่)" }, { img: "whorn.png", name: "Wrathful Wish (เขาทองแดง)" }, { img: "wshorn.png", name: "Wrathful Sublimation (เขาทองฟ้า)" }, { img: "rhorn.png", name: "Maddened Curse (เขาแดงมังกร)" }, { img: "ystone.png", name: "ลูกแก้วเหลือง" }, { img: "yamp.png", name: "Ampทอง" }, { img: "ramp.png", name: "Ampแดง" }, { img: "yampf.png", name: "เศษAmpทอง" }, { img: "rampf.png", name: "เศษAmpแดง" }, { img: "rodyle.png", name: "Radiant Odyle" }];
 
         function getThaiTime() { const now = new Date(); return new Date(now.getTime() + (now.getTimezoneOffset() * 60000) + (3600000 * 7)); }
@@ -99,15 +106,9 @@
         }
 
         window.loadUserList = async () => {
-            const snap = await get(ref(db, 'userData'));
-            const dropdown = document.getElementById('userDropdown');
+            const snap = await get(ref(db, 'userData')); const dropdown = document.getElementById('userDropdown');
             dropdown.innerHTML = '<option value="">-- เลือก User --</option>';
-            if (snap.exists()) {
-                Object.keys(snap.val()).forEach(u => {
-                    const opt = document.createElement('option');
-                    opt.value = u; opt.textContent = u; dropdown.appendChild(opt);
-                });
-            }
+            if (snap.exists()) { Object.keys(snap.val()).forEach(u => { const opt = document.createElement('option'); opt.value = u; opt.textContent = u; dropdown.appendChild(opt); }); }
             if (currentUser) dropdown.value = currentUser;
         };
 
@@ -115,40 +116,24 @@
         window.closeUserModal = () => document.getElementById('userModal').style.display = 'none';
 
         window.confirmAddUser = async () => {
-            const name = document.getElementById('newUserName').value.trim();
-            if(!name) return;
-            // บังคับเซฟโครงสร้างเบื้องต้นทันทีเพื่อให้ Firebase จดจำ User แม้ยังไม่มี ID
+            const name = document.getElementById('newUserName').value.trim(); if(!name) return;
             await set(ref(db, `userData/${name}`), { ids: [], lastActive: getThaiTime().getTime() });
-            window.closeUserModal(); 
-            await window.loadUserList(); // รอให้ดึงลิสต์ใหม่มาครบก่อน
-            window.switchUser(name); // สลับไปหา User ใหม่ทันที
+            window.closeUserModal(); await window.loadUserList(); window.switchUser(name);
         };
 
-        window.deleteUser = async () => {
-            if(!currentUser) return;
-            if(confirm(`ลบ User: ${currentUser}?`)) {
-                await remove(ref(db, `userData/${currentUser}`));
-                currentUser = ""; await window.loadUserList(); renderUI();
-            }
-        };
+        window.deleteUser = async () => { if(!currentUser) return; if(confirm(`ลบ User: ${currentUser}?`)) { await remove(ref(db, `userData/${currentUser}`)); currentUser = ""; await window.loadUserList(); renderUI(); } };
 
         window.switchUser = async (u) => {
-            const btnContainer = document.getElementById('btn-add-id-container');
-            if(!u) { currentUser = ""; renderUI(); btnContainer.style.display = 'none'; return; }
-            currentUser = u;
-            document.getElementById('userDropdown').value = u;
-            document.getElementById('loading').style.display = 'flex';
-            const snap = await get(ref(db, `userData/${currentUser}`));
-            appData = processTimeLogic(snap.val() || { ids: [] });
-            renderUI();
-            btnContainer.style.display = 'block';
-            document.getElementById('loading').style.display = 'none';
+            const btnContainer = document.getElementById('btn-add-id-container'); if(!u) { currentUser = ""; renderUI(); btnContainer.style.display = 'none'; return; }
+            currentUser = u; document.getElementById('userDropdown').value = u; document.getElementById('loading').style.display = 'flex';
+            const snap = await get(ref(db, `userData/${currentUser}`)); appData = processTimeLogic(snap.val() || { ids: [] });
+            renderUI(); btnContainer.style.display = 'block'; document.getElementById('loading').style.display = 'none';
         };
 
         window.syncDataFromUI = function() {
             if(!currentUser) return;
-            const blocks = document.querySelectorAll('.id-container');
-            appData.ids = Array.from(blocks).map((b, idx) => ({
+            const idBlocks = document.querySelectorAll('.id-container');
+            appData.ids = Array.from(idBlocks).map((b, idx) => ({
                 idName: b.querySelector('.id-name-input').value, kinahTotal: b.querySelector('.kinah-total-id').value, isVIP: b.querySelector('.vip-input').checked, vipExpiry: appData.ids[idx]?.vipExpiry || 0, trans: b.querySelector('.in-trans')?.value || 0, conq: b.querySelector('.in-conq')?.value || 0, setTotal: b.querySelector('.in-set-total')?.value || 0,
                 characters: Array.from(b.querySelectorAll('.char-table tbody tr')).map((row, cIdx) => ({
                     name: row.querySelector('.char-name').value, class: row.querySelector('.class-select').value, stamina: row.querySelector('.stam-main').value, staminaBonus: row.querySelector('.stam-bonus').value, duty: row.querySelector('.duty-check').checked, raid: row.querySelector('.raid-check').checked, asc: row.querySelector('.asc-check').checked, daily: row.querySelector('.daily-check').checked, nm: row.querySelector('.nm-main').value, nmBonus: row.querySelector('.nm-bonus').value, buy: row.querySelector('.buy-check').checked, craft: row.querySelector('.craft-check').checked, fb: row.querySelector('.fb-main').value, rc: row.querySelector('.rc-main').value, rcBonus: row.querySelector('.rc-bonus').value, lastUpdate: appData.ids[idx]?.characters[cIdx]?.lastUpdate || getThaiTime().getTime()
@@ -161,32 +146,46 @@
         window.updateCalculations = () => {
             appData.ids.forEach((id, idx) => {
                 const b = document.querySelectorAll('.id-container')[idx]; if(!b) return;
-                let tRuns = 0;
+                let tRuns = 0; let hasFullStamina = false;
                 (id.characters || []).forEach((c, cIdx) => {
                     const row = b.querySelectorAll('.char-table tbody tr')[cIdx]; if(!row) return;
-                    const tS = (parseInt(c.stamina)||0) + (parseInt(c.staminaBonus)||0);
-                    const tR = (parseInt(c.rc)||0) + (parseInt(c.rcBonus)||0);
+                    const mainStam = parseInt(c.stamina)||0; const tS = mainStam + (parseInt(c.staminaBonus)||0); const tR = (parseInt(c.rc)||0) + (parseInt(c.rcBonus)||0);
                     const runs = Math.min(Math.floor(tS/80), parseInt(c.fb)||0, tR);
                     tRuns += runs;
+                    const stamInput = row.querySelector('.stam-main');
+                    if (mainStam >= 840) { stamInput.classList.add('glow-red'); hasFullStamina = true; } else { stamInput.classList.remove('glow-red'); }
                     row.querySelector('.total-white-stam').innerText = tS; row.querySelector('.total-white-rc').innerText = tR;
                     const rC = row.querySelector('.live-run-count'); rC.innerText = runs; rC.className = 'live-run-count '+(runs===0?'red-text':'');
                 });
-                (id.inventory || []).forEach((inv, iIdx) => {
-                    const row = b.querySelectorAll('.inv-table tbody tr')[iIdx];
-                    if(row) row.querySelector('.total-glow').innerText = ((parseInt(inv.trade)||0) + (parseInt(inv.nonTrade)||0)).toLocaleString();
-                });
+                const alertIcon = b.querySelector('.stamina-alert-icon'); alertIcon.style.display = hasFullStamina ? 'flex' : 'none';
+                (id.inventory || []).forEach((inv, iIdx) => { const row = b.querySelectorAll('.inv-table tbody tr')[iIdx]; if(row) row.querySelector('.total-glow').innerText = ((parseInt(inv.trade)||0) + (parseInt(inv.nonTrade)||0)).toLocaleString(); });
                 const cur = (parseInt(id.trans)||0) + (parseInt(id.conq)||0);
                 b.querySelector('.summary-run-total').innerText = tRuns; b.querySelector('.summary-current').innerText = cur; b.querySelector('.summary-remain').innerText = (parseInt(id.setTotal)||0) - cur;
             });
         };
 
+        window.openDun = (iIdx, cIdx) => { curDunID = iIdx; curDunChar = cIdx; document.getElementById('dunCount').value = 1; document.getElementById('dunModal').style.display = 'flex'; };
+        window.closeDun = () => document.getElementById('dunModal').style.display = 'none';
+        
+        window.confirmDun = async () => {
+            const count = parseInt(document.getElementById('dunCount').value) || 0;
+            if (count > 0 && curDunID !== -1 && curDunChar !== -1) {
+                const char = appData.ids[curDunID].characters[curDunChar];
+                
+                // Logic Fix [v1.29]: บันทึกลง Memory และ Database ทันทีเพื่อเลี่ยง UI Sync Error
+                char.stamina = Math.max(0, (parseInt(char.stamina) || 0) - (count * 80));
+                char.fb = Math.max(0, (parseInt(char.fb) || 0) - count);
+                char.rc = Math.max(0, (parseInt(char.rc) || 0) - count);
+                
+                await set(ref(db, `userData/${currentUser}`), appData);
+                renderUI(); 
+            }
+            window.closeDun();
+        };
+
         window.openVIP = (idx) => { currentEditingVIP = idx; document.getElementById('vipModal').style.display = 'flex'; };
         window.closeVIP = () => { document.getElementById('vipModal').style.display = 'none'; };
-        window.confirmVIP = () => {
-            const d = parseInt(document.getElementById('vDay').value)||0, h = parseInt(document.getElementById('vHour').value)||0, m = parseInt(document.getElementById('vMin').value)||0;
-            appData.ids[currentEditingVIP].vipExpiry = getThaiTime().getTime() + (d*86400000) + (h*3600000) + (m*60000);
-            window.closeVIP(); renderUI(); window.syncDataFromUI();
-        };
+        window.confirmVIP = () => { const d = parseInt(document.getElementById('vDay').value)||0, h = parseInt(document.getElementById('vHour').value)||0, m = parseInt(document.getElementById('vMin').value)||0; appData.ids[currentEditingVIP].vipExpiry = getThaiTime().getTime() + (d*86400000) + (h*3600000) + (m*60000); window.closeVIP(); renderUI(); window.syncDataFromUI(); };
 
         function renderUI() {
             const wrapper = document.getElementById('main-wrapper'); const now = getThaiTime().getTime(); wrapper.innerHTML = '';
@@ -195,15 +194,31 @@
                 const b = document.createElement('div'); b.className = 'id-container';
                 let vS = "", vC = "vip-red";
                 if(id.vipExpiry > now) { const diff = id.vipExpiry-now, d = Math.floor(diff/86400000), h = Math.floor((diff%86400000)/3600000), m = Math.floor((diff%3600000)/60000); vS = `VIP คงเหลือ ${d} วัน ${h} ชม. ${m} นาที`; if (d>=7) vC = "vip-green"; }
-                const rows = (id.characters || []).map((c, cIdx) => `<tr><td><input type="text" class="char-name" value="${c.name||''}" oninput="window.syncDataFromUI()"></td><td><select class="class-select" onchange="window.syncDataFromUI()"><option value="">เลือกอาชีพ</option>${['Templar','Gladiator','Assassin','Sorceror','Elementalist','Cleric','Ranger','Chanter'].map(cls=>`<option value="${cls}" ${c.class===cls?'selected':''}>${cls}</option>`).join('')}</select></td><td><div class="split-input"><input type="number" class="standard-num stam-main" value="${c.stamina||0}" oninput="window.syncDataFromUI()"><span class="bonus-text">+(</span><input type="number" class="bonus-input stam-bonus" value="${c.staminaBonus||0}" oninput="window.syncDataFromUI()"><span class="bonus-text">)</span><span class="total-white total-white-stam">0</span></div></td><td><input type="checkbox" class="duty-check" ${c.duty?'checked':''} onchange="window.syncDataFromUI()"></td><td><input type="checkbox" class="raid-check" ${c.raid?'checked':''} onchange="window.syncDataFromUI()"></td><td><input type="checkbox" class="asc-check" ${c.asc?'checked':''} onchange="window.syncDataFromUI()"></td><td><input type="checkbox" class="daily-check" ${c.daily?'checked':''} onchange="window.syncDataFromUI()"></td><td><div class="split-input"><input type="number" class="standard-num nm-main" value="${c.nm||0}" oninput="window.syncDataFromUI()"><span class="bonus-text">+(</span><input type="number" class="bonus-input nm-bonus" value="${c.nmBonus||0}" oninput="window.syncDataFromUI()"><span class="bonus-text">)</span></div></td><td><input type="checkbox" class="buy-check" ${c.buy?'checked':''} onchange="window.syncDataFromUI()"></td><td><input type="checkbox" class="craft-check" ${c.craft?'checked':''} onchange="window.syncDataFromUI()"></td><td><input type="number" class="standard-num fb-main" value="${c.fb||0}" oninput="window.syncDataFromUI()"></td><td><div class="split-input"><input type="number" class="standard-num rc-main" value="${c.rc||0}" oninput="window.syncDataFromUI()"><span class="bonus-text">+(</span><input type="number" class="bonus-input rc-bonus" value="${c.rcBonus||0}" oninput="window.syncDataFromUI()"><span class="bonus-text">)</span><span class="total-white total-white-rc">0</span></div></td><td class="live-run-count">0</td><td><button class="btn-danger" onclick="window.removeCharacter(${idx}, ${cIdx})">ลบ</button></td></tr>`).join('');
-                b.innerHTML = `<button class="btn-reset-id" onclick="window.resetIDToMax(${idx})">reset</button><div class="id-header"><label><input type="checkbox" class="vip-input" ${id.isVIP?'checked':''} onchange="window.syncDataFromUI()"> VIP</label><input type="text" class="id-name-input" value="${id.idName||''}" oninput="window.syncDataFromUI()"><button onclick="window.addCharacter(${idx})">+ เพิ่มตัวละคร</button><button class="btn-danger" onclick="window.removeID(${idx})">ลบ ID นี้</button><button onclick="window.openVIP(${idx})">ตั้งค่า vip</button><div class="kinah-id-wrapper">เงินรวม <input type="text" class="kinah-total-id" value="${id.kinahTotal||0}" oninput="window.syncDataFromUI()"></div><span class="vip-status ${vC}">${vS}</span></div><div class="tab-controls"><button class="btn-tab active" onclick="window.switchTab(this, 'char')">👥 จัดการตัวละคร</button><button class="btn-tab" onclick="window.switchTab(this, 'inv')">📦 คลังไอเทม</button></div><table class="char-table"><thead><tr><th>ชื่อ</th><th>อาชีพ</th><th>Stamina</th><th>Duty</th><th>Raid</th><th>Asc</th><th>Daily</th><th>Nightmare</th><th>Buy Stamina</th><th>Craft Stamina</th><th>Final Boss</th><th>Reward Count</th><th>รอบดันที่ลงได้</th><th>จัดการ</th></tr></thead><tbody>${rows}</tbody></table><table class="inv-table" style="display:none"><thead><tr><th>รูป</th><th>ชื่อไอเทม</th><th>Tradable</th><th>Non-Tradable</th><th>Total</th></tr></thead><tbody>${inventoryList.map((item,i)=> { const inv = (id.inventory && id.inventory[i]) ? id.inventory[i] : { trade: 0, nonTrade: 0 }; return `<tr><td><img src="pic/${item.img}" width="28"></td><td style="text-align:left">${item.name}</td><td><input type="number" style="width:120px; text-align:right" class="inv-trade" value="${inv.trade||0}" oninput="window.syncDataFromUI()"></td><td><input type="number" style="width:120px; text-align:right" class="inv-non" value="${inv.nonTrade||0}" oninput="window.syncDataFromUI()"></td><td class="total-glow">0</td></tr>`; }).join('')}</tbody></table><div class="summary-table-container"><table class="summary-table"><tr><td>รอบดันที่ลงได้ (รวมทุกตัวละคร)</td><td class="summary-val summary-run-total">0</td></tr><tr><td>รอบ transcendence</td><td><input type="number" class="in-trans" value="${id.trans||0}" oninput="window.syncDataFromUI()"></td></tr><tr><td>รอบ conquest</td><td><input type="number" class="in-conq" value="${id.conq||0}" oninput="window.syncDataFromUI()"></td></tr><tr><td>รอบรวมที่ตั้งไว้</td><td><input type="number" class="in-set-total" value="${id.setTotal||0}" oninput="window.syncDataFromUI()"></td></tr><tr><td>รอบรวมปัจจุบัน</td><td class="summary-val summary-current">0</td></tr><tr><td>คงเหลือที่ต้องลง</td><td class="summary-val summary-remain">0</td></tr></table></div>`;
+                const rows = (id.characters || []).map((c, cIdx) => `<tr>
+                    <td><input type="text" class="char-name" value="${c.name||''}" oninput="window.syncDataFromUI()"></td>
+                    <td><select class="class-select" onchange="window.syncDataFromUI()"><option value="">เลือกอาชีพ</option>${['Templar','Gladiator','Assassin','Sorceror','Elementalist','Cleric','Ranger','Chanter'].map(cls=>`<option value="${cls}" ${c.class===cls?'selected':''}>${cls}</option>`).join('')}</select></td>
+                    <td><div class="split-input"><input type="number" class="standard-num stam-main" value="${c.stamina||0}" oninput="window.syncDataFromUI()"><span class="bonus-text">+(</span><input type="number" class="bonus-input stam-bonus" value="${c.staminaBonus||0}" oninput="window.syncDataFromUI()"><span class="bonus-text">)</span><span class="total-white total-white-stam">0</span></div></td>
+                    <td><input type="checkbox" class="duty-check" ${c.duty?'checked':''} onchange="window.syncDataFromUI()"></td>
+                    <td><input type="checkbox" class="raid-check" ${c.raid?'checked':''} onchange="window.syncDataFromUI()"></td>
+                    <td><input type="checkbox" class="asc-check" ${c.asc?'checked':''} onchange="window.syncDataFromUI()"></td>
+                    <td><input type="checkbox" class="daily-check" ${c.daily?'checked':''} onchange="window.syncDataFromUI()"></td>
+                    <td><div class="split-input"><input type="number" class="standard-num nm-main" value="${c.nm||0}" oninput="window.syncDataFromUI()"><span class="bonus-text">+(</span><input type="number" class="bonus-input nm-bonus" value="${c.nmBonus||0}" oninput="window.syncDataFromUI()"><span class="bonus-text">)</span></div></td>
+                    <td><input type="checkbox" class="buy-check" ${c.buy?'checked':''} onchange="window.syncDataFromUI()"></td>
+                    <td><input type="checkbox" class="craft-check" ${c.craft?'checked':''} onchange="window.syncDataFromUI()"></td>
+                    <td><input type="number" class="standard-num fb-main" value="${c.fb||0}" oninput="window.syncDataFromUI()"></td>
+                    <td><div class="split-input"><input type="number" class="standard-num rc-main" value="${c.rc||0}" oninput="window.syncDataFromUI()"><span class="bonus-text">+(</span><input type="number" class="bonus-input rc-bonus" value="${c.rcBonus||0}" oninput="window.syncDataFromUI()"><span class="bonus-text">)</span><span class="total-white total-white-rc">0</span></div></td>
+                    <td class="live-run-count">0</td>
+                    <td><button onclick="window.openDun(${idx}, ${cIdx})">ดัน</button></td>
+                    <td><button class="btn-danger" onclick="window.removeCharacter(${idx}, ${cIdx})">ลบ</button></td>
+                </tr>`).join('');
+                b.innerHTML = `<button class="btn-reset-id" onclick="window.resetIDToMax(${idx})">reset</button><div class="id-header"><label><input type="checkbox" class="vip-input" ${id.isVIP?'checked':''} onchange="window.syncDataFromUI()"> VIP</label><input type="text" class="id-name-input" value="${id.idName||''}" oninput="window.syncDataFromUI()"><button onclick="window.addCharacter(${idx})">+ เพิ่มตัวละคร</button><button class="btn-danger" onclick="window.removeID(${idx})">ลบ ID นี้</button><button onclick="window.openVIP(${idx})">ตั้งค่า vip</button><div class="kinah-id-wrapper"><div class="stamina-alert-icon">!</div>เงินรวม <input type="text" class="kinah-total-id" value="${id.kinahTotal||0}" oninput="window.syncDataFromUI()"></div><span class="vip-status ${vC}">${vS}</span></div><div class="tab-controls"><button class="btn-tab active" onclick="window.switchTab(this, 'char')">👥 จัดการตัวละคร</button><button class="btn-tab" onclick="window.switchTab(this, 'inv')">📦 คลังไอเทม</button></div><table class="char-table"><thead><tr><th>ชื่อ</th><th>อาชีพ</th><th>Stamina</th><th>Duty</th><th>Raid</th><th>Asc</th><th>Daily</th><th>Nightmare</th><th>Buy Stamina</th><th>Craft Stamina</th><th>Final Boss</th><th>Reward Count</th><th>รอบดันที่ลงได้</th><th>ดัน</th><th>จัดการ</th></tr></thead><tbody>${rows}</tbody></table><table class="inv-table" style="display:none"><thead><tr><th>รูป</th><th>ชื่อไอเทม</th><th>Tradable</th><th>Non-Tradable</th><th>Total</th></tr></thead><tbody>${inventoryList.map((item,i)=> { const inv = (id.inventory && id.inventory[i]) ? id.inventory[i] : { trade: 0, nonTrade: 0 }; return `<tr><td><img src="pic/${item.img}" width="28"></td><td style="text-align:left">${item.name}</td><td><input type="number" style="width:120px; text-align:right" class="inv-trade" value="${inv.trade||0}" oninput="window.syncDataFromUI()"></td><td><input type="number" style="width:120px; text-align:right" class="inv-non" value="${inv.nonTrade||0}" oninput="window.syncDataFromUI()"></td><td class="total-glow">0</td></tr>`; }).join('')}</tbody></table><div class="summary-table-container"><table class="summary-table"><tr><td>รอบดันที่ลงได้ (รวมทุกตัวละคร)</td><td class="summary-val summary-run-total">0</td></tr><tr><td>รอบ transcendence</td><td><input type="number" class="in-trans" value="${id.trans||0}" oninput="window.syncDataFromUI()"></td></tr><tr><td>รอบ conquest</td><td><input type="number" class="in-conq" value="${id.conq||0}" oninput="window.syncDataFromUI()"></td></tr><tr><td>รอบรวมที่ตั้งไว้</td><td><input type="number" class="in-set-total" value="${id.setTotal||0}" oninput="window.syncDataFromUI()"></td></tr><tr><td>รอบรวมปัจจุบัน</td><td class="summary-val summary-current">0</td></tr><tr><td>คงเหลือที่ต้องลง</td><td class="summary-val summary-remain">0</td></tr></table></div>`;
                 wrapper.appendChild(b);
             });
             window.updateCalculations();
         }
 
         window.addNewID = () => { appData.ids.push({ idName: "New ID", kinahTotal: 0, isVIP: false, characters: [], inventory: inventoryList.map(()=>({trade:0, nonTrade:0})) }); renderUI(); window.syncDataFromUI(); };
-        window.addCharacter = (idx) => { appData.ids[idx].characters.push({ name:"", class:"", stamina:840, staminaBonus:0, rc:21, rcBonus:0, nm:14, nmBonus:0, fb:35, lastUpdate: getThaiTime().getTime() }); renderUI(); window.syncDataFromUI(); };
+        window.addCharacter = (idx) => { if (appData.ids[idx].characters && appData.ids[idx].characters.length >= 8) return alert("หนึ่ง ID มีตัวละครได้สูงสุด 8 ตัวครับ"); appData.ids[idx].characters.push({ name:"", class:"", stamina:840, staminaBonus:0, rc:21, rcBonus:0, nm:14, nmBonus:0, fb:35, lastUpdate: getThaiTime().getTime() }); renderUI(); window.syncDataFromUI(); };
         window.removeCharacter = (idx, cIdx) => { if(confirm("ลบตัวละคร?")) { appData.ids[idx].characters.splice(cIdx,1); renderUI(); window.syncDataFromUI(); } };
         window.removeID = (idx) => { if(confirm("ลบ ID?")) { appData.ids.splice(idx,1); renderUI(); window.syncDataFromUI(); } };
         window.switchTab = (btn, tab) => { const c = btn.closest('.id-container'); Array.from(c.querySelectorAll('.btn-tab')).forEach(bt => bt.classList.remove('active')); btn.classList.add('active'); c.querySelector('.char-table').style.display = tab==='char'?'table':'none'; c.querySelector('.inv-table').style.display = tab==='inv'?'table':'none'; };
