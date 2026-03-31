@@ -3,16 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AION2 Check List v1.29 (Dungeon Master Fix)</title>
+    <title>AION2 Check List v1.54</title>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root { --bg-color: #0d1117; --panel-bg: rgba(22, 27, 34, 0.85); --neon-blue: #00f3ff; --text-main: #c9d1d9; --border-color: #30363d; --bonus-color: #ffb000; --danger-red: #ff4444; }
         body { background-image: linear-gradient(rgba(13, 17, 23, 0.85), rgba(13, 17, 23, 0.85)), url('pic/background.jpg'); background-size: cover; background-position: center; background-attachment: fixed; color: var(--text-main); font-family: 'Prompt', sans-serif; margin: 0; padding: 20px; }
+        #loading { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0d1117; display: flex; justify-content: center; align-items: center; color: var(--neon-blue); font-size: 1.5rem; z-index: 9999; }
+        
+        /* --- Stamina Glow Fixed (Force Priority) --- */
+        .glow-red { 
+            border: 2px solid var(--danger-red) !important; 
+            box-shadow: 0 0 12px var(--danger-red) !important; 
+            color: #fff !important; 
+            font-weight: bold !important;
+        }
+        
         .header-container { text-align: center; margin-bottom: 20px; }
         .logo-img { max-width: 200px; height: auto; margin-bottom: 10px; }
         h1 { color: var(--neon-blue); text-transform: uppercase; letter-spacing: 2px; margin: 0; text-shadow: 0 0 10px rgba(0, 243, 255, 0.5); font-size: 1.8rem; }
         .user-menu-bar { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 25px; background: var(--panel-bg); padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); }
-        .user-select { background: #161b22; color: var(--neon-blue); border: 1px solid var(--neon-blue); padding: 5px 12px; border-radius: 4px; font-family: 'Prompt'; min-width: 150px; }
+        .user-select { background: #161b22; color: var(--neon-blue); border: 1px solid var(--neon-blue); padding: 5px 12px; border-radius: 4px; font-family: 'Prompt'; min-width: 150px; cursor: pointer; }
         .id-container { background-color: var(--panel-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 20px; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(0, 243, 255, 0.1); position: relative; backdrop-filter: blur(5px); }
         .id-header { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid var(--border-color); flex-wrap: wrap; }
         .id-header input[type="text"].id-name-input { background: transparent; border: none; color: var(--neon-blue); font-size: 1.4rem; font-weight: bold; outline: none; border-bottom: 1px dashed var(--border-color); width: 150px; font-family: 'Prompt', sans-serif; }
@@ -20,8 +32,6 @@
         @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.2); opacity: 0.8; } 100% { transform: scale(1); opacity: 1; } }
         .kinah-id-wrapper { margin-left: auto; margin-right: 90px; display: flex; align-items: center; gap: 8px; }
         .kinah-total-id { background: rgba(13, 17, 23, 0.8); border: 1px solid var(--neon-blue); color: #fff; font-size: 1.1rem; padding: 5px 10px; border-radius: 4px; width: 170px; text-align: right; font-family: 'Prompt', sans-serif; }
-        .vip-status { font-size: 0.9rem; font-weight: bold; width: 100%; margin-top: 5px; }
-        .vip-green { color: #00ff00; } .vip-red { color: #ff4444; }
         .btn-reset-id { position: absolute; top: 20px; right: 20px; background-color: transparent; color: var(--bonus-color); border: 1px solid var(--bonus-color); padding: 6px 12px; font-size: 0.9rem; border-radius: 4px; cursor: pointer; transition: 0.2s; font-weight: bold; }
         .tab-controls { display: flex; gap: 10px; margin-bottom: 15px; }
         .btn-tab { background: rgba(33, 38, 45, 0.8); color: var(--text-main); border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 4px; cursor: pointer; font-family: 'Prompt', sans-serif; }
@@ -30,7 +40,6 @@
         th, td { border: 1px solid var(--border-color); padding: 8px 4px; }
         th { background-color: rgba(33, 38, 45, 0.8); color: #ffffff; }
         input[type="number"], input[type="text"], select { background: rgba(13, 17, 23, 0.8); color: white; border: 1px solid #444; border-radius: 4px; padding: 4px; text-align: center; font-family: 'Prompt', sans-serif; }
-        .stam-main.glow-red { border-color: var(--danger-red) !important; box-shadow: 0 0 8px var(--danger-red); color: #fff; font-weight: bold; }
         .split-input { display: flex; align-items: center; justify-content: flex-end; gap: 2px; }
         .total-white { color: #fff; font-weight: bold; min-width: 45px; text-align: right; padding-left: 5px; }
         input[type="number"].bonus-input { color: var(--bonus-color); border-color: #664400; width: 40px; padding: 2px; }
@@ -41,190 +50,201 @@
         .summary-table-container { display: flex; justify-content: center; width: 100%; margin-top: 15px; }
         .summary-table { width: 480px !important; border: 1px solid var(--border-color); }
         .summary-table td { text-align: left; padding: 10px 15px; }
-        .summary-table input { width: 80px; text-align: center; }
         .summary-val { color: var(--neon-blue); font-weight: bold; text-align: center !important; }
         button { background-color: transparent; color: var(--neon-blue); border: 1px solid var(--neon-blue); padding: 8px 12px; cursor: pointer; border-radius: 4px; font-weight: bold; font-family: 'Prompt', sans-serif; }
         button:hover { background-color: var(--neon-blue); color: #000; }
         .btn-danger { color: #ff4444; border-color: #ff4444; }
         .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); justify-content: center; align-items: center; }
-        .modal-content { background: #161b22; padding: 25px; border-radius: 10px; border: 2px solid var(--neon-blue); width: 320px; text-align: center; box-shadow: 0 0 30px rgba(0,243,255,0.2); }
+        .modal-content { background: #161b22; padding: 25px; border-radius: 10px; border: 2px solid var(--neon-blue); width: 340px; text-align: center; box-shadow: 0 0 30px rgba(0,243,255,0.2); }
         .modal-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding: 0 20px; }
         .modal-row label { font-size: 1.1rem; color: #fff; width: 80px; text-align: left; }
-        .modal-row input { width: 120px; font-size: 1.1rem; }
-        #loading { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0d1117; display: flex; justify-content: center; align-items: center; color: var(--neon-blue); font-size: 1.5rem; z-index: 3000; }
+        .modal-row input { width: 120px; font-size: 1.1rem; background: #0d1117; color: #fff; border: 1px solid #444; border-radius: 4px; }
     </style>
 </head>
 <body>
-    <div id="loading">กำลังซิงค์ข้อมูล v1.29...</div>
+    <div id="loading">ระบบกู้คืน UI v1.54...</div>
 
-    <div id="vipModal" class="modal"><div class="modal-content"><h3>ตั้งค่า VIP คงเหลือ</h3><div class="modal-row"><label>วัน</label><input type="number" id="vDay" value="0"></div><div class="modal-row"><label>ชม.</label><input type="number" id="vHour" value="0"></div><div class="modal-row"><label>นาที</label><input type="number" id="vMin" value="0"></div><div style="margin-top:20px;"><button onclick="confirmVIP()">ตกลง</button> <button class="btn-danger" onclick="closeVIP()">ยกเลิก</button></div></div></div>
-    <div id="userModal" class="modal"><div class="modal-content"><h3>เพิ่ม User ใหม่</h3><div class="modal-row"><label>ชื่อ</label><input type="text" id="newUserName" placeholder="..."></div><div style="margin-top:20px;"><button onclick="confirmAddUser()">ตกลง</button> <button class="btn-danger" onclick="closeUserModal()">ยกเลิก</button></div></div></div>
-    <div id="dunModal" class="modal"><div class="modal-content"><h3>ลงดันเจี้ยน</h3><div class="modal-row"><label>จำนวนรอบ</label><input type="number" id="dunCount" value="1" min="1"></div><div style="margin-top:20px;"><button onclick="window.confirmDun()">ตกลง</button> <button class="btn-danger" onclick="window.closeDun()">ยกเลิก</button></div></div></div>
+    <div id="userModal" class="modal"><div class="modal-content"><h3>เพิ่ม User ใหม่</h3><div class="modal-row"><label>ชื่อ</label><input type="text" id="newUserName"></div><div class="modal-row"><label>รหัสผ่าน</label><input type="password" id="newUserPass"></div><div style="margin-top:20px;"><button onclick="confirmAddUser()">ตกลง</button> <button class="btn-danger" onclick="closeModal('userModal')">ยกเลิก</button></div></div></div>
+    <div id="passModal" class="modal"><div class="modal-content"><h3 id="passModalTitle">ใส่รหัสผ่าน</h3><div class="modal-row"><label>รหัส</label><input type="password" id="checkPass"></div><div style="margin: 15px 0; text-align: left; padding-left: 100px;"><label style="color: #fff; cursor: pointer;"><input type="checkbox" id="rememberMe"> จำรหัสผ่าน</label></div><button onclick="validateUser()">ตกลง</button> <button class="btn-danger" onclick="cancelLogin()">ยกเลิก</button></div></div>
+    <div id="vipModal" class="modal"><div class="modal-content"><h3>VIP</h3><div class="modal-row"><label>วัน</label><input type="number" id="vDay" value="0"></div><div style="margin-top:20px;"><button onclick="confirmVIP()">ตกลง</button> <button class="btn-danger" onclick="closeModal('vipModal')">ยกเลิก</button></div></div></div>
+    <div id="dunModal" class="modal"><div class="modal-content"><h3>ลงดัน</h3><div class="modal-row"><label>รอบ</label><input type="number" id="dunCount" value="1"></div><button onclick="confirmDun()">ตกลง</button> <button class="btn-danger" onclick="closeModal('dunModal')">ยกเลิก</button></div></div></div>
 
-    <div class="header-container"><img src="pic/logo.png" alt="AION 2 Logo" class="logo-img"><h1>AION2 Check List v1.29 by VANS</h1></div>
+    <div class="header-container"><img src="pic/logo.png" alt="Logo" class="logo-img"><h1>AION2 Check List v1.54</h1></div>
+
     <div class="user-menu-bar">
-        <select id="userDropdown" class="user-select" onchange="window.switchUser(this.value)"></select>
-        <button onclick="window.openUserModal()">+ เพิ่ม User</button>
-        <button class="btn-danger" onclick="window.deleteUser()">ลบ User นี้</button>
+        <select id="userDropdown" class="user-select" onchange="handleUserSelect(this.value)"></select>
+        <button onclick="document.getElementById('userModal').style.display='flex'">+ เพิ่ม User</button>
+        <button onclick="refreshData()">🔄 รีเฟรช</button>
+        <button class="btn-danger" onclick="deleteUser()">ลบ User นี้</button>
     </div>
+
     <div id="main-wrapper"></div>
-    <div id="btn-add-id-container" style="text-align: center; margin-top: 20px; display: none;"><button onclick="window.addNewID()">+ เพิ่ม ID ใหม่</button></div>
+    <div id="btn-add-id-container" style="text-align: center; margin-top: 20px; display: none;"><button onclick="addNewID()">+ เพิ่ม ID ใหม่</button></div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getDatabase, ref, get, set, remove } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+    <script>
+        const config = { apiKey: "AIzaSyB8vq1cDV3LuqRmqtNsUqNHjriaEI9oGMM", databaseURL: "https://aion2-checklist-vans-default-rtdb.asia-southeast1.firebasedatabase.app" };
+        firebase.initializeApp(config);
+        const db = firebase.database();
 
-        const firebaseConfig = { apiKey: "AIzaSyB8vq1cDV3LuqRmqtNsUqNHjriaEI9oGMM", authDomain: "aion2-checklist-vans.firebaseapp.com", databaseURL: "https://aion2-checklist-vans-default-rtdb.asia-southeast1.firebasedatabase.app", projectId: "aion2-checklist-vans", storageBucket: "aion2-checklist-vans.firebasestorage.app", messagingSenderId: "175263444943", appId: "1:175263444943:web:025867abf79262b5e1acba", measurementId: "G-VZZFX13ZGX" };
-        const app = initializeApp(firebaseConfig); const db = getDatabase(app); 
+        let currentUser = ""; let appData = { ids: [] }; let pendingUser = ""; let isSettingPass = false;
+        let curDunID = -1, curDunChar = -1; let currentEditingVIP = -1;
 
-        let currentUser = ""; let appData = { ids: [] }; let currentEditingVIP = -1;
-        let curDunID = -1, curDunChar = -1;
+        const inventoryList = [{ img: "shorn.png", name: "Mind" }, { img: "mhorn.png", name: "Will" }, { img: "lhorn.png", name: "Ego" }, { img: "whorn.png", name: "Wish" }, { img: "wshorn.png", name: "Sublimation" }, { img: "rhorn.png", name: "Curse" }, { img: "ystone.png", name: "ลูกแก้วเหลือง" }, { img: "yamp.png", name: "Ampทอง" }, { img: "ramp.png", name: "Ampแดง" }, { img: "yampf.png", name: "เศษAmpทอง" }, { img: "rampf.png", name: "เศษAmpแดง" }, { img: "rodyle.png", name: "Radiant Odyle" }];
 
-        const inventoryList = [{ img: "shorn.png", name: "Wrathful Mind (เขาเล็ก)" }, { img: "mhorn.png", name: "Wrathful Will (เขากลาง)" }, { img: "lhorn.png", name: "Wrathful Ego (เขาใหญ่)" }, { img: "whorn.png", name: "Wrathful Wish (เขาทองแดง)" }, { img: "wshorn.png", name: "Wrathful Sublimation (เขาทองฟ้า)" }, { img: "rhorn.png", name: "Maddened Curse (เขาแดงมังกร)" }, { img: "ystone.png", name: "ลูกแก้วเหลือง" }, { img: "yamp.png", name: "Ampทอง" }, { img: "ramp.png", name: "Ampแดง" }, { img: "yampf.png", name: "เศษAmpทอง" }, { img: "rampf.png", name: "เศษAmpแดง" }, { img: "rodyle.png", name: "Radiant Odyle" }];
-
-        function getThaiTime() { const now = new Date(); return new Date(now.getTime() + (now.getTimezoneOffset() * 60000) + (3600000 * 7)); }
+        function getThaiTime() { return new Date(new Date().getTime() + (new Date().getTimezoneOffset() * 60000) + (3600000 * 7)); }
         function getBase4AM(t) { let d = new Date(t); if (d.getHours() < 4) d.setDate(d.getDate() - 1); d.setHours(4,0,0,0); return d.getTime(); }
-        function getRecentWed4AM(t) { let d = new Date(t); let day = d.getDay(); if (day===3 && d.getHours()>=4) {} else { let diff = (day<3)?(day+4):(day-3); d.setDate(d.getDate()-diff); } d.setHours(4,0,0,0); return d.getTime(); }
+        function getRecentWed4AM(t) { let d = new Date(t); let day = d.getDay(); if (day===3 && d.getHours()<4) { d.setDate(d.getDate()-7); } else { let diff = (day<3)?(day+4):(day-3); d.setDate(d.getDate()-diff); } d.setHours(4,0,0,0); return d.getTime(); }
 
-        function processTimeLogic(data) {
-            if (!data || !data.ids) return { ids: [] };
+        async function runResetLogic(data) {
+            if (!data || !data.ids || data.ids.length === 0) return data;
             const now = getThaiTime().getTime(); const c4AM = getBase4AM(now); const cWed = getRecentWed4AM(now);
+            let anyChange = false;
             data.ids.forEach(id => {
-                (id.characters || []).forEach(c => {
-                    let last = c.lastUpdate || now;
-                    if (last < cWed) { c.raid=c.asc=c.daily=c.duty=c.buy=c.craft=false; c.fb=35; }
-                    if (last < c4AM) { let dP = Math.floor((c4AM - getBase4AM(last)) / 86400000); if (dP > 0) c.nm = Math.min(14, (parseInt(c.nm) || 0) + (2 * dP)); }
+                if(!id.characters) return;
+                id.characters.forEach(c => {
+                    let last = c.lastUpdate || now; let changed = false;
+                    if (last < cWed) { c.fb = 35; c.daily = false; c.buy = false; c.craft = false; c.raid = false; c.asc = false; changed = true; }
+                    if (last < c4AM) { c.duty = false; let days = Math.floor((c4AM - getBase4AM(last)) / 86400000); if (days > 0) c.nm = Math.min(14, (parseInt(c.nm) || 0) + (2 * days)); changed = true; }
                     let l4S = getBase4AM(last);
                     let iPS = (Math.floor((c4AM-l4S)/86400000)*8) + Math.floor((now-c4AM)/10800000) - Math.floor((last-l4S)/10800000);
-                    if (iPS > 0) c.stamina = Math.min(840, (parseInt(c.stamina)||0)+(iPS*(id.isVIP?15:10)));
+                    if (iPS > 0) { c.stamina = Math.min(840, (parseInt(c.stamina)||0)+(iPS*(id.isVIP?15:10))); changed = true; }
                     let iPR = (Math.floor((c4AM-l4S)/86400000)*3) + Math.floor((now-c4AM)/28800000) - Math.floor((last-l4S)/28800000);
-                    if (iPR > 0) c.rc = Math.min(21, (parseInt(c.rc)||0)+(iPR*1));
-                    c.lastUpdate = now;
+                    if (iPR > 0) { c.rc = Math.min(21, (parseInt(c.rc)||0)+(iPR*1)); changed = true; }
+                    if (changed) { c.lastUpdate = now; anyChange = true; }
                 });
             });
+            if (anyChange && currentUser) await db.ref(`userData/${currentUser}/ids`).set(data.ids);
             return data;
         }
 
-        window.loadUserList = async () => {
-            const snap = await get(ref(db, 'userData')); const dropdown = document.getElementById('userDropdown');
-            dropdown.innerHTML = '<option value="">-- เลือก User --</option>';
-            if (snap.exists()) { Object.keys(snap.val()).forEach(u => { const opt = document.createElement('option'); opt.value = u; opt.textContent = u; dropdown.appendChild(opt); }); }
-            if (currentUser) dropdown.value = currentUser;
+        window.loadUserList = function() {
+            db.ref('userData').once('value').then(snap => {
+                const dd = document.getElementById('userDropdown'); dd.innerHTML = '<option value="">-- เลือก User --</option>';
+                if(snap.exists()) { Object.keys(snap.val()).forEach(u => { const opt = document.createElement('option'); opt.value = u; opt.text = u; dd.add(opt); }); }
+                document.getElementById('loading').style.display = 'none';
+            }).catch(() => document.getElementById('loading').style.display = 'none');
         };
 
-        window.openUserModal = () => { document.getElementById('newUserName').value = ""; document.getElementById('userModal').style.display = 'flex'; };
-        window.closeUserModal = () => document.getElementById('userModal').style.display = 'none';
-
-        window.confirmAddUser = async () => {
-            const name = document.getElementById('newUserName').value.trim(); if(!name) return;
-            await set(ref(db, `userData/${name}`), { ids: [], lastActive: getThaiTime().getTime() });
-            window.closeUserModal(); await window.loadUserList(); window.switchUser(name);
+        window.handleUserSelect = function(u) {
+            if(!u) return; pendingUser = u;
+            db.ref(`userData/${u}/password`).once('value').then(snap => {
+                const saved = localStorage.getItem(`pass_${u}`);
+                if (snap.exists() && snap.val() !== "" && saved === snap.val()) { return switchUser(u); }
+                isSettingPass = !snap.exists() || snap.val() === "";
+                document.getElementById('passModalTitle').innerText = isSettingPass ? "ตั้งรหัสใหม่" : "ใส่รหัสผ่าน";
+                document.getElementById('passModal').style.display = 'flex';
+            });
         };
 
-        window.deleteUser = async () => { if(!currentUser) return; if(confirm(`ลบ User: ${currentUser}?`)) { await remove(ref(db, `userData/${currentUser}`)); currentUser = ""; await window.loadUserList(); renderUI(); } };
-
-        window.switchUser = async (u) => {
-            const btnContainer = document.getElementById('btn-add-id-container'); if(!u) { currentUser = ""; renderUI(); btnContainer.style.display = 'none'; return; }
-            currentUser = u; document.getElementById('userDropdown').value = u; document.getElementById('loading').style.display = 'flex';
-            const snap = await get(ref(db, `userData/${currentUser}`)); appData = processTimeLogic(snap.val() || { ids: [] });
-            renderUI(); btnContainer.style.display = 'block'; document.getElementById('loading').style.display = 'none';
+        window.validateUser = function() {
+            const p = document.getElementById('checkPass').value.trim(); const rem = document.getElementById('rememberMe').checked;
+            if(!p) return alert("ห้ามใส่รหัสว่าง");
+            if(isSettingPass) {
+                db.ref(`userData/${pendingUser}/password`).set(p).then(() => { if(rem) localStorage.setItem(`pass_${pendingUser}`, p); document.getElementById('passModal').style.display='none'; switchUser(pendingUser); });
+            } else {
+                db.ref(`userData/${pendingUser}/password`).once('value').then(snap => {
+                    if(snap.val() === p) { if(rem) localStorage.setItem(`pass_${pendingUser}`, p); document.getElementById('passModal').style.display='none'; switchUser(pendingUser); }
+                    else alert("รหัสผิด!");
+                });
+            }
         };
+
+        async function switchUser(u) {
+            currentUser = u; document.getElementById('loading').style.display = 'flex';
+            const snap = await db.ref(`userData/${u}`).once('value');
+            let rawData = snap.val() || { ids: [] };
+            if (!rawData.ids) rawData.ids = [];
+            appData = await runResetLogic(rawData);
+            renderUI(); document.getElementById('btn-add-id-container').style.display = 'block'; document.getElementById('loading').style.display = 'none';
+        }
 
         window.syncDataFromUI = function() {
             if(!currentUser) return;
-            const idBlocks = document.querySelectorAll('.id-container');
-            appData.ids = Array.from(idBlocks).map((b, idx) => ({
-                idName: b.querySelector('.id-name-input').value, kinahTotal: b.querySelector('.kinah-total-id').value, isVIP: b.querySelector('.vip-input').checked, vipExpiry: appData.ids[idx]?.vipExpiry || 0, trans: b.querySelector('.in-trans')?.value || 0, conq: b.querySelector('.in-conq')?.value || 0, setTotal: b.querySelector('.in-set-total')?.value || 0,
-                characters: Array.from(b.querySelectorAll('.char-table tbody tr')).map((row, cIdx) => ({
-                    name: row.querySelector('.char-name').value, class: row.querySelector('.class-select').value, stamina: row.querySelector('.stam-main').value, staminaBonus: row.querySelector('.stam-bonus').value, duty: row.querySelector('.duty-check').checked, raid: row.querySelector('.raid-check').checked, asc: row.querySelector('.asc-check').checked, daily: row.querySelector('.daily-check').checked, nm: row.querySelector('.nm-main').value, nmBonus: row.querySelector('.nm-bonus').value, buy: row.querySelector('.buy-check').checked, craft: row.querySelector('.craft-check').checked, fb: row.querySelector('.fb-main').value, rc: row.querySelector('.rc-main').value, rcBonus: row.querySelector('.rc-bonus').value, lastUpdate: appData.ids[idx]?.characters[cIdx]?.lastUpdate || getThaiTime().getTime()
+            const blocks = document.querySelectorAll('.id-container');
+            const newIds = Array.from(blocks).map((b, i) => ({
+                idName: b.querySelector('.id-name-input').value, kinahTotal: b.querySelector('.kinah-total-id').value, isVIP: b.querySelector('.vip-input').checked,
+                characters: Array.from(b.querySelectorAll('.char-row')).map((row, ci) => ({
+                    name: row.querySelector('.c-name').value, class: row.querySelector('.c-class').value, stamina: row.querySelector('.c-stam').value, staminaBonus: row.querySelector('.c-stam-b').value,
+                    duty: row.querySelector('.c-duty').checked, raid: row.querySelector('.c-raid').checked, asc: row.querySelector('.c-asc').checked, daily: row.querySelector('.c-daily').checked,
+                    nm: row.querySelector('.c-nm').value, nmBonus: row.querySelector('.c-nm-b').value, buy: row.querySelector('.c-buy').checked, craft: row.querySelector('.c-craft').checked,
+                    fb: row.querySelector('.c-fb').value, rc: row.querySelector('.c-rc').value,
+                    lastUpdate: appData.ids[i]?.characters?.[ci]?.lastUpdate || getThaiTime().getTime()
                 })),
-                inventory: Array.from(b.querySelectorAll('.inv-table tbody tr')).map(row => ({ trade: parseInt(row.querySelector('.inv-trade').value) || 0, nonTrade: parseInt(row.querySelector('.inv-non').value) || 0 }))
+                inventory: Array.from(b.querySelectorAll('.inv-row')).map(row => ({ trade: row.querySelector('.i-trade').value, nonTrade: row.querySelector('.i-non').value }))
             }));
-            set(ref(db, `userData/${currentUser}`), appData); window.updateCalculations();
+            appData.ids = newIds; db.ref(`userData/${currentUser}/ids`).set(newIds); updateCalcs();
         };
 
-        window.updateCalculations = () => {
+        function updateCalcs() {
             appData.ids.forEach((id, idx) => {
                 const b = document.querySelectorAll('.id-container')[idx]; if(!b) return;
-                let tRuns = 0; let hasFullStamina = false;
-                (id.characters || []).forEach((c, cIdx) => {
-                    const row = b.querySelectorAll('.char-table tbody tr')[cIdx]; if(!row) return;
-                    const mainStam = parseInt(c.stamina)||0; const tS = mainStam + (parseInt(c.staminaBonus)||0); const tR = (parseInt(c.rc)||0) + (parseInt(c.rcBonus)||0);
-                    const runs = Math.min(Math.floor(tS/80), parseInt(c.fb)||0, tR);
-                    tRuns += runs;
-                    const stamInput = row.querySelector('.stam-main');
-                    if (mainStam >= 840) { stamInput.classList.add('glow-red'); hasFullStamina = true; } else { stamInput.classList.remove('glow-red'); }
-                    row.querySelector('.total-white-stam').innerText = tS; row.querySelector('.total-white-rc').innerText = tR;
-                    const rC = row.querySelector('.live-run-count'); rC.innerText = runs; rC.className = 'live-run-count '+(runs===0?'red-text':'');
+                let tRuns = 0; let hasFullStam = false;
+                (id.characters || []).forEach((c, ci) => {
+                    const row = b.querySelectorAll('.char-row')[ci]; if(!row) return;
+                    const mainS = parseInt(c.stamina)||0; const totalS = mainS + (parseInt(c.staminaBonus)||0);
+                    const runs = Math.min(Math.floor(totalS/80), parseInt(c.fb)||0, parseInt(c.rc)||0); tRuns += runs;
+                    
+                    // --- CSS Priority Fix Logic ---
+                    if (mainS >= 840) { row.querySelector('.c-stam').classList.add('glow-red'); hasFullStam = true; } 
+                    else { row.querySelector('.c-stam').classList.remove('glow-red'); }
+                    
+                    row.querySelector('.stam-total').innerText = totalS;
+                    const rC = row.querySelector('.run-count'); rC.innerText = runs; rC.className = 'run-count total-white '+(runs===0?'red-text':'');
                 });
-                const alertIcon = b.querySelector('.stamina-alert-icon'); alertIcon.style.display = hasFullStamina ? 'flex' : 'none';
-                (id.inventory || []).forEach((inv, iIdx) => { const row = b.querySelectorAll('.inv-table tbody tr')[iIdx]; if(row) row.querySelector('.total-glow').innerText = ((parseInt(inv.trade)||0) + (parseInt(inv.nonTrade)||0)).toLocaleString(); });
-                const cur = (parseInt(id.trans)||0) + (parseInt(id.conq)||0);
-                b.querySelector('.summary-run-total').innerText = tRuns; b.querySelector('.summary-current').innerText = cur; b.querySelector('.summary-remain').innerText = (parseInt(id.setTotal)||0) - cur;
+                b.querySelector('.stamina-alert-icon').style.display = hasFullStam ? 'flex' : 'none';
+                (id.inventory || []).forEach((inv, i) => { const row = b.querySelectorAll('.inv-row')[i]; if(row) row.querySelector('.total-glow').innerText = (parseInt(inv.trade)||0) + (parseInt(inv.nonTrade)||0); });
+                b.querySelector('.summary-run-total').innerText = tRuns;
             });
-        };
-
-        window.openDun = (iIdx, cIdx) => { curDunID = iIdx; curDunChar = cIdx; document.getElementById('dunCount').value = 1; document.getElementById('dunModal').style.display = 'flex'; };
-        window.closeDun = () => document.getElementById('dunModal').style.display = 'none';
-        
-        window.confirmDun = async () => {
-            const count = parseInt(document.getElementById('dunCount').value) || 0;
-            if (count > 0 && curDunID !== -1 && curDunChar !== -1) {
-                const char = appData.ids[curDunID].characters[curDunChar];
-                
-                // Logic Fix [v1.29]: บันทึกลง Memory และ Database ทันทีเพื่อเลี่ยง UI Sync Error
-                char.stamina = Math.max(0, (parseInt(char.stamina) || 0) - (count * 80));
-                char.fb = Math.max(0, (parseInt(char.fb) || 0) - count);
-                char.rc = Math.max(0, (parseInt(char.rc) || 0) - count);
-                
-                await set(ref(db, `userData/${currentUser}`), appData);
-                renderUI(); 
-            }
-            window.closeDun();
-        };
-
-        window.openVIP = (idx) => { currentEditingVIP = idx; document.getElementById('vipModal').style.display = 'flex'; };
-        window.closeVIP = () => { document.getElementById('vipModal').style.display = 'none'; };
-        window.confirmVIP = () => { const d = parseInt(document.getElementById('vDay').value)||0, h = parseInt(document.getElementById('vHour').value)||0, m = parseInt(document.getElementById('vMin').value)||0; appData.ids[currentEditingVIP].vipExpiry = getThaiTime().getTime() + (d*86400000) + (h*3600000) + (m*60000); window.closeVIP(); renderUI(); window.syncDataFromUI(); };
-
-        function renderUI() {
-            const wrapper = document.getElementById('main-wrapper'); const now = getThaiTime().getTime(); wrapper.innerHTML = '';
-            if(!currentUser) { wrapper.innerHTML = '<div style="text-align:center; padding:50px; color:#666;">กรุณาเลือกหรือสร้าง User เพื่อแสดงข้อมูล</div>'; return; }
-            appData.ids.forEach((id, idx) => {
-                const b = document.createElement('div'); b.className = 'id-container';
-                let vS = "", vC = "vip-red";
-                if(id.vipExpiry > now) { const diff = id.vipExpiry-now, d = Math.floor(diff/86400000), h = Math.floor((diff%86400000)/3600000), m = Math.floor((diff%3600000)/60000); vS = `VIP คงเหลือ ${d} วัน ${h} ชม. ${m} นาที`; if (d>=7) vC = "vip-green"; }
-                const rows = (id.characters || []).map((c, cIdx) => `<tr>
-                    <td><input type="text" class="char-name" value="${c.name||''}" oninput="window.syncDataFromUI()"></td>
-                    <td><select class="class-select" onchange="window.syncDataFromUI()"><option value="">เลือกอาชีพ</option>${['Templar','Gladiator','Assassin','Sorceror','Elementalist','Cleric','Ranger','Chanter'].map(cls=>`<option value="${cls}" ${c.class===cls?'selected':''}>${cls}</option>`).join('')}</select></td>
-                    <td><div class="split-input"><input type="number" class="standard-num stam-main" value="${c.stamina||0}" oninput="window.syncDataFromUI()"><span class="bonus-text">+(</span><input type="number" class="bonus-input stam-bonus" value="${c.staminaBonus||0}" oninput="window.syncDataFromUI()"><span class="bonus-text">)</span><span class="total-white total-white-stam">0</span></div></td>
-                    <td><input type="checkbox" class="duty-check" ${c.duty?'checked':''} onchange="window.syncDataFromUI()"></td>
-                    <td><input type="checkbox" class="raid-check" ${c.raid?'checked':''} onchange="window.syncDataFromUI()"></td>
-                    <td><input type="checkbox" class="asc-check" ${c.asc?'checked':''} onchange="window.syncDataFromUI()"></td>
-                    <td><input type="checkbox" class="daily-check" ${c.daily?'checked':''} onchange="window.syncDataFromUI()"></td>
-                    <td><div class="split-input"><input type="number" class="standard-num nm-main" value="${c.nm||0}" oninput="window.syncDataFromUI()"><span class="bonus-text">+(</span><input type="number" class="bonus-input nm-bonus" value="${c.nmBonus||0}" oninput="window.syncDataFromUI()"><span class="bonus-text">)</span></div></td>
-                    <td><input type="checkbox" class="buy-check" ${c.buy?'checked':''} onchange="window.syncDataFromUI()"></td>
-                    <td><input type="checkbox" class="craft-check" ${c.craft?'checked':''} onchange="window.syncDataFromUI()"></td>
-                    <td><input type="number" class="standard-num fb-main" value="${c.fb||0}" oninput="window.syncDataFromUI()"></td>
-                    <td><div class="split-input"><input type="number" class="standard-num rc-main" value="${c.rc||0}" oninput="window.syncDataFromUI()"><span class="bonus-text">+(</span><input type="number" class="bonus-input rc-bonus" value="${c.rcBonus||0}" oninput="window.syncDataFromUI()"><span class="bonus-text">)</span><span class="total-white total-white-rc">0</span></div></td>
-                    <td class="live-run-count">0</td>
-                    <td><button onclick="window.openDun(${idx}, ${cIdx})">ดัน</button></td>
-                    <td><button class="btn-danger" onclick="window.removeCharacter(${idx}, ${cIdx})">ลบ</button></td>
-                </tr>`).join('');
-                b.innerHTML = `<button class="btn-reset-id" onclick="window.resetIDToMax(${idx})">reset</button><div class="id-header"><label><input type="checkbox" class="vip-input" ${id.isVIP?'checked':''} onchange="window.syncDataFromUI()"> VIP</label><input type="text" class="id-name-input" value="${id.idName||''}" oninput="window.syncDataFromUI()"><button onclick="window.addCharacter(${idx})">+ เพิ่มตัวละคร</button><button class="btn-danger" onclick="window.removeID(${idx})">ลบ ID นี้</button><button onclick="window.openVIP(${idx})">ตั้งค่า vip</button><div class="kinah-id-wrapper"><div class="stamina-alert-icon">!</div>เงินรวม <input type="text" class="kinah-total-id" value="${id.kinahTotal||0}" oninput="window.syncDataFromUI()"></div><span class="vip-status ${vC}">${vS}</span></div><div class="tab-controls"><button class="btn-tab active" onclick="window.switchTab(this, 'char')">👥 จัดการตัวละคร</button><button class="btn-tab" onclick="window.switchTab(this, 'inv')">📦 คลังไอเทม</button></div><table class="char-table"><thead><tr><th>ชื่อ</th><th>อาชีพ</th><th>Stamina</th><th>Duty</th><th>Raid</th><th>Asc</th><th>Daily</th><th>Nightmare</th><th>Buy Stamina</th><th>Craft Stamina</th><th>Final Boss</th><th>Reward Count</th><th>รอบดันที่ลงได้</th><th>ดัน</th><th>จัดการ</th></tr></thead><tbody>${rows}</tbody></table><table class="inv-table" style="display:none"><thead><tr><th>รูป</th><th>ชื่อไอเทม</th><th>Tradable</th><th>Non-Tradable</th><th>Total</th></tr></thead><tbody>${inventoryList.map((item,i)=> { const inv = (id.inventory && id.inventory[i]) ? id.inventory[i] : { trade: 0, nonTrade: 0 }; return `<tr><td><img src="pic/${item.img}" width="28"></td><td style="text-align:left">${item.name}</td><td><input type="number" style="width:120px; text-align:right" class="inv-trade" value="${inv.trade||0}" oninput="window.syncDataFromUI()"></td><td><input type="number" style="width:120px; text-align:right" class="inv-non" value="${inv.nonTrade||0}" oninput="window.syncDataFromUI()"></td><td class="total-glow">0</td></tr>`; }).join('')}</tbody></table><div class="summary-table-container"><table class="summary-table"><tr><td>รอบดันที่ลงได้ (รวมทุกตัวละคร)</td><td class="summary-val summary-run-total">0</td></tr><tr><td>รอบ transcendence</td><td><input type="number" class="in-trans" value="${id.trans||0}" oninput="window.syncDataFromUI()"></td></tr><tr><td>รอบ conquest</td><td><input type="number" class="in-conq" value="${id.conq||0}" oninput="window.syncDataFromUI()"></td></tr><tr><td>รอบรวมที่ตั้งไว้</td><td><input type="number" class="in-set-total" value="${id.setTotal||0}" oninput="window.syncDataFromUI()"></td></tr><tr><td>รอบรวมปัจจุบัน</td><td class="summary-val summary-current">0</td></tr><tr><td>คงเหลือที่ต้องลง</td><td class="summary-val summary-remain">0</td></tr></table></div>`;
-                wrapper.appendChild(b);
-            });
-            window.updateCalculations();
         }
 
-        window.addNewID = () => { appData.ids.push({ idName: "New ID", kinahTotal: 0, isVIP: false, characters: [], inventory: inventoryList.map(()=>({trade:0, nonTrade:0})) }); renderUI(); window.syncDataFromUI(); };
-        window.addCharacter = (idx) => { if (appData.ids[idx].characters && appData.ids[idx].characters.length >= 8) return alert("หนึ่ง ID มีตัวละครได้สูงสุด 8 ตัวครับ"); appData.ids[idx].characters.push({ name:"", class:"", stamina:840, staminaBonus:0, rc:21, rcBonus:0, nm:14, nmBonus:0, fb:35, lastUpdate: getThaiTime().getTime() }); renderUI(); window.syncDataFromUI(); };
-        window.removeCharacter = (idx, cIdx) => { if(confirm("ลบตัวละคร?")) { appData.ids[idx].characters.splice(cIdx,1); renderUI(); window.syncDataFromUI(); } };
-        window.removeID = (idx) => { if(confirm("ลบ ID?")) { appData.ids.splice(idx,1); renderUI(); window.syncDataFromUI(); } };
-        window.switchTab = (btn, tab) => { const c = btn.closest('.id-container'); Array.from(c.querySelectorAll('.btn-tab')).forEach(bt => bt.classList.remove('active')); btn.classList.add('active'); c.querySelector('.char-table').style.display = tab==='char'?'table':'none'; c.querySelector('.inv-table').style.display = tab==='inv'?'table':'none'; };
+        function renderUI() {
+            const w = document.getElementById('main-wrapper'); w.innerHTML = '';
+            if(!currentUser) return;
+            appData.ids.forEach((id, idx) => {
+                const b = document.createElement('div'); b.className = 'id-container';
+                const rows = (id.characters || []).map((c, ci) => `<tr class="char-row">
+                    <td><input type="text" class="c-name" value="${c.name||''}" onchange="syncDataFromUI()"></td>
+                    <td><select class="c-class" onchange="syncDataFromUI()"><option value="">เลือกอาชีพ</option>${['Templar','Gladiator','Assassin','Sorceror','Elementalist','Cleric','Ranger','Chanter'].map(cls=>`<option value="${cls}" ${c.class===cls?'selected':''}>${cls}</option>`).join('')}</select></td>
+                    <td><div class="split-input"><input type="number" class="standard-num c-stam" value="${c.stamina||0}" onchange="syncDataFromUI()">+<input type="number" class="bonus-input c-stam-b" value="${c.staminaBonus||0}" onchange="syncDataFromUI()"><span class="total-white stam-total">0</span></div></td>
+                    <td><input type="checkbox" class="c-duty" ${c.duty?'checked':''} onchange="syncDataFromUI()"></td>
+                    <td><input type="checkbox" class="c-raid" ${c.raid?'checked':''} onchange="syncDataFromUI()"></td>
+                    <td><input type="checkbox" class="c-asc" ${c.asc?'checked':''} onchange="syncDataFromUI()"></td>
+                    <td><input type="checkbox" class="c-daily" ${c.daily?'checked':''} onchange="syncDataFromUI()"></td>
+                    <td><div class="split-input"><input type="number" style="width:45px" class="c-nm" value="${c.nm||0}" onchange="syncDataFromUI()">+<input type="number" class="bonus-input c-nm-b" value="${c.nmBonus||0}" onchange="syncDataFromUI()"></div></td>
+                    <td><input type="checkbox" class="c-buy" ${c.buy?'checked':''} onchange="syncDataFromUI()"></td>
+                    <td><input type="checkbox" class="c-craft" ${c.craft?'checked':''} onchange="syncDataFromUI()"></td>
+                    <td><input type="number" style="width:45px" class="c-fb" value="${c.fb||35}" onchange="syncDataFromUI()"></td>
+                    <td><input type="number" style="width:45px" class="c-rc" value="${c.rc||21}" onchange="syncDataFromUI()"></td>
+                    <td class="run-count total-white">0</td><td><button onclick="openDun(${idx}, ${ci})">ดัน</button></td><td><button class="btn-danger" onclick="removeChar(${idx}, ${ci})">ลบ</button></td>
+                </tr>`).join('');
+                const invRows = inventoryList.map((item, i) => {
+                    const d = id.inventory?.[i] || { trade: 0, nonTrade: 0 };
+                    return `<tr class="inv-row"><td><img src="pic/${item.img}" width="28"></td><td>${item.name}</td><td><input type="number" class="i-trade" value="${d.trade||0}" onchange="syncDataFromUI()"></td><td><input type="number" class="i-non" value="${d.nonTrade||0}" onchange="syncDataFromUI()"></td><td class="total-glow total-white">0</td></tr>`;
+                }).join('');
+                b.innerHTML = `<button class="btn-reset-id" onclick="resetIDToMax(${idx})">reset</button><div class="id-header"><div class="stamina-alert-icon">!</div><input type="checkbox" class="vip-input" ${id.isVIP?'checked':''} onchange="syncDataFromUI()"> VIP <input type="text" class="id-name-input" value="${id.idName||''}" onchange="syncDataFromUI()"><button onclick="addChar(${idx})">+ เพิ่มตัวละคร</button><button class="btn-danger" onclick="removeID(${idx})">ลบ ID</button><button onclick="openVIPModal(${idx})">VIP</button><div class="kinah-id-wrapper">เงิน <input type="text" class="kinah-total-id" value="${id.kinahTotal||0}" onchange="syncDataFromUI()"></div></div><div class="tab-controls"><button class="btn-tab active" onclick="switchTab(this,'char')">👥 ตัวละคร</button><button class="btn-tab" onclick="switchTab(this,'inv')">📦 คลัง</button></div><table class="char-t"><thead><tr><th>ชื่อ</th><th>อาชีพ</th><th>Stamina</th><th>Duty</th><th>Raid</th><th>Asc</th><th>Daily</th><th>NM</th><th>Buy</th><th>Craft</th><th>FB</th><th>RC</th><th>รอบ</th><th>ดัน</th><th>ลบ</th></tr></thead><tbody>${rows}</tbody></table><table class="inv-t" style="display:none"><thead><tr><th>รูป</th><th>ชื่อ</th><th>Trade</th><th>Non</th><th>Total</th></tr></thead><tbody>${invRows}</tbody></table><div style="text-align:center">รอบรวมดันที่ลงได้: <span class="summary-run-total summary-val">0</span></div>`;
+                w.appendChild(b);
+            });
+            updateCalcs();
+        }
+
+        // --- HELPERS ---
+        window.closeModal = (id) => document.getElementById(id).style.display='none';
+        window.confirmAddUser = function() { const n=document.getElementById('newUserName').value.trim(), p=document.getElementById('newUserPass').value.trim(); if(!n||!p) return alert("ห้ามว่าง"); db.ref(`userData/${n}`).set({ids:[], password:p}).then(() => { closeModal('userModal'); loadUserList(); }); };
+        window.deleteUser = function() { if(currentUser && confirm("ลบ?")) { db.ref(`userData/${currentUser}`).remove(); localStorage.removeItem(`pass_${currentUser}`); currentUser=""; loadUserList(); renderUI(); } };
+        window.addNewID = () => { if(!appData.ids) appData.ids=[]; appData.ids.push({idName:"ID ใหม่", characters:[], inventory:[]}); renderUI(); syncDataFromUI(); };
+        window.addChar = (i) => { if(!appData.ids[i].characters) appData.ids[i].characters=[]; appData.ids[i].characters.push({name:"", stamina:840, fb:35, rc:21, lastUpdate: getThaiTime().getTime()}); renderUI(); syncDataFromUI(); };
+        window.removeChar = (i, ci) => { if(confirm("ลบตัวละคร?")) { appData.ids[i].characters.splice(ci,1); renderUI(); syncDataFromUI(); } };
+        window.removeID = (i) => { if(confirm("ลบ ID?")) { appData.ids.splice(i,1); renderUI(); syncDataFromUI(); } };
+        window.switchTab = (btn, tab) => { const c=btn.closest('.id-container'); c.querySelectorAll('.btn-tab').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); c.querySelector('.char-t').style.display = tab==='char'?'table':'none'; c.querySelector('.inv-t').style.display = tab==='inv'?'table':'none'; };
+        window.openVIPModal = (i) => { currentEditingVIP=i; document.getElementById('vipModal').style.display='flex'; };
+        window.confirmVIP = () => { const d=parseInt(document.getElementById('vDay').value)||0; appData.ids[currentEditingVIP].vipExpiry = getThaiTime().getTime() + (d*86400000); closeModal('vipModal'); renderUI(); syncDataFromUI(); };
+        window.openDun = (i, ci) => { curDunID=i; curDunChar=ci; document.getElementById('dunModal').style.display='flex'; };
+        window.confirmDun = function() { const count=parseInt(document.getElementById('dunCount').value); const c = appData.ids[curDunID].characters[curDunChar]; c.stamina=Math.max(0, c.stamina-(count*80)); c.fb=Math.max(0, c.fb-count); c.rc=Math.max(0, c.rc-count); closeModal('dunModal'); renderUI(); syncDataFromUI(); };
+        window.refreshData = () => { if(currentUser) switchUser(currentUser); };
+        window.cancelLogin = () => { document.getElementById('passModal').style.display='none'; document.getElementById('userDropdown').value = currentUser; };
         window.resetIDToMax = (idx) => { if(confirm("Reset ID?")) { appData.ids[idx].characters.forEach(c => { c.stamina=840; c.nm=14; c.fb=35; c.rc=21; c.duty=c.raid=c.asc=c.daily=c.buy=c.craft=false; }); renderUI(); window.syncDataFromUI(); } };
 
-        window.loadUserList().then(() => document.getElementById('loading').style.display = 'none');
+        loadUserList();
     </script>
 </body>
 </html>
