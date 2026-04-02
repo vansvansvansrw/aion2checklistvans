@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AION2 Check List v1.61 (Restored UI 1.29)</title>
+    <title>AION2 Check List v1.62 (Checklist Fixed)</title>
     
     <script>
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768) {
@@ -13,7 +13,6 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        /* --- CSS จาก v1.29 ต้นฉบับเป๊ะๆ --- */
         :root { --bg-color: #0d1117; --panel-bg: rgba(22, 27, 34, 0.85); --neon-blue: #00f3ff; --text-main: #c9d1d9; --border-color: #30363d; --bonus-color: #ffb000; --danger-red: #ff4444; }
         body { background-image: linear-gradient(rgba(13, 17, 23, 0.85), rgba(13, 17, 23, 0.85)), url('pic/background.jpg'); background-size: cover; background-position: center; background-attachment: fixed; color: var(--text-main); font-family: 'Prompt', sans-serif; margin: 0; padding: 20px; }
         .header-container { text-align: center; margin-bottom: 20px; }
@@ -38,7 +37,10 @@
         th, td { border: 1px solid var(--border-color); padding: 8px 4px; }
         th { background-color: rgba(33, 38, 45, 0.8); color: #ffffff; }
         input[type="number"], input[type="text"], select { background: rgba(13, 17, 23, 0.8); color: white; border: 1px solid #444; border-radius: 4px; padding: 4px; text-align: center; font-family: 'Prompt', sans-serif; }
+        
+        /* 1. Stamina Glow Fixed */
         .stam-main.glow-red { border-color: var(--danger-red) !important; box-shadow: 0 0 8px var(--danger-red) !important; color: #fff; font-weight: bold; }
+        
         .split-input { display: flex; align-items: center; justify-content: flex-end; gap: 2px; }
         .total-white { color: #fff; font-weight: bold; min-width: 45px; text-align: right; padding-left: 5px; }
         input[type="number"].bonus-input { color: var(--bonus-color); border-color: #664400; width: 40px; padding: 2px; }
@@ -63,14 +65,14 @@
     </style>
 </head>
 <body>
-    <div id="loading">กำลังซิงค์ข้อมูล v1.61...</div>
+    <div id="loading">กำลังซิงค์ข้อมูล v1.62...</div>
 
     <div id="vipModal" class="modal"><div class="modal-content"><h3>ตั้งค่า VIP คงเหลือ</h3><div class="modal-row"><label>วัน</label><input type="number" id="vDay" value="0"></div><div class="modal-row"><label>ชม.</label><input type="number" id="vHour" value="0"></div><div class="modal-row"><label>นาที</label><input type="number" id="vMin" value="0"></div><div style="margin-top:20px;"><button onclick="window.confirmVIP()">ตกลง</button> <button class="btn-danger" onclick="closeModal('vipModal')">ยกเลิก</button></div></div></div>
     <div id="userModal" class="modal"><div class="modal-content"><h3>เพิ่ม User ใหม่</h3><div class="modal-row"><label>ชื่อ</label><input type="text" id="newUserName"></div><div class="modal-row"><label>รหัสผ่าน</label><input type="password" id="newUserPass"></div><div style="margin-top:20px;"><button onclick="confirmAddUser()">ตกลง</button> <button class="btn-danger" onclick="closeModal('userModal')">ยกเลิก</button></div></div></div>
     <div id="passModal" class="modal"><div class="modal-content"><h3 id="passModalTitle">ใส่รหัสผ่าน</h3><div class="modal-row"><label>รหัส</label><input type="password" id="checkPass"></div><div style="margin: 15px 0; text-align: left; padding-left: 100px;"><label style="color: #fff; cursor: pointer; font-size: 0.9rem;"><input type="checkbox" id="rememberMe"> จดจำรหัสผ่าน</label></div><button onclick="validateUser()">ตกลง</button> <button class="btn-danger" onclick="cancelLogin()">ยกเลิก</button></div></div>
     <div id="dunModal" class="modal"><div class="modal-content"><h3>ลงดันเจี้ยน</h3><div class="modal-row"><label>รอบ</label><input type="number" id="dunCount" value="1" min="1"></div><div style="margin-top:20px;"><button onclick="confirmDun()">ตกลง</button> <button class="btn-danger" onclick="closeModal('dunModal')">ยกเลิก</button></div></div></div>
 
-    <div class="header-container"><img src="pic/logo.png" alt="Logo" class="logo-img"><h1>AION2 Check List v1.61 by VANS</h1></div>
+    <div class="header-container"><img src="pic/logo.png" alt="Logo" class="logo-img"><h1>AION2 Check List v1.62 by VANS</h1></div>
 
     <div class="user-menu-bar">
         <select id="userDropdown" class="user-select" onchange="handleUserSelect(this.value)"></select>
@@ -99,6 +101,7 @@
         function getBase4AM(t) { let d = new Date(t); if (d.getHours() < 4) d.setDate(d.getDate() - 1); d.setHours(4,0,0,0); return d.getTime(); }
         function getRecentWed4AM(t) { let d = new Date(t); let day = d.getDay(); if (day===3 && d.getHours()<4) { d.setDate(d.getDate()-7); } else { let diff = (day<3)?(day+4):(day-3); d.setDate(d.getDate()-diff); } d.setHours(4,0,0,0); return d.getTime(); }
 
+        // 2. Logic RC Fixed (Delta Time Calculation)
         async function runResetLogic(data) {
             if (!data || !data.ids || data.ids.length === 0) return data;
             const now = getThaiTime().getTime(); const c4AM = getBase4AM(now); const cWed = getRecentWed4AM(now);
@@ -109,9 +112,15 @@
                     let last = c.lastUpdate || now; let changed = false;
                     if (last < cWed) { c.fb = 35; c.daily = false; c.buy = false; c.craft = false; c.raid = false; c.asc = false; changed = true; }
                     if (last < c4AM) { c.duty = false; let days = Math.floor((c4AM - getBase4AM(last)) / 86400000); if (days > 0) c.nm = Math.min(14, (parseInt(c.nm) || 0) + (2 * days)); changed = true; }
+                    
                     let l4S = getBase4AM(last);
                     let iPS = (Math.floor((c4AM-l4S)/86400000)*8) + Math.floor((now-c4AM)/10800000) - Math.floor((last-l4S)/10800000);
                     if (iPS > 0) { c.stamina = Math.min(840, (parseInt(c.stamina)||0)+(iPS*(id.isVIP?15:10))); changed = true; }
+                    
+                    // Fixed RC Delta logic
+                    let iPR = Math.floor((now - l4S)/28800000) - Math.floor((last - l4S)/28800000);
+                    if (iPR > 0) { c.rc = Math.min(21, (parseInt(c.rc)||0) + iPR); changed = true; }
+                    
                     if (changed) { c.lastUpdate = now; anyChange = true; }
                 });
             });
@@ -171,7 +180,8 @@
                     name: row.querySelector('.c-name').value, class: row.querySelector('.c-class').value, stamina: row.querySelector('.c-stam').value, staminaBonus: row.querySelector('.c-stam-b').value,
                     duty: row.querySelector('.c-duty').checked, raid: row.querySelector('.c-raid').checked, asc: row.querySelector('.c-asc').checked, daily: row.querySelector('.c-daily').checked,
                     nm: row.querySelector('.c-nm').value, nmBonus: row.querySelector('.c-nm-b').value, buy: row.querySelector('.c-buy').checked, craft: row.querySelector('.c-craft').checked,
-                    fb: row.querySelector('.c-fb').value, rc: row.querySelector('.c-rc').value, lastUpdate: appData.ids[i]?.characters?.[ci]?.lastUpdate || getThaiTime().getTime()
+                    fb: row.querySelector('.c-fb').value, rc: row.querySelector('.c-rc').value, rcBonus: row.querySelector('.c-rc-b').value, // 3. Bonus RC
+                    lastUpdate: appData.ids[i]?.characters?.[ci]?.lastUpdate || getThaiTime().getTime()
                 })),
                 inventory: Array.from(b.querySelectorAll('.inv-row')).map(row => ({ trade: row.querySelector('.i-trade').value, nonTrade: row.querySelector('.i-non').value }))
             }));
@@ -186,9 +196,15 @@
                 (id.characters || []).forEach((c, ci) => {
                     const row = b.querySelectorAll('.char-row')[ci]; if(!row) return;
                     const mainS = parseInt(c.stamina)||0; const totalS = mainS + (parseInt(c.staminaBonus)||0);
-                    const runs = Math.min(Math.floor(totalS/80), parseInt(c.fb)||0, parseInt(c.rc)||21); tRuns += runs;
+                    const totalR = (parseInt(c.rc)||0) + (parseInt(c.rcBonus)||0); // 3. Total RC
+                    const runs = Math.min(Math.floor(totalS/80), parseInt(c.fb)||0, totalR); tRuns += runs;
+                    
+                    // 1. Stamina Glow Fixed
                     if (mainS >= 840) { row.querySelector('.c-stam').classList.add('glow-red'); hasFullStam = true; } else { row.querySelector('.c-stam').classList.remove('glow-red'); }
-                    row.querySelector('.total-white-stam').innerText = totalS; row.querySelector('.run-count').innerText = runs;
+                    
+                    row.querySelector('.stam-total').innerText = totalS; 
+                    row.querySelector('.rc-total').innerText = totalR; // 3. Update RC UI
+                    row.querySelector('.run-count').innerText = runs;
                 });
                 b.querySelector('.stamina-alert-icon').style.display = hasFullStam ? 'flex' : 'none';
                 (id.inventory || []).forEach((inv, i) => { const row = b.querySelectorAll('.inv-row')[i]; if(row) row.querySelector('.total-glow').innerText = (parseInt(inv.trade)||0) + (parseInt(inv.nonTrade)||0); });
@@ -208,7 +224,7 @@
                 const rows = (id.characters || []).map((c, ci) => `<tr class="char-row">
                     <td><input type="text" class="c-name" value="${c.name||''}" onchange="syncDataFromUI()"></td>
                     <td><select class="c-class" onchange="syncDataFromUI()"><option value="">เลือกอาชีพ</option>${['Templar','Gladiator','Assassin','Sorceror','Elementalist','Cleric','Ranger','Chanter'].map(cls=>`<option value="${cls}" ${c.class===cls?'selected':''}>${cls}</option>`).join('')}</select></td>
-                    <td><div class="split-input"><input type="number" class="standard-num c-stam" value="${c.stamina||0}" onchange="syncDataFromUI()">+<input type="number" class="bonus-input c-stam-b" value="${c.staminaBonus||0}" onchange="syncDataFromUI()"><span class="total-white total-white-stam">0</span></div></td>
+                    <td><div class="split-input"><input type="number" class="standard-num c-stam" value="${c.stamina||0}" onchange="syncDataFromUI()">+<input type="number" class="bonus-input c-stam-b" value="${c.staminaBonus||0}" onchange="syncDataFromUI()"><span class="total-white stam-total">0</span></div></td>
                     <td><input type="checkbox" class="c-duty" ${c.duty?'checked':''} onchange="syncDataFromUI()"></td>
                     <td><input type="checkbox" class="c-raid" ${c.raid?'checked':''} onchange="syncDataFromUI()"></td>
                     <td><input type="checkbox" class="c-asc" ${c.asc?'checked':''} onchange="syncDataFromUI()"></td>
@@ -217,7 +233,7 @@
                     <td><input type="checkbox" class="c-buy" ${c.buy?'checked':''} onchange="syncDataFromUI()"></td>
                     <td><input type="checkbox" class="c-craft" ${c.craft?'checked':''} onchange="syncDataFromUI()"></td>
                     <td><input type="number" style="width:45px" class="c-fb" value="${c.fb||35}" onchange="syncDataFromUI()"></td>
-                    <td><input type="number" style="width:45px" class="c-rc" value="${c.rc||21}" onchange="syncDataFromUI()"></td>
+                    <td><div class="split-input"><input type="number" style="width:45px" class="c-rc" value="${c.rc||21}" onchange="syncDataFromUI()">+<input type="number" class="bonus-input c-rc-b" value="${c.rcBonus||0}" onchange="syncDataFromUI()"><span class="total-white rc-total">0</span></div></td>
                     <td class="run-count total-white">0</td><td><button onclick="openDun(${idx}, ${ci})">ดัน</button></td><td><button class="btn-danger" onclick="removeChar(${idx}, ${ci})">ลบ</button></td>
                 </tr>`).join('');
                 const invRows = inventoryList.map((item, i) => {
@@ -234,14 +250,14 @@
         window.confirmAddUser = function() { const n=document.getElementById('newUserName').value.trim(), p=document.getElementById('newUserPass').value.trim(); if(!n||!p) return alert("ห้ามว่าง"); db.ref(`userData/${n}`).set({ids:[], password:p}).then(() => { closeModal('userModal'); loadUserList(); }); };
         window.deleteUser = function() { if(currentUser && confirm("ลบ?")) { db.ref(`userData/${currentUser}`).remove(); localStorage.removeItem(`pass_${currentUser}`); currentUser=""; loadUserList(); renderUI(); } };
         window.addNewID = () => { if(!appData.ids) appData.ids=[]; appData.ids.push({idName:"ID ใหม่", characters:[], inventory:[]}); renderUI(); syncDataFromUI(); };
-        window.addChar = (i) => { if(!appData.ids[i].characters) appData.ids[i].characters=[]; appData.ids[i].characters.push({name:"", stamina:840, fb:35, rc:21, lastUpdate: getThaiTime().getTime()}); renderUI(); syncDataFromUI(); };
+        window.addChar = (i) => { if(!appData.ids[i].characters) appData.ids[i].characters=[]; appData.ids[i].characters.push({name:"", stamina:840, staminaBonus:0, fb:35, rc:21, rcBonus:0, lastUpdate: getThaiTime().getTime()}); renderUI(); syncDataFromUI(); };
         window.removeChar = (i, ci) => { if(confirm("ลบตัวละคร?")) { appData.ids[i].characters.splice(ci,1); renderUI(); syncDataFromUI(); } };
         window.removeID = (i) => { if(confirm("ลบ ID?")) { appData.ids.splice(i,1); renderUI(); syncDataFromUI(); } };
         window.switchTab = (btn, tab) => { const c=btn.closest('.id-container'); c.querySelectorAll('.btn-tab').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); c.querySelector('.char-t').style.display = tab==='char'?'table':'none'; c.querySelector('.inv-t').style.display = tab==='inv'?'table':'none'; };
         window.openVIPModal = (i) => { currentEditingVIP=i; document.getElementById('vipModal').style.display='flex'; };
         window.confirmVIP = () => { const d=parseInt(document.getElementById('vDay').value)||0, h=parseInt(document.getElementById('vHour').value)||0, m=parseInt(document.getElementById('vMin').value)||0; appData.ids[currentEditingVIP].vipExpiry = getThaiTime().getTime() + (d*86400000) + (h*3600000) + (m*60000); closeModal('vipModal'); renderUI(); syncDataFromUI(); };
         window.openDun = (i, ci) => { curDunID=i; curDunChar=ci; document.getElementById('dunCount').value=1; document.getElementById('dunModal').style.display='flex'; };
-        window.confirmDun = function() { const count=parseInt(document.getElementById('dunCount').value); const c = appData.ids[curDunID].characters[curDunChar]; c.stamina=Math.max(0, c.stamina-(count*80)); c.fb=Math.max(0, c.fb-count); c.rc=Math.max(0, c.rc-count); closeModal('dunModal'); renderUI(); syncDataFromUI(); };
+        window.confirmDun = function() { const count=parseInt(document.getElementById('dunCount').value); const c = appData.ids[curDunID].characters[curDunChar]; c.stamina=Math.max(0, (parseInt(c.stamina)||0)-(count*80)); c.fb=Math.max(0, (parseInt(c.fb)||0)-count); c.rc=Math.max(0, (parseInt(c.rc)||0)-count); closeModal('dunModal'); renderUI(); syncDataFromUI(); };
         window.refreshData = () => { if(currentUser) switchUser(currentUser); };
         window.cancelLogin = () => { document.getElementById('passModal').style.display='none'; document.getElementById('userDropdown').value = currentUser; };
         window.resetIDToMax = (idx) => { if(confirm("Reset ID?")) { appData.ids[idx].characters.forEach(c => { c.stamina=840; c.nm=14; c.fb=35; c.rc=21; c.duty=c.raid=c.asc=c.daily=c.buy=c.craft=false; }); renderUI(); window.syncDataFromUI(); } };
