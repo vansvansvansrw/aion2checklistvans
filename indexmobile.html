@@ -2,74 +2,71 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AION2 Mobile v1.55</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AION2 Mobile v1.58</title>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        :root { --bg-color: #0d1117; --panel-bg: rgba(22, 27, 34, 0.95); --neon-blue: #00f3ff; --text-main: #c9d1d9; --border-color: #30363d; --bonus-color: #ffb000; --danger-red: #ff4444; }
-        body { background: var(--bg-color); color: var(--text-main); font-family: 'Prompt', sans-serif; margin: 0; padding: 10px; font-size: 14px; }
+        :root { --bg-color: #0d1117; --panel-bg: rgba(22, 27, 34, 0.98); --neon-blue: #00f3ff; --text-main: #c9d1d9; --border-color: #30363d; --bonus-color: #ffb000; --danger-red: #ff4444; }
+        body { background: var(--bg-color); color: var(--text-main); font-family: 'Prompt', sans-serif; margin: 0; padding: 10px; font-size: 16px; overflow-x: hidden; }
         #loading { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0d1117; display: flex; justify-content: center; align-items: center; color: var(--neon-blue); z-index: 9999; }
-        .header { text-align: center; margin-bottom: 15px; }
-        .header h1 { font-size: 1.4rem; color: var(--neon-blue); margin: 0; }
         
-        .user-bar { background: var(--panel-bg); padding: 10px; border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 15px; display: flex; flex-direction: column; gap: 8px; }
-        .user-select { width: 100%; background: #161b22; color: var(--neon-blue); border: 1px solid var(--neon-blue); padding: 8px; border-radius: 4px; font-family: 'Prompt'; }
+        .sticky-bar { position: sticky; top: 0; z-index: 1000; background: var(--bg-color); padding-bottom: 10px; }
+        .user-bar, .id-selector-bar { background: var(--panel-bg); padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 8px; }
+        select { width: 100%; background: #161b22; color: var(--neon-blue); border: 1px solid var(--neon-blue); padding: 10px; border-radius: 6px; font-family: 'Prompt'; font-size: 16px; }
+
+        .id-card { background: var(--panel-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; margin-bottom: 20px; }
+        .char-card { background: rgba(255,255,255,0.03); border-radius: 10px; padding: 12px; margin-bottom: 12px; border-left: 4px solid var(--neon-blue); }
+        .glow-red { border: 2px solid var(--danger-red) !important; box-shadow: 0 0 10px var(--danger-red); }
+
+        /* การจัดวางข้อมูลใน Card */
+        .row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; margin-bottom: 8px; }
+        .grid-checkbox { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 10px 0; }
+        .check-item { display: flex; flex-direction: column; align-items: center; font-size: 12px; gap: 5px; }
+
+        input[type="number"], input[type="text"] { background: #0d1117; color: #fff; border: 1px solid #444; padding: 6px; border-radius: 4px; text-align: center; width: 100%; box-sizing: border-box; }
+        input[type="checkbox"] { width: 24px; height: 24px; accent-color: #00ff00; }
         
-        .id-card { background: var(--panel-bg); border: 1px solid var(--border-color); border-radius: 10px; padding: 12px; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-        .id-title { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #444; padding-bottom: 8px; margin-bottom: 10px; }
-        .id-name-input { background: transparent; border: none; color: var(--neon-blue); font-size: 1.1rem; font-weight: bold; width: 60%; }
-        
-        .char-item { background: rgba(0,0,0,0.2); padding: 10px; border-radius: 6px; margin-bottom: 10px; border-left: 4px solid var(--neon-blue); }
-        .char-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; align-items: center; }
-        
-        .glow-red { border: 1px solid var(--danger-red) !important; box-shadow: 0 0 8px var(--danger-red); }
-        .summary-box { background: rgba(0,243,255,0.05); padding: 10px; border-radius: 8px; margin-top: 10px; border: 1px solid var(--border-color); }
-        .summary-row { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px dashed #333; }
-        
-        button { background: transparent; color: var(--neon-blue); border: 1px solid var(--neon-blue); padding: 8px 12px; border-radius: 4px; font-weight: bold; font-family: 'Prompt'; }
-        .btn-reset { color: var(--bonus-color); border-color: var(--bonus-color); font-size: 12px; }
+        button { background: transparent; color: var(--neon-blue); border: 1px solid var(--neon-blue); padding: 8px; border-radius: 5px; font-weight: bold; font-family: 'Prompt'; width: 100%; margin-top: 5px; }
         .btn-danger { color: #ff4444; border-color: #ff4444; }
-        
-        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); justify-content: center; align-items: center; }
-        .modal-content { background: #161b22; padding: 20px; border-radius: 10px; border: 1px solid var(--neon-blue); width: 85%; text-align: center; }
-        .modal-content input { width: 90%; margin: 10px 0; padding: 8px; background: #0d1117; color: #fff; border: 1px solid #444; }
-        
-        input[type="checkbox"] { width: 22px; height: 22px; accent-color: #00ff00; }
-        .vip-info { font-size: 12px; margin-top: 4px; }
+        .summary-box { background: rgba(0,243,255,0.05); padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); }
+        .vip-status { font-size: 13px; font-weight: bold; margin-bottom: 10px; }
         .vip-green { color: #00ff00; } .vip-red { color: #ff4444; }
+        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); justify-content: center; align-items: center; padding: 20px; }
+        .modal-content { background: #161b22; padding: 20px; border-radius: 10px; border: 1px solid var(--neon-blue); width: 100%; text-align: center; }
     </style>
 </head>
 <body>
-    <div id="loading">Mobile Syncing v1.55...</div>
+    <div id="loading">AION2 Mobile Loading...</div>
 
-    <div id="userModal" class="modal"><div class="modal-content"><h3>เพิ่ม User</h3><input type="text" id="newUserName" placeholder="ชื่อ"><input type="password" id="newUserPass" placeholder="รหัสผ่าน"><br><button onclick="confirmAddUser()">ตกลง</button> <button onclick="closeModal('userModal')">ยกเลิก</button></div></div>
-    <div id="passModal" class="modal"><div class="modal-content"><h3 id="passModalTitle">รหัสผ่าน</h3><input type="password" id="checkPass"><br><label style="color:#fff"><input type="checkbox" id="rememberMe"> จำรหัส</label><br><br><button onclick="validateUser()">ตกลง</button> <button onclick="cancelLogin()">ยกเลิก</button></div></div>
-    <div id="vipModal" class="modal"><div class="modal-content"><h3>ตั้งค่า VIP</h3><input type="number" id="vDay" placeholder="วัน"><input type="number" id="vHour" placeholder="ชม."><input type="number" id="vMin" placeholder="นาที"><br><button onclick="confirmVIP()">ตกลง</button> <button onclick="closeModal('vipModal')">ยกเลิก</button></div></div>
-
-    <div class="header"><h1>AION2 Mobile v1.55</h1></div>
-
-    <div class="user-bar">
-        <select id="userDropdown" class="user-select" onchange="handleUserSelect(this.value)"></select>
-        <div style="display:flex; gap:5px;">
-            <button style="flex:1" onclick="document.getElementById('userModal').style.display='flex'">+ User</button>
-            <button style="flex:1" onclick="refreshData()">🔄 Refresh</button>
+    <div class="sticky-bar">
+        <div class="user-bar">
+            <select id="userDropdown" onchange="handleUserSelect(this.value)"></select>
+            <div style="display:flex; gap:5px; margin-top:8px;">
+                <button onclick="document.getElementById('userModal').style.display='flex'">+ User</button>
+                <button onclick="refreshData()">🔄 รีเฟรช</button>
+            </div>
+        </div>
+        <div id="id-selector-container" class="id-selector-bar" style="display:none">
+            <select id="idDropdown" onchange="window.currentIDIdx = this.value; renderUI();"></select>
         </div>
     </div>
 
     <div id="main-wrapper"></div>
-    <div style="text-align: center; margin-top: 15px;"><button id="btn-add-id-container" style="display:none" onclick="addNewID()">+ เพิ่ม ID ใหม่</button></div>
+
+    <div id="userModal" class="modal"><div class="modal-content"><h3>เพิ่ม User</h3><input type="text" id="newUserName" placeholder="ชื่อ"><input type="password" id="newUserPass" placeholder="รหัสผ่าน"><button onclick="confirmAddUser()">ตกลง</button><button class="btn-danger" onclick="closeModal('userModal')">ยกเลิก</button></div></div>
+    <div id="passModal" class="modal"><div class="modal-content"><h3 id="passModalTitle">ใส่รหัสผ่าน</h3><input type="password" id="checkPass"><br><label style="color:#fff"><input type="checkbox" id="rememberMe"> จำรหัสผ่าน</label><button onclick="validateUser()">ตกลง</button><button class="btn-danger" onclick="cancelLogin()">ยกเลิก</button></div></div>
+    <div id="vipModal" class="modal"><div class="modal-content"><h3>ตั้งค่า VIP</h3><input type="number" id="vDay" placeholder="วัน"><input type="number" id="vHour" placeholder="ชม."><input type="number" id="vMin" placeholder="นาที"><button onclick="confirmVIP()">ตกลง</button><button class="btn-danger" onclick="closeModal('vipModal')">ยกเลิก</button></div></div>
 
     <script>
         const config = { apiKey: "AIzaSyB8vq1cDV3LuqRmqtNsUqNHjriaEI9oGMM", databaseURL: "https://aion2-checklist-vans-default-rtdb.asia-southeast1.firebasedatabase.app" };
         firebase.initializeApp(config);
         const db = firebase.database();
 
-        let currentUser = ""; let appData = { ids: [] }; let pendingUser = ""; let isSettingPass = false;
-        let currentEditingVIP = -1;
+        let currentUser = ""; let appData = { ids: [] }; let currentIDIdx = 0; let pendingUser = ""; let isSettingPass = false;
 
-        // --- Logic เวลา (เดิมเป๊ะ) ---
         function getThaiTime() { return new Date(new Date().getTime() + (new Date().getTimezoneOffset() * 60000) + (3600000 * 7)); }
         function getBase4AM(t) { let d = new Date(t); if (d.getHours() < 4) d.setDate(d.getDate() - 1); d.setHours(4,0,0,0); return d.getTime(); }
         function getRecentWed4AM(t) { let d = new Date(t); let day = d.getDay(); if (day===3 && d.getHours()<4) { d.setDate(d.getDate()-7); } else { let diff = (day<3)?(day+4):(day-3); d.setDate(d.getDate()-diff); } d.setHours(4,0,0,0); return d.getTime(); }
@@ -79,8 +76,7 @@
             const now = getThaiTime().getTime(); const c4AM = getBase4AM(now); const cWed = getRecentWed4AM(now);
             let anyChange = false;
             data.ids.forEach(id => {
-                if(!id.characters) return;
-                id.characters.forEach(c => {
+                (id.characters || []).forEach(c => {
                     let last = c.lastUpdate || now; let changed = false;
                     if (last < cWed) { c.fb = 35; c.daily = false; c.buy = false; c.craft = false; c.raid = false; c.asc = false; changed = true; }
                     if (last < c4AM) { c.duty = false; let days = Math.floor((c4AM - getBase4AM(last)) / 86400000); if (days > 0) c.nm = Math.min(14, (parseInt(c.nm) || 0) + (2 * days)); changed = true; }
@@ -99,7 +95,7 @@
                 const dd = document.getElementById('userDropdown'); dd.innerHTML = '<option value="">-- เลือก User --</option>';
                 if(snap.exists()) { Object.keys(snap.val()).forEach(u => { const opt = document.createElement('option'); opt.value = u; opt.text = u; dd.add(opt); }); }
                 document.getElementById('loading').style.display = 'none';
-            }).catch(() => document.getElementById('loading').style.display = 'none');
+            });
         };
 
         window.handleUserSelect = function(u) {
@@ -109,121 +105,144 @@
                 if (snap.exists() && snap.val() !== "" && saved === snap.val()) { switchUser(u); }
                 else {
                     isSettingPass = !snap.exists() || snap.val() === "";
-                    document.getElementById('passModalTitle').innerText = isSettingPass ? "ตั้งรหัสใหม่" : "ใส่รหัสผ่าน";
                     document.getElementById('passModal').style.display = 'flex';
                 }
             });
-        };
-
-        window.validateUser = function() {
-            const p = document.getElementById('checkPass').value.trim();
-            const rem = document.getElementById('rememberMe').checked;
-            if(!p) return alert("ห้ามว่าง");
-            if(isSettingPass) {
-                db.ref(`userData/${pendingUser}/password`).set(p).then(() => { if(rem) localStorage.setItem(`pass_${pendingUser}`, p); document.getElementById('passModal').style.display='none'; switchUser(pendingUser); });
-            } else {
-                db.ref(`userData/${pendingUser}/password`).once('value').then(snap => {
-                    if(snap.val() === p) { if(rem) localStorage.setItem(`pass_${pendingUser}`, p); document.getElementById('passModal').style.display='none'; switchUser(pendingUser); }
-                    else alert("รหัสผิด!");
-                });
-            }
         };
 
         async function switchUser(u) {
             currentUser = u; document.getElementById('loading').style.display = 'flex';
             const snap = await db.ref(`userData/${u}`).once('value');
             let rawData = snap.val() || { ids: [] };
-            if (!rawData.ids) rawData.ids = [];
             appData = await runResetLogic(rawData);
-            renderUI(); document.getElementById('btn-add-id-container').style.display = 'block'; document.getElementById('loading').style.display = 'none';
+            currentIDIdx = 0;
+            updateIDDropdown();
+            renderUI();
+            document.getElementById('loading').style.display = 'none';
+        }
+
+        function updateIDDropdown() {
+            const dd = document.getElementById('idDropdown');
+            const container = document.getElementById('id-selector-container');
+            if(!appData.ids || appData.ids.length === 0) { container.style.display = 'none'; return; }
+            container.style.display = 'block';
+            dd.innerHTML = appData.ids.map((id, i) => `<option value="${i}" ${i==currentIDIdx?'selected':''}>ID: ${id.idName||'Unnamed'}</option>`).join('');
+            dd.innerHTML += `<option value="ADD">+ เพิ่ม ID ใหม่</option>`;
+            dd.onchange = (e) => { 
+                if(e.target.value === "ADD") addNewID(); 
+                else { currentIDIdx = e.target.value; renderUI(); }
+            };
         }
 
         window.syncDataFromUI = function() {
-            if(!currentUser) return;
-            const blocks = document.querySelectorAll('.id-card');
-            const newIds = Array.from(blocks).map((b, i) => ({
-                idName: b.querySelector('.id-name-input').value, kinahTotal: b.querySelector('.kinah-total-id')?.value || 0,
-                isVIP: b.querySelector('.vip-check').checked, vipExpiry: appData.ids[i]?.vipExpiry || 0,
-                trans: b.querySelector('.in-trans')?.value || 0, conq: b.querySelector('.in-conq')?.value || 0, setTotal: b.querySelector('.in-set-total')?.value || 0,
-                characters: Array.from(b.querySelectorAll('.char-item')).map((item, ci) => ({
-                    name: item.querySelector('.c-name').value, stamina: item.querySelector('.c-stam').value,
-                    duty: item.querySelector('.c-duty').checked, fb: item.querySelector('.c-fb').value,
-                    lastUpdate: appData.ids[i]?.characters?.[ci]?.lastUpdate || getThaiTime().getTime()
-                }))
+            if(!currentUser || !appData.ids[currentIDIdx]) return;
+            const id = appData.ids[currentIDIdx];
+            const card = document.querySelector('.id-card');
+            id.idName = card.querySelector('.id-name-input').value;
+            id.kinahTotal = card.querySelector('.kinah-total').value;
+            id.isVIP = card.querySelector('.vip-check').checked;
+            id.trans = card.querySelector('.in-trans').value;
+            id.conq = card.querySelector('.in-conq').value;
+            id.setTotal = card.querySelector('.in-set-total').value;
+            
+            const charCards = card.querySelectorAll('.char-card');
+            id.characters = Array.from(charCards).map((c, i) => ({
+                name: c.querySelector('.c-name').value,
+                stamina: c.querySelector('.c-stam').value,
+                staminaBonus: c.querySelector('.c-stam-b').value,
+                duty: c.querySelector('.c-duty').checked,
+                fb: c.querySelector('.c-fb').value,
+                nm: c.querySelector('.c-nm').value,
+                lastUpdate: id.characters[i].lastUpdate || getThaiTime().getTime()
             }));
-            appData.ids = newIds; db.ref(`userData/${currentUser}/ids`).set(newIds); updateCalcs();
+            db.ref(`userData/${currentUser}/ids`).set(appData.ids);
+            updateCalcs();
         };
 
         function renderUI() {
             const w = document.getElementById('main-wrapper'); w.innerHTML = '';
-            if(!currentUser) return;
+            if(!currentUser || !appData.ids[currentIDIdx]) return;
+            const id = appData.ids[currentIDIdx];
             const now = getThaiTime().getTime();
-            appData.ids.forEach((id, idx) => {
-                const b = document.createElement('div'); b.className = 'id-card';
-                let vS = ""; let vC = "vip-red";
-                if(id.vipExpiry > now) {
-                    const diff = id.vipExpiry-now, d = Math.floor(diff/86400000), h = Math.floor((diff%86400000)/3600000), m = Math.floor((diff%3600000)/60000);
-                    vS = `VIP: ${d}วัน ${h}ชม. ${m}นาที`; if(d>=7) vC="vip-green";
-                }
-                const chars = (id.characters || []).map((c, ci) => `
-                    <div class="char-item">
-                        <div class="char-grid">
-                            <input type="text" class="c-name" value="${c.name||''}" placeholder="ชื่อตัวละคร" onchange="syncDataFromUI()">
-                            <input type="number" class="c-stam ${parseInt(c.stamina)>=840?'glow-red':''}" value="${c.stamina||0}" onchange="syncDataFromUI()">
-                            <div>Duty <input type="checkbox" class="c-duty" ${c.duty?'checked':''} onchange="syncDataFromUI()"></div>
-                            <div>FB <input type="number" class="c-fb" style="width:40px" value="${c.fb||35}" onchange="syncDataFromUI()"></div>
-                        </div>
-                        <button class="btn-danger" style="margin-top:5px; width:100%; padding:4px;" onclick="removeChar(${idx}, ${ci})">ลบตัวละคร</button>
-                    </div>`).join('');
-                b.innerHTML = `
-                    <div class="id-title">
-                        <input type="text" class="id-name-input" value="${id.idName||''}" onchange="syncDataFromUI()">
-                        <button class="btn-reset" onclick="resetID(${idx})">Reset</button>
+            
+            let vS = "", vC = "vip-red";
+            if(id.vipExpiry > now) {
+                const diff = id.vipExpiry-now, d = Math.floor(diff/86400000), h = Math.floor((diff%86400000)/3600000), m = Math.floor((diff%3600000)/60000);
+                vS = `VIP: ${d}วัน ${h}ชม. ${m}นาที`; if(d>=7) vC="vip-green";
+            }
+
+            const chars = (id.characters || []).map((c, ci) => `
+                <div class="char-card">
+                    <div class="row">
+                        <input type="text" class="c-name" value="${c.name||''}" placeholder="ชื่อตัวละคร" onchange="syncDataFromUI()">
+                        <button class="btn-danger" style="width:40px; padding:4px;" onclick="removeChar(${ci})">ลบ</button>
                     </div>
-                    <div class="vip-info ${vC}">${vS}</div>
-                    <div style="margin:10px 0; display:flex; justify-content:space-between; align-items:center;">
-                        <label><input type="checkbox" class="vip-check" ${id.isVIP?'checked':''} onchange="syncDataFromUI()"> VIP</label>
-                        <button onclick="openVIPModal(${idx})">ตั้งเวลา VIP</button>
+                    <div class="grid-3">
+                        <div>Stam<input type="number" class="c-stam ${parseInt(c.stamina)>=840?'glow-red':''}" value="${c.stamina||0}" onchange="syncDataFromUI()"></div>
+                        <div>Bonus<input type="number" class="c-stam-b" style="color:var(--bonus-color)" value="${c.staminaBonus||0}" onchange="syncDataFromUI()"></div>
+                        <div>Boss<input type="number" class="c-fb" value="${c.fb||35}" onchange="syncDataFromUI()"></div>
                     </div>
-                    ${chars}
-                    <button style="width:100%; margin-bottom:15px;" onclick="addChar(${idx})">+ เพิ่มตัวละคร</button>
-                    <div class="summary-box">
-                        <div class="summary-row"><span>Trans</span><input type="number" class="in-trans" style="width:60px" value="${id.trans||0}" onchange="syncDataFromUI()"></div>
-                        <div class="summary-row"><span>Conq</span><input type="number" class="in-conq" style="width:60px" value="${id.conq||0}" onchange="syncDataFromUI()"></div>
-                        <div class="summary-row"><span>เป้าหมาย</span><input type="number" class="in-set-total" style="width:60px" value="${id.setTotal||0}" onchange="syncDataFromUI()"></div>
-                        <div class="summary-row"><span>ปัจจุบัน</span><span class="summary-current">0</span></div>
-                        <div class="summary-row"><span>คงเหลือ</span><span class="summary-remain" style="color:var(--neon-blue)">0</span></div>
+                    <div class="grid-checkbox">
+                        <div class="check-item">Duty<input type="checkbox" class="c-duty" ${c.duty?'checked':''} onchange="syncDataFromUI()"></div>
+                        <div class="check-item">NM<input type="number" class="c-nm" value="${c.nm||0}" onchange="syncDataFromUI()"></div>
+                        <div class="check-item">Run<span class="run-count total-white">0</span></div>
                     </div>
-                    <button class="btn-danger" style="width:100%; margin-top:10px;" onclick="removeID(${idx})">ลบ ID นี้</button>`;
-                w.appendChild(b);
-            });
+                </div>`).join('');
+
+            w.innerHTML = `
+                <div class="id-card">
+                    <div class="row"><input type="text" class="id-name-input" value="${id.idName||''}" onchange="syncDataFromUI()"><button style="width:80px" onclick="resetID()">Reset</button></div>
+                    <div class="vip-status ${vC}">${vS}</div>
+                    <div class="row">
+                        <label style="display:flex; align-items:center; gap:8px;"><input type="checkbox" class="vip-check" ${id.isVIP?'checked':''} onchange="syncDataFromUI()"> VIP</label>
+                        <button style="width:100px" onclick="document.getElementById('vipModal').style.display='flex'">ตั้งเวลา VIP</button>
+                    </div>
+                    <div class="row">Kinah <input type="text" class="kinah-total" style="width:150px" value="${id.kinahTotal||0}" onchange="syncDataFromUI()"></div>
+                    <div id="chars-container">${chars}</div>
+                    <button onclick="addChar()">+ เพิ่มตัวละคร</button>
+                    <div class="summary-box" style="margin-top:15px">
+                        <div class="row"><span>Trans</span><input type="number" class="in-trans" style="width:80px" value="${id.trans||0}" onchange="syncDataFromUI()"></div>
+                        <div class="row"><span>Conq</span><input type="number" class="in-conq" style="width:80px" value="${id.conq||0}" onchange="syncDataFromUI()"></div>
+                        <div class="row"><span>Target</span><input type="number" class="in-set-total" style="width:80px" value="${id.setTotal||0}" onchange="syncDataFromUI()"></div>
+                        <div class="row"><span>Current</span><span class="summary-current summary-val">0</span></div>
+                        <div class="row"><span>Remain</span><span class="summary-remain" style="color:var(--neon-blue); font-weight:bold;">0</span></div>
+                    </div>
+                </div>`;
             updateCalcs();
         }
 
         function updateCalcs() {
-            appData.ids.forEach((id, idx) => {
-                const b = document.querySelectorAll('.id-card')[idx]; if(!b) return;
-                const cur = (parseInt(id.trans)||0) + (parseInt(id.conq)||0);
-                b.querySelector('.summary-current').innerText = cur;
-                b.querySelector('.summary-remain').innerText = (parseInt(id.setTotal)||0) - cur;
+            const id = appData.ids[currentIDIdx]; if(!id) return;
+            const charCards = document.querySelectorAll('.char-card');
+            let tRuns = 0;
+            (id.characters || []).forEach((c, i) => {
+                const runs = Math.min(Math.floor((parseInt(c.stamina)+parseInt(c.staminaBonus||0))/80), parseInt(c.fb)||0);
+                tRuns += runs;
+                if(charCards[i]) charCards[i].querySelector('.run-count').innerText = runs;
             });
+            const cur = (parseInt(id.trans)||0) + (parseInt(id.conq)||0);
+            document.querySelector('.summary-current').innerText = cur;
+            document.querySelector('.summary-remain').innerText = (parseInt(id.setTotal)||0) - cur;
         }
 
-        window.confirmAddUser = function() { const n=document.getElementById('newUserName').value.trim(), p=document.getElementById('newUserPass').value.trim(); if(!n||!p) return alert("ห้ามว่าง"); db.ref(`userData/${n}`).set({ids:[], password:p}).then(() => { closeModal('userModal'); loadUserList(); }); };
-        window.addNewID = () => { appData.ids.push({idName:"ID ใหม่", characters:[], isVIP:false}); renderUI(); syncDataFromUI(); };
-        window.addChar = (i) => { if(!appData.ids[i].characters) appData.ids[i].characters=[]; appData.ids[i].characters.push({name:"", stamina:840, fb:35, lastUpdate: getThaiTime().getTime()}); renderUI(); syncDataFromUI(); };
-        window.removeChar = (i, ci) => { if(confirm("ลบ?")) { appData.ids[i].characters.splice(ci,1); renderUI(); syncDataFromUI(); } };
-        window.removeID = (i) => { if(confirm("ลบ ID?")) { appData.ids.splice(i,1); renderUI(); syncDataFromUI(); } };
-        window.openVIPModal = (i) => { currentEditingVIP=i; document.getElementById('vipModal').style.display='flex'; };
-        window.confirmVIP = () => { 
-            const d=parseInt(document.getElementById('vDay').value)||0, h=parseInt(document.getElementById('vHour').value)||0, m=parseInt(document.getElementById('vMin').value)||0; 
-            appData.ids[currentEditingVIP].vipExpiry = getThaiTime().getTime() + (d*86400000) + (h*3600000) + (m*60000); 
-            closeModal('vipModal'); renderUI(); syncDataFromUI(); 
-        };
+        window.addNewID = () => { appData.ids.push({idName:"ID ใหม่", characters:[], trans:0, conq:0, setTotal:0}); currentIDIdx = appData.ids.length-1; updateIDDropdown(); renderUI(); syncDataFromUI(); };
+        window.addChar = () => { appData.ids[currentIDIdx].characters.push({name:"", stamina:840, staminaBonus:0, fb:35, lastUpdate: getThaiTime().getTime()}); renderUI(); syncDataFromUI(); };
+        window.removeChar = (ci) => { if(confirm("ลบ?")) { appData.ids[currentIDIdx].characters.splice(ci,1); renderUI(); syncDataFromUI(); } };
+        window.confirmVIP = () => { const d=parseInt(document.getElementById('vDay').value)||0, h=parseInt(document.getElementById('vHour').value)||0, m=parseInt(document.getElementById('vMin').value)||0; appData.ids[currentIDIdx].vipExpiry = getThaiTime().getTime() + (d*86400000) + (h*3600000) + (m*60000); closeModal('vipModal'); renderUI(); syncDataFromUI(); };
         window.closeModal = (id) => document.getElementById(id).style.display='none';
         window.refreshData = () => { if(currentUser) switchUser(currentUser); };
-        window.cancelLogin = () => { document.getElementById('passModal').style.display='none'; document.getElementById('userDropdown').value = currentUser; };
-        window.resetID = (idx) => { if(confirm("Reset?")) { appData.ids[idx].characters.forEach(c => { c.stamina=840; c.fb=35; c.duty=false; }); renderUI(); syncDataFromUI(); } };
+        window.validateUser = function() {
+            const p = document.getElementById('checkPass').value.trim();
+            const rem = document.getElementById('rememberMe').checked;
+            db.ref(`userData/${pendingUser}/password`).once('value').then(snap => {
+                if(!snap.exists() || snap.val() === p) {
+                    if(rem) localStorage.setItem(`pass_${pendingUser}`, p);
+                    closeModal('passModal'); switchUser(pendingUser);
+                } else alert("รหัสผิด");
+            });
+        };
+        window.cancelLogin = () => { closeModal('passModal'); document.getElementById('userDropdown').value = currentUser; };
+        window.resetID = () => { if(confirm("Reset ID?")) { appData.ids[currentIDIdx].characters.forEach(c => { c.stamina=840; c.fb=35; c.duty=false; }); renderUI(); syncDataFromUI(); } };
 
         loadUserList();
     </script>
