@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AION2 Check List v1.68 (UI & VIP Fixed)</title>
+    <title>AION2 Check List v1.70 (Refresh Fixed)</title>
     
     <script>
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768) {
@@ -26,11 +26,8 @@
         .id-header input[type="text"].id-name-input { background: transparent; border: none; color: var(--neon-blue); font-size: 1.4rem; font-weight: bold; outline: none; border-bottom: 1px dashed var(--border-color); width: 150px; font-family: 'Prompt', sans-serif; }
         .stamina-alert-icon { display: none; background: var(--danger-red); color: white; width: 22px; height: 22px; border-radius: 50%; font-weight: bold; align-items: center; justify-content: center; font-size: 14px; box-shadow: 0 0 10px var(--danger-red); animation: pulse 1.5s infinite; }
         @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.2); opacity: 0.8; } 100% { transform: scale(1); opacity: 1; } }
-        
-        /* 2. Header Layout Fixed */
         .kinah-id-wrapper { margin-left: auto; display: flex; align-items: center; gap: 10px; font-size: 0.85rem; padding-right: 120px; }
         .kinah-total-id { background: rgba(13, 17, 23, 0.8); border: 1px solid var(--neon-blue); color: #fff; padding: 5px 10px; border-radius: 4px; width: 160px; text-align: right; }
-        
         .vip-status { font-size: 0.9rem; font-weight: bold; width: 100%; margin-top: 5px; }
         .vip-green { color: #00ff00; } .vip-red { color: #ff4444; }
         .btn-reset-id { position: absolute; top: 20px; right: 20px; background-color: transparent; color: var(--bonus-color); border: 1px solid var(--bonus-color); padding: 6px 12px; font-size: 0.9rem; border-radius: 4px; cursor: pointer; transition: 0.2s; font-weight: bold; }
@@ -43,11 +40,8 @@
         input[type="number"], input[type="text"], select { background: rgba(13, 17, 23, 0.8); color: white; border: 1px solid #444; border-radius: 4px; padding: 4px; text-align: center; font-family: 'Prompt', sans-serif; }
         .split-input { display: flex; align-items: center; justify-content: flex-end; gap: 2px; }
         .total-white { color: #fff; font-weight: bold; min-width: 35px; text-align: right; }
-        
-        /* 3. Stamina Bonus Field Expanded */
         input[type="number"].bonus-input { color: var(--bonus-color); border-color: #664400; width: 50px; padding: 2px; }
         input[type="number"].standard-num { width: 55px; }
-        
         input[type="checkbox"] { accent-color: #00ff00; width: 18px; height: 18px; cursor: pointer; appearance: none; border: 2px solid #ff4444; border-radius: 3px; position: relative; background: rgba(255,0,0,0.1); }
         input[type="checkbox"]:checked { background-color: #00ff00; border-color: #00ff00; appearance: auto; }
         .summary-table-container { display: flex; justify-content: center; width: 100%; margin-top: 15px; }
@@ -65,14 +59,14 @@
     </style>
 </head>
 <body>
-    <div id="loading">กำลังซิงค์ข้อมูล v1.68...</div>
+    <div id="loading">กำลังซิงค์ข้อมูล v1.70...</div>
 
     <div id="vipModal" class="modal"><div class="modal-content"><h3>ตั้งค่า VIP คงเหลือ</h3><div style="display:flex; gap:10px; justify-content:center; margin-bottom:15px;"><input type="number" id="vDay" placeholder="วัน" style="width:60px"><input type="number" id="vHour" placeholder="ชม" style="width:60px"><input type="number" id="vMin" placeholder="นาที" style="width:60px"></div><button onclick="window.confirmVIP()">ตกลง</button> <button class="btn-danger" onclick="closeModal('vipModal')">ยกเลิก</button></div></div>
     <div id="userModal" class="modal"><div class="modal-content"><h3>เพิ่ม User ใหม่</h3><input type="text" id="newUserName" placeholder="ชื่อ"><br><br><input type="password" id="newUserPass" placeholder="รหัสผ่าน"><br><br><button onclick="confirmAddUser()">ตกลง</button> <button class="btn-danger" onclick="closeModal('userModal')">ยกเลิก</button></div></div>
     <div id="passModal" class="modal"><div class="modal-content"><h3 id="passModalTitle">ใส่รหัสผ่าน</h3><input type="password" id="checkPass"><br><br><label style="color:#fff"><input type="checkbox" id="rememberMe"> จดจำรหัสผ่าน</label><br><br><button onclick="validateUser()">ตกลง</button> <button class="btn-danger" onclick="cancelLogin()">ยกเลิก</button></div></div>
     <div id="dunModal" class="modal"><div class="modal-content"><h3 id="dunTitle">ลงดันเจี้ยน</h3><input type="number" id="dunCount" value="1" min="1"><br><br><button onclick="confirmDun()">ตกลง</button> <button class="btn-danger" onclick="closeModal('dunModal')">ยกเลิก</button></div></div>
 
-    <div class="header-container"><img src="pic/logo.png" alt="Logo" class="logo-img"><h1>AION2 Check List v1.68 by VANS</h1></div>
+    <div class="header-container"><img src="pic/logo.png" alt="Logo" class="logo-img"><h1>AION2 Check List v1.70 by VANS</h1></div>
 
     <div class="user-menu-bar">
         <select id="userDropdown" class="user-select" onchange="handleUserSelect(this.value)"></select>
@@ -107,8 +101,9 @@
                 if(!id.characters) return;
                 id.characters.forEach(c => {
                     let last = c.lastUpdate || now; let changed = false;
-                    if (last < cWed) { c.fb = 35; c.fbT = 28; c.daily = false; c.buy = false; c.craft = false; c.asc = false; changed = true; }
+                    if (last < cWed) { c.fb = 35; c.fbT = 28; c.asc = false; changed = true; }
                     if (last < c4AM) { c.duty = false; let days = Math.floor((c4AM - getBase4AM(last)) / 86400000); if (days > 0) c.nm = Math.min(14, (parseInt(c.nm) || 0) + (2 * days)); changed = true; }
+                    if (last < cWed) { id.buyStam = false; id.craftStam = false; id.dailyId = false; changed = true; }
                     let l4S = getBase4AM(last);
                     let iPS = (Math.floor((c4AM-l4S)/86400000)*8) + Math.floor((now-c4AM)/10800000) - Math.floor((last-l4S)/10800000);
                     if (iPS > 0) { c.stamina = Math.min(840, (parseInt(c.stamina)||0)+(iPS*(id.isVIP?15:10))); changed = true; }
@@ -138,7 +133,6 @@
                 if (snap.exists() && snap.val() !== "" && saved === snap.val()) { switchUser(u); }
                 else {
                     isSettingPass = !snap.exists() || snap.val() === "";
-                    document.getElementById('passModalTitle').innerText = isSettingPass ? "ตั้งรหัสใหม่" : "ใส่รหัสผ่าน";
                     document.getElementById('passModal').style.display = 'flex';
                 }
             });
@@ -146,15 +140,10 @@
 
         window.validateUser = function() {
             const p = document.getElementById('checkPass').value.trim(); const rem = document.getElementById('rememberMe').checked;
-            if(!p) return alert("ห้ามใส่รหัสว่าง");
-            if(isSettingPass) {
-                db.ref(`userData/${pendingUser}/password`).set(p).then(() => { if(rem) localStorage.setItem(`pass_${pendingUser}`, p); closeModal('passModal'); switchUser(pendingUser); });
-            } else {
-                db.ref(`userData/${pendingUser}/password`).once('value').then(snap => {
-                    if(snap.val() === p) { if(rem) localStorage.setItem(`pass_${pendingUser}`, p); closeModal('passModal'); switchUser(pendingUser); }
-                    else alert("รหัสผิด!");
-                });
-            }
+            db.ref(`userData/${pendingUser}/password`).once('value').then(snap => {
+                if(snap.val() === p) { if(rem) localStorage.setItem(`pass_${pendingUser}`, p); closeModal('passModal'); switchUser(pendingUser); }
+                else alert("รหัสผิด!");
+            });
         };
 
         async function switchUser(u) {
@@ -176,6 +165,7 @@
                     kinahTotal: b.querySelector('.kinah-total-id').value,
                     buyStam: b.querySelector('.buy-stam-id').checked,
                     craftStam: b.querySelector('.craft-stam-id').checked,
+                    dailyId: b.querySelector('.daily-id').checked, 
                     isVIP: (expiry > now), 
                     vipExpiry: expiry, 
                     trans: b.querySelector('.in-trans').value, 
@@ -184,7 +174,7 @@
                     characters: Array.from(b.querySelectorAll('.char-row')).map((row, ci) => ({
                         name: row.querySelector('.c-name').value, class: row.querySelector('.c-class').value, 
                         stamina: row.querySelector('.stam-main').value, staminaBonus: row.querySelector('.c-stam-b').value,
-                        duty: row.querySelector('.c-duty').checked, asc: row.querySelector('.c-asc').checked, daily: row.querySelector('.c-daily').checked,
+                        duty: row.querySelector('.c-duty').checked, asc: row.querySelector('.c-asc').checked,
                         nm: row.querySelector('.c-nm').value, nmBonus: row.querySelector('.c-nm-b').value, 
                         fb: row.querySelector('.c-fb').value, rc: row.querySelector('.c-rc').value, rcBonus: row.querySelector('.c-rc-b').value,
                         fbT: row.querySelector('.c-fb-t').value, rcT: row.querySelector('.c-rc-t').value, rcBonusT: row.querySelector('.c-rc-b-t').value,
@@ -200,8 +190,6 @@
             const now = getThaiTime().getTime();
             appData.ids.forEach((id, idx) => {
                 const b = document.querySelectorAll('.id-container')[idx]; if(!b) return;
-                
-                // 1. VIP Countdown Fixed
                 let vS = "", vC = "vip-red";
                 if(id.vipExpiry > now) {
                     const diff = id.vipExpiry - now;
@@ -219,14 +207,12 @@
                     const row = b.querySelectorAll('.char-row')[ci]; if(!row) return;
                     const mainS = parseInt(c.stamina)||0; const totalS = mainS + (parseInt(c.staminaBonus)||0);
                     if (mainS >= 840) { row.querySelector('.stam-main').classList.add('glow-red'); hasFullStam = true; } else { row.querySelector('.stam-main').classList.remove('glow-red'); }
-                    
                     const totalRC = (parseInt(c.rc)||0) + (parseInt(c.rcBonus)||0);
                     const runsCon = Math.min(Math.floor(totalS/80), (c.fb===undefined?35:parseInt(c.fb)), totalRC); 
                     tRunsCon += runsCon;
                     row.querySelector('.total-white-stam').innerText = totalS;
                     row.querySelector('.rc-total').innerText = totalRC;
                     row.querySelector('.run-count-con').innerText = runsCon;
-
                     const totalRCT = (parseInt(c.rcT)||0) + (parseInt(c.rcBonusT)||0);
                     const runsTra = Math.min(Math.floor(totalS/80), (c.fbT===undefined?28:parseInt(c.fbT)), totalRCT);
                     tRunsTra += runsTra;
@@ -253,32 +239,27 @@
                     <td><div class="split-input"><input type="number" class="standard-num stam-main" value="${c.stamina||0}" onchange="syncDataFromUI()">+<input type="number" class="bonus-input c-stam-b" value="${c.staminaBonus||0}" onchange="syncDataFromUI()"><span class="total-white total-white-stam">0</span></div></td>
                     <td><input type="checkbox" class="c-duty" ${c.duty?'checked':''} onchange="syncDataFromUI()"></td>
                     <td><input type="checkbox" class="c-asc" ${c.asc?'checked':''} onchange="syncDataFromUI()"></td>
-                    <td><input type="checkbox" class="c-daily" ${c.daily?'checked':''} onchange="syncDataFromUI()"></td>
-                    
                     <td><div class="split-input"><input type="number" style="width:35px" class="c-nm" value="${c.nm||14}" onchange="syncDataFromUI()">+<input type="number" class="bonus-input c-nm-b" value="${c.nmBonus||0}" onchange="syncDataFromUI()"></div></td>
-                    
                     <td class="group-con"><div class="split-input"><input type="number" style="width:35px" class="c-rc" value="${c.rc||0}" onchange="syncDataFromUI()">+<input type="number" class="bonus-input c-rc-b" value="${c.rcBonus||0}" onchange="syncDataFromUI()"><span class="total-white rc-total">0</span></div></td>
                     <td class="group-con"><input type="number" style="width:35px" class="c-fb" value="${c.fb===undefined?35:c.fb}" onchange="syncDataFromUI()"></td>
                     <td class="group-con run-count-con total-white">0</td>
                     <td class="group-con"><button onclick="openDunModal(${idx}, ${ci}, 'CON')">ดัน C</button></td>
-
                     <td class="group-tra"><div class="split-input"><input type="number" style="width:35px" class="c-rc-t" value="${c.rcT||0}" onchange="syncDataFromUI()">+<input type="number" class="bonus-input c-rc-b-t" value="${c.rcBonusT||0}" onchange="syncDataFromUI()"><span class="total-white rc-total-t">0</span></div></td>
                     <td class="group-tra"><input type="number" style="width:35px" class="c-fb-t" value="${c.fbT===undefined?28:c.fbT}" onchange="syncDataFromUI()"></td>
                     <td class="group-tra run-count-tra total-white">0</td>
                     <td class="group-tra"><button onclick="openDunModal(${idx}, ${ci}, 'TRA')">ดัน T</button></td>
                     <td><button class="btn-danger" onclick="removeChar(${idx}, ${ci})">ลบ</button></td>
                 </tr>`).join('');
-                
                 b.innerHTML = `
                     <div class="id-header">
                         <div class="stamina-alert-icon">!</div><input type="checkbox" class="vip-input" disabled> VIP 
                         <input type="text" class="id-name-input" value="${id.idName||''}" onchange="syncDataFromUI()">
                         <button onclick="addChar(${idx})">+ ตัวละคร</button>
                         <button onclick="openVIPModal(${idx})">VIP</button>
-                        
                         <div class="kinah-id-wrapper">
                             <span>Buy <input type="checkbox" class="buy-stam-id" ${id.buyStam?'checked':''} onchange="syncDataFromUI()"></span>
                             <span>Craft <input type="checkbox" class="craft-stam-id" ${id.craftStam?'checked':''} onchange="syncDataFromUI()"></span>
+                            <span>Daily <input type="checkbox" class="daily-id" ${id.dailyId?'checked':''} onchange="syncDataFromUI()"></span>
                             <span>เงินรวม <input type="text" class="kinah-total-id" value="${id.kinahTotal||0}" onchange="syncDataFromUI()"></span>
                         </div>
                         <button class="btn-reset-id" onclick="resetIDToMax(${idx})">reset</button>
@@ -288,10 +269,10 @@
                     <table class="char-t">
                         <thead>
                             <tr>
-                                <th rowspan="2">ชื่อ</th><th rowspan="2">อาชีพ</th><th rowspan="2">Stamina</th><th colspan="4">General</th><th colspan="4" class="group-con">Conquest</th><th colspan="4" class="group-tra">Trancendense</th><th rowspan="2">จัดการ</th>
+                                <th rowspan="2">ชื่อ</th><th rowspan="2">อาชีพ</th><th rowspan="2">Stamina</th><th colspan="3">General</th><th colspan="4" class="group-con">Conquest</th><th colspan="4" class="group-tra">Trancendense</th><th rowspan="2">จัดการ</th>
                             </tr>
                             <tr>
-                                <th>Duty</th><th>Asc</th><th>Daily</th><th>Nightmare</th>
+                                <th>Duty</th><th>Asc</th><th>Nightmare</th>
                                 <th class="group-con">RC</th><th class="group-con">FB</th><th class="group-con">รอบ</th><th class="group-con">ดัน</th>
                                 <th class="group-tra">RC</th><th class="group-tra">FB</th><th class="group-tra">รอบ</th><th class="group-tra">ดัน</th>
                             </tr>
@@ -338,7 +319,7 @@
         };
 
         window.closeModal = (id) => document.getElementById(id).style.display='none';
-        window.addNewID = () => { appData.ids.push({idName:"ID ใหม่", characters:[], inventory:[]}); renderUI(); syncDataFromUI(); };
+        window.addNewID = () => { appData.ids.push({idName:"ID ใหม่", characters:[]}); renderUI(); syncDataFromUI(); };
         window.addChar = (i) => { appData.ids[i].characters.push({name:"", stamina:840, fb:35, rc:14, fbT:28, rcT:7, lastUpdate: getThaiTime().getTime()}); renderUI(); syncDataFromUI(); };
         window.removeChar = (i, ci) => { if(confirm("ลบ?")) { appData.ids[i].characters.splice(ci,1); renderUI(); syncDataFromUI(); } };
         window.openVIPModal = (i) => { currentEditingVIP=i; document.getElementById('vipModal').style.display='flex'; };
@@ -347,7 +328,12 @@
             appData.ids[currentEditingVIP].vipExpiry = getThaiTime().getTime() + (d*86400000) + (h*3600000) + (m*60000); 
             closeModal('vipModal'); renderUI(); syncDataFromUI(); 
         };
-        window.resetIDToMax = (idx) => { if(confirm("Reset ID?")) { appData.ids[idx].characters.forEach(c => { c.stamina=840; c.nm=14; c.fb=35; c.rc=14; c.fbT=28; c.rcT=7; c.duty=c.asc=c.daily=false; }); renderUI(); syncDataFromUI(); } };
+        window.refreshData = () => { 
+            const u = document.getElementById('userDropdown').value;
+            if(u) switchUser(u); 
+            else alert("กรุณาเลือก User ก่อนรีเฟรช");
+        };
+        window.resetIDToMax = (idx) => { if(confirm("Reset ID?")) { appData.ids[idx].characters.forEach(c => { c.stamina=840; c.nm=14; c.fb=35; c.rc=14; c.fbT=28; c.rcT=7; c.duty=c.asc=false; }); renderUI(); syncDataFromUI(); } };
         setInterval(() => { if(currentUser) updateCalcs(); }, 60000);
         window.loadUserList();
     </script>
