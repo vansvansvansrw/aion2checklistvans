@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AION2 Check List v1.73 (Full Style Restoration)</title>
+    <title>AION2 Check List v1.74 (Sync Fixed)</title>
     
     <script>
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768) {
@@ -40,12 +40,10 @@
         input[type="number"], input[type="text"], select { background: rgba(13, 17, 23, 0.8); color: white; border: 1px solid #444; border-radius: 4px; padding: 4px; text-align: center; font-family: 'Prompt', sans-serif; }
         .split-input { display: flex; align-items: center; justify-content: flex-end; gap: 2px; }
         .total-white { color: #fff; font-weight: bold; min-width: 35px; text-align: right; }
-        
-        /* Fixed Widths for Stamina & RC */
-        input[type="number"].bonus-input { color: var(--bonus-color); border-color: #664400; width: 55px; padding: 2px; } /* ขยายกลับเป็น 55px */
+        input[type="number"].bonus-input { color: var(--bonus-color); border-color: #664400; width: 55px; padding: 2px; }
         input[type="number"].standard-num { width: 55px; }
-        input[type="number"].rc-box-fix { width: 35px; color: white; } /* บีบช่อง RC */
-        input[type="number"].rc-bonus-fix { width: 35px; color: var(--bonus-color); border-color: #664400; } /* คืนสีส้ม RC Bonus */
+        input[type="number"].rc-box-fix { width: 35px; color: white; }
+        input[type="number"].rc-bonus-fix { width: 35px; color: var(--bonus-color); border-color: #664400; }
 
         input[type="checkbox"] { accent-color: #00ff00; width: 18px; height: 18px; cursor: pointer; appearance: none; border: 2px solid #ff4444; border-radius: 3px; position: relative; background: rgba(255,0,0,0.1); }
         input[type="checkbox"]:checked { background-color: #00ff00; border-color: #00ff00; appearance: auto; }
@@ -64,14 +62,14 @@
     </style>
 </head>
 <body>
-    <div id="loading">กำลังซิงค์ข้อมูล v1.73...</div>
+    <div id="loading">กำลังซิงค์ข้อมูล v1.74...</div>
 
     <div id="vipModal" class="modal"><div class="modal-content"><h3>ตั้งค่า VIP คงเหลือ</h3><div style="display:flex; gap:10px; justify-content:center; margin-bottom:15px;"><input type="number" id="vDay" placeholder="วัน" style="width:60px"><input type="number" id="vHour" placeholder="ชม" style="width:60px"><input type="number" id="vMin" placeholder="นาที" style="width:60px"></div><button onclick="window.confirmVIP()">ตกลง</button> <button class="btn-danger" onclick="closeModal('vipModal')">ยกเลิก</button></div></div>
     <div id="userModal" class="modal"><div class="modal-content"><h3>เพิ่ม User ใหม่</h3><input type="text" id="newUserName" placeholder="ชื่อ"><br><br><input type="password" id="newUserPass" placeholder="รหัสผ่าน"><br><br><button onclick="confirmAddUser()">ตกลง</button> <button class="btn-danger" onclick="closeModal('userModal')">ยกเลิก</button></div></div>
     <div id="passModal" class="modal"><div class="modal-content"><h3 id="passModalTitle">ใส่รหัสผ่าน</h3><input type="password" id="checkPass"><br><br><label style="color:#fff"><input type="checkbox" id="rememberMe"> จดจำรหัสผ่าน</label><br><br><button onclick="validateUser()">ตกลง</button> <button class="btn-danger" onclick="cancelLogin()">ยกเลิก</button></div></div>
     <div id="dunModal" class="modal"><div class="modal-content"><h3 id="dunTitle">ลงดันเจี้ยน</h3><input type="number" id="dunCount" value="1" min="1"><br><br><button onclick="confirmDun()">ตกลง</button> <button class="btn-danger" onclick="closeModal('dunModal')">ยกเลิก</button></div></div>
 
-    <div class="header-container"><img src="pic/logo.png" alt="Logo" class="logo-img"><h1>AION2 Check List v1.73 by VANS</h1></div>
+    <div class="header-container"><img src="pic/logo.png" alt="Logo" class="logo-img"><h1>AION2 Check List v1.74 by VANS</h1></div>
 
     <div class="user-menu-bar">
         <select id="userDropdown" class="user-select" onchange="handleUserSelect(this.value)"></select>
@@ -177,6 +175,7 @@
                     conq: b.querySelector('.in-conq').value, 
                     setTotal: b.querySelector('.in-set-total').value,
                     characters: Array.from(b.querySelectorAll('.char-row')).map((row, ci) => ({
+                        // --- CHECKC & CHECKT SYNC FIXED ---
                         checkC: row.querySelector('.c-check-c').checked,
                         checkT: row.querySelector('.c-check-t').checked,
                         name: row.querySelector('.c-name').value, class: row.querySelector('.c-class').value, 
