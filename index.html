@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AION2 Check List v1.79 (Stability Fix)</title>
+    <title>AION2 Check List v1.81 (User Login Fixed)</title>
     
     <script>
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768) {
@@ -31,24 +31,18 @@
         .vip-status { font-size: 0.9rem; font-weight: bold; width: 100%; margin-top: 5px; }
         .vip-green { color: #00ff00; } .vip-red { color: #ff4444; }
         .btn-reset-id { position: absolute; top: 20px; right: 20px; background-color: transparent; color: var(--bonus-color); border: 1px solid var(--bonus-color); padding: 6px 12px; font-size: 0.9rem; border-radius: 4px; cursor: pointer; transition: 0.2s; font-weight: bold; }
-        .tab-controls { display: flex; gap: 10px; margin-bottom: 15px; }
-        .btn-tab { background: rgba(33, 38, 45, 0.8); color: var(--text-main); border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 4px; cursor: pointer; font-family: 'Prompt', sans-serif; }
-        .btn-tab.active { background: var(--neon-blue); color: #000; font-weight: bold; }
         table { width: 100%; border-collapse: collapse; text-align: center; font-size: 0.85rem; margin-bottom: 15px; }
         th, td { border: 1px solid var(--border-color); padding: 8px 4px; }
         th { background-color: rgba(33, 38, 45, 0.8); color: #ffffff; }
         input[type="number"], input[type="text"], select { background: rgba(13, 17, 23, 0.8); color: white; border: 1px solid #444; border-radius: 4px; padding: 4px; text-align: center; font-family: 'Prompt', sans-serif; }
         .split-input { display: flex; align-items: center; justify-content: flex-end; gap: 2px; }
         .total-white { color: #fff; font-weight: bold; min-width: 35px; text-align: right; }
-        
         input[type="number"].bonus-input { color: var(--bonus-color) !important; border-color: #664400; width: 55px; padding: 2px; }
         input[type="number"].standard-num { width: 55px; }
         input[type="number"].rc-box-fix { width: 35px; color: white; }
         input[type="number"].rc-bonus-fix { width: 35px; color: var(--bonus-color) !important; border-color: #664400; }
-
         input[type="checkbox"] { accent-color: #00ff00; width: 18px; height: 18px; cursor: pointer; appearance: none; border: 2px solid #ff4444; border-radius: 3px; position: relative; background: rgba(255,0,0,0.1); }
         input[type="checkbox"]:checked { background-color: #00ff00; border-color: #00ff00; appearance: auto; }
-        
         .summary-table-container { display: flex; justify-content: center; width: 100%; margin-top: 15px; }
         .summary-table { width: 550px !important; border: 1px solid var(--border-color); }
         .summary-table td { text-align: left; padding: 8px 15px; }
@@ -64,14 +58,14 @@
     </style>
 </head>
 <body>
-    <div id="loading">กำลังซิงค์ข้อมูล v1.79...</div>
+    <div id="loading">กำลังซิงค์ข้อมูล v1.81...</div>
 
     <div id="vipModal" class="modal"><div class="modal-content"><h3>ตั้งค่า VIP คงเหลือ</h3><div style="display:flex; gap:10px; justify-content:center; margin-bottom:15px;"><input type="number" id="vDay" placeholder="วัน" style="width:60px"><input type="number" id="vHour" placeholder="ชม" style="width:60px"><input type="number" id="vMin" placeholder="นาที" style="width:60px"></div><button onclick="window.confirmVIP()">ตกลง</button> <button class="btn-danger" onclick="closeModal('vipModal')">ยกเลิก</button></div></div>
-    <div id="userModal" class="modal"><div class="modal-content"><h3>เพิ่ม User ใหม่</h3><input type="text" id="newUserName" placeholder="ชื่อ"><br><br><input type="password" id="newUserPass" placeholder="รหัสผ่าน"><br><br><button onclick="confirmAddUser()">ตกลง</button> <button class="btn-danger" onclick="closeModal('userModal')">ยกเลิก</button></div></div>
+    <div id="userModal" class="modal"><div class="modal-content"><h3>เพิ่ม User ใหม่</h3><input type="text" id="newUserName" placeholder="ชื่อ"><br><br><input type="password" id="newUserPass" placeholder="รหัสผ่าน"><br><br><button onclick="window.confirmAddUser()">ตกลง</button> <button class="btn-danger" onclick="closeModal('userModal')">ยกเลิก</button></div></div>
     <div id="passModal" class="modal"><div class="modal-content"><h3 id="passModalTitle">ใส่รหัสผ่าน</h3><input type="password" id="checkPass"><br><br><label style="color:#fff"><input type="checkbox" id="rememberMe"> จดจำรหัสผ่าน</label><br><br><button onclick="validateUser()">ตกลง</button> <button class="btn-danger" onclick="cancelLogin()">ยกเลิก</button></div></div>
     <div id="dunModal" class="modal"><div class="modal-content"><h3 id="dunTitle">ลงดันเจี้ยน</h3><input type="number" id="dunCount" value="1" min="1"><br><br><button onclick="confirmDun()">ตกลง</button> <button class="btn-danger" onclick="closeModal('dunModal')">ยกเลิก</button></div></div>
 
-    <div class="header-container"><img src="pic/logo.png" alt="Logo" class="logo-img"><h1>AION2 Check List v1.79 by VANS</h1></div>
+    <div class="header-container"><img src="pic/logo.png" alt="Logo" class="logo-img"><h1>AION2 Check List v1.81 by VANS</h1></div>
 
     <div class="user-menu-bar">
         <select id="userDropdown" class="user-select" onchange="handleUserSelect(this.value)"></select>
@@ -101,25 +95,23 @@
         async function runResetLogic(data) {
             if (!data || !data.ids || data.ids.length === 0) return data;
             const now = getThaiTime().getTime(); const c4AM = getBase4AM(now); const cWed = getRecentWed4AM(now);
-            let anyChange = false;
             data.ids.forEach(id => {
                 if(!id.characters) return;
                 id.characters.forEach(c => {
-                    let last = c.lastUpdate || now;
-                    if (last < cWed) { c.fb = 35; c.fbT = 28; c.asc = false; c.checkC = false; c.checkT = false; anyChange = true; }
-                    if (last < c4AM) { c.duty = false; let days = Math.floor((c4AM - getBase4AM(last)) / 86400000); if (days > 0) c.nm = Math.min(14, (parseInt(c.nm) || 0) + (2 * days)); anyChange = true; }
-                    if (last < cWed) { id.buyStam = false; id.craftStam = false; id.dailyId = false; anyChange = true; }
+                    let last = c.lastUpdate || now; let changed = false;
+                    if (last < cWed) { c.fb = 35; c.fbT = 28; c.asc = false; c.checkC = false; c.checkT = false; changed = true; }
+                    if (last < c4AM) { c.duty = false; let days = Math.floor((c4AM - getBase4AM(last)) / 86400000); if (days > 0) c.nm = Math.min(14, (parseInt(c.nm) || 0) + (2 * days)); changed = true; }
+                    if (last < cWed) { id.buyStam = false; id.craftStam = false; id.dailyId = false; changed = true; }
                     let l4S = getBase4AM(last);
                     let iPS = (Math.floor((c4AM-l4S)/86400000)*8) + Math.floor((now-c4AM)/10800000) - Math.floor((last-l4S)/10800000);
-                    if (iPS > 0) { c.stamina = Math.min(840, (parseInt(c.stamina)||0)+(iPS*(id.isVIP?15:10))); anyChange = true; }
+                    if (iPS > 0) { c.stamina = Math.min(840, (parseInt(c.stamina)||0)+(iPS*(id.isVIP?15:10))); changed = true; }
                     let iPR_Con = Math.floor((now - l4S)/43200000) - Math.floor((last - l4S)/43200000);
-                    if (iPR_Con > 0) { c.rc = Math.min(14, (parseInt(c.rc)||0) + iPR_Con); anyChange = true; }
+                    if (iPR_Con > 0) { c.rc = Math.min(14, (parseInt(c.rc)||0) + iPR_Con); changed = true; }
                     let iPR_Tra = Math.floor((now - l4S)/86400000) - Math.floor((last - l4S)/86400000);
-                    if (iPR_Tra > 0) { c.rcT = Math.min(7, (parseInt(c.rcT)||0) + iPR_Tra); anyChange = true; }
-                    if (anyChange) c.lastUpdate = now;
+                    if (iPR_Tra > 0) { c.rcT = Math.min(7, (parseInt(c.rcT)||0) + iPR_Tra); changed = true; }
+                    if (changed) c.lastUpdate = now;
                 });
             });
-            if (anyChange && currentUser) await db.ref(`userData/${currentUser}/ids`).set(data.ids);
             return data;
         }
 
@@ -129,6 +121,13 @@
                 if(snap.exists()) { Object.keys(snap.val()).forEach(u => { const opt = document.createElement('option'); opt.value = u; opt.text = u; dd.add(opt); }); }
                 document.getElementById('loading').style.display = 'none';
             });
+        };
+
+        window.confirmAddUser = function() {
+            const n = document.getElementById('newUserName').value.trim();
+            const p = document.getElementById('newUserPass').value.trim();
+            if(!n || !p) return alert("ห้ามว่าง");
+            db.ref(`userData/${n}`).set({ ids: [], password: p }).then(() => { closeModal('userModal'); loadUserList(); });
         };
 
         window.handleUserSelect = function(u) {
@@ -195,12 +194,12 @@
                     }))
                 };
             });
-            // Update Database without redrawing UI (Crucial for stability)
             db.ref(`userData/${currentUser}/ids`).set(appData.ids);
             updateCalcs(); 
         };
 
         function updateCalcs() {
+            if (!appData || !appData.ids) return;
             const now = getThaiTime().getTime();
             appData.ids.forEach((id, idx) => {
                 const b = document.querySelectorAll('.id-container')[idx]; if(!b) return;
@@ -247,7 +246,7 @@
 
         function renderUI() {
             const w = document.getElementById('main-wrapper'); w.innerHTML = '';
-            if(!currentUser) return;
+            if(!currentUser || !appData.ids) return;
             appData.ids.forEach((id, idx) => {
                 const b = document.createElement('div'); b.className = 'id-container';
                 const rows = (id.characters || []).map((c, ci) => `<tr class="char-row">
@@ -284,7 +283,6 @@
                         <button class="btn-reset-id" onclick="resetIDToMax(${idx})">reset</button>
                         <span class="vip-status"></span>
                     </div>
-                    <div class="tab-controls"><button class="btn-tab active">👥 จัดการตัวละคร</button></div>
                     <table class="char-t">
                         <thead>
                             <tr><th rowspan="2">C</th><th rowspan="2">T</th><th rowspan="2">ชื่อ</th><th rowspan="2">อาชีพ</th><th rowspan="2">Stamina</th><th colspan="3">General</th><th colspan="4" class="group-con">Conquest</th><th colspan="4" class="group-tra">Trancendense</th><th rowspan="2">จัดการ</th></tr>
@@ -328,14 +326,13 @@
                 if (rcM >= count) c.rcT = rcM - count; else { c.rcT = 0; c.rcBonusT = rcB - (count - rcM); }
                 c.fbT = fb - count;
             }
-            closeModal('dunModal');
-            // After manual dungeon run, we DO NEED a redraw to update the inputs properly
-            renderUI(); syncDataFromUI();
+            closeModal('dunModal'); renderUI(); syncDataFromUI();
         };
 
         window.closeModal = (id) => document.getElementById(id).style.display='none';
         window.refreshData = () => { if(currentUser) switchUser(currentUser); };
-        window.addNewID = () => { appData.ids.push({idName:"ID ใหม่", characters:[]}); renderUI(); syncDataFromUI(); };
+        window.deleteUser = function() { if(currentUser && confirm("ลบ?")) { db.ref(`userData/${currentUser}`).remove(); localStorage.removeItem(`pass_${currentUser}`); currentUser=""; loadUserList(); renderUI(); } };
+        window.addNewID = () => { if(!appData.ids) appData.ids=[]; appData.ids.push({idName:"ID ใหม่", characters:[]}); renderUI(); syncDataFromUI(); };
         window.addChar = (i) => { appData.ids[i].characters.push({name:"", stamina:840, fb:35, rc:14, fbT:28, rcT:7, lastUpdate: getThaiTime().getTime()}); renderUI(); syncDataFromUI(); };
         window.removeChar = (i, ci) => { if(confirm("ลบ?")) { appData.ids[i].characters.splice(ci,1); renderUI(); syncDataFromUI(); } };
         window.openVIPModal = (i) => { currentEditingVIP=i; document.getElementById('vipModal').style.display='flex'; };
