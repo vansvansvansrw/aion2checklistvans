@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AION2 Check List v1.74 (Sync Fixed)</title>
+    <title>AION2 Check List v1.75 (Checkbox Recovery Fixed)</title>
     
     <script>
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768) {
@@ -40,6 +40,7 @@
         input[type="number"], input[type="text"], select { background: rgba(13, 17, 23, 0.8); color: white; border: 1px solid #444; border-radius: 4px; padding: 4px; text-align: center; font-family: 'Prompt', sans-serif; }
         .split-input { display: flex; align-items: center; justify-content: flex-end; gap: 2px; }
         .total-white { color: #fff; font-weight: bold; min-width: 35px; text-align: right; }
+        
         input[type="number"].bonus-input { color: var(--bonus-color); border-color: #664400; width: 55px; padding: 2px; }
         input[type="number"].standard-num { width: 55px; }
         input[type="number"].rc-box-fix { width: 35px; color: white; }
@@ -62,14 +63,14 @@
     </style>
 </head>
 <body>
-    <div id="loading">กำลังซิงค์ข้อมูล v1.74...</div>
+    <div id="loading">กำลังซิงค์ข้อมูล v1.75...</div>
 
     <div id="vipModal" class="modal"><div class="modal-content"><h3>ตั้งค่า VIP คงเหลือ</h3><div style="display:flex; gap:10px; justify-content:center; margin-bottom:15px;"><input type="number" id="vDay" placeholder="วัน" style="width:60px"><input type="number" id="vHour" placeholder="ชม" style="width:60px"><input type="number" id="vMin" placeholder="นาที" style="width:60px"></div><button onclick="window.confirmVIP()">ตกลง</button> <button class="btn-danger" onclick="closeModal('vipModal')">ยกเลิก</button></div></div>
     <div id="userModal" class="modal"><div class="modal-content"><h3>เพิ่ม User ใหม่</h3><input type="text" id="newUserName" placeholder="ชื่อ"><br><br><input type="password" id="newUserPass" placeholder="รหัสผ่าน"><br><br><button onclick="confirmAddUser()">ตกลง</button> <button class="btn-danger" onclick="closeModal('userModal')">ยกเลิก</button></div></div>
     <div id="passModal" class="modal"><div class="modal-content"><h3 id="passModalTitle">ใส่รหัสผ่าน</h3><input type="password" id="checkPass"><br><br><label style="color:#fff"><input type="checkbox" id="rememberMe"> จดจำรหัสผ่าน</label><br><br><button onclick="validateUser()">ตกลง</button> <button class="btn-danger" onclick="cancelLogin()">ยกเลิก</button></div></div>
     <div id="dunModal" class="modal"><div class="modal-content"><h3 id="dunTitle">ลงดันเจี้ยน</h3><input type="number" id="dunCount" value="1" min="1"><br><br><button onclick="confirmDun()">ตกลง</button> <button class="btn-danger" onclick="closeModal('dunModal')">ยกเลิก</button></div></div>
 
-    <div class="header-container"><img src="pic/logo.png" alt="Logo" class="logo-img"><h1>AION2 Check List v1.74 by VANS</h1></div>
+    <div class="header-container"><img src="pic/logo.png" alt="Logo" class="logo-img"><h1>AION2 Check List v1.75 by VANS</h1></div>
 
     <div class="user-menu-bar">
         <select id="userDropdown" class="user-select" onchange="handleUserSelect(this.value)"></select>
@@ -175,7 +176,6 @@
                     conq: b.querySelector('.in-conq').value, 
                     setTotal: b.querySelector('.in-set-total').value,
                     characters: Array.from(b.querySelectorAll('.char-row')).map((row, ci) => ({
-                        // --- CHECKC & CHECKT SYNC FIXED ---
                         checkC: row.querySelector('.c-check-c').checked,
                         checkT: row.querySelector('.c-check-t').checked,
                         name: row.querySelector('.c-name').value, class: row.querySelector('.c-class').value, 
@@ -196,7 +196,6 @@
             const now = getThaiTime().getTime();
             appData.ids.forEach((id, idx) => {
                 const b = document.querySelectorAll('.id-container')[idx]; if(!b) return;
-                
                 let vS = "", vC = "vip-red";
                 if(id.vipExpiry > now) {
                     const diff = id.vipExpiry - now;
@@ -241,8 +240,8 @@
             appData.ids.forEach((id, idx) => {
                 const b = document.createElement('div'); b.className = 'id-container';
                 const rows = (id.characters || []).map((c, ci) => `<tr class="char-row">
-                    <td><input type="checkbox" class="c-check-c" ${c.checkC?'checked':''} onchange="syncDataFromUI()"></td>
-                    <td><input type="checkbox" class="c-check-t" ${c.checkT?'checked':''} onchange="syncDataFromUI()"></td>
+                    <td><input type="checkbox" class="c-check-c" ${c.checkC ? 'checked' : ''} onchange="syncDataFromUI()"></td>
+                    <td><input type="checkbox" class="c-check-t" ${c.checkT ? 'checked' : ''} onchange="syncDataFromUI()"></td>
                     <td><input type="text" class="c-name" value="${c.name||''}" style="width:80px" onchange="syncDataFromUI()"></td>
                     <td><select class="c-class" onchange="syncDataFromUI()"><option value="">อาชีพ</option>${['Templar','Gladiator','Assassin','Sorceror','Elementalist','Cleric','Ranger','Chanter'].map(cls=>`<option value="${cls}" ${c.class===cls?'selected':''}>${cls}</option>`).join('')}</select></td>
                     <td><div class="split-input"><input type="number" class="standard-num stam-main" value="${c.stamina||0}" onchange="syncDataFromUI()">+<input type="number" class="bonus-input c-stam-b" value="${c.staminaBonus||0}" onchange="syncDataFromUI()"><span class="total-white total-white-stam">0</span></div></td>
@@ -331,19 +330,19 @@
         };
 
         window.closeModal = (id) => document.getElementById(id).style.display='none';
+        window.refreshData = () => { 
+            const u = document.getElementById('userDropdown').value;
+            if(u) switchUser(u); 
+            else alert("กรุณาเลือก User ก่อนรีเฟรช");
+        };
         window.addNewID = () => { appData.ids.push({idName:"ID ใหม่", characters:[]}); renderUI(); syncDataFromUI(); };
-        window.addChar = (i) => { appData.ids[i].characters.push({name:"", stamina:840, fb:35, rc:14, fbT:28, rcT:7, lastUpdate: getThaiTime().getTime()}); renderUI(); syncDataFromUI(); };
+        window.addChar = (i) => { appData.ids[i].characters.push({name:"", stamina:840, fb:35, rc:14, fbT:28, rcT:7, lastUpdate: getThaiTime().getTime(), checkC: false, checkT: false}); renderUI(); syncDataFromUI(); };
         window.removeChar = (i, ci) => { if(confirm("ลบ?")) { appData.ids[i].characters.splice(ci,1); renderUI(); syncDataFromUI(); } };
         window.openVIPModal = (i) => { currentEditingVIP=i; document.getElementById('vipModal').style.display='flex'; };
         window.confirmVIP = () => { 
             const d=parseInt(document.getElementById('vDay').value)||0, h=parseInt(document.getElementById('vHour').value)||0, m=parseInt(document.getElementById('vMin').value)||0; 
             appData.ids[currentEditingVIP].vipExpiry = getThaiTime().getTime() + (d*86400000) + (h*3600000) + (m*60000); 
             closeModal('vipModal'); renderUI(); syncDataFromUI(); 
-        };
-        window.refreshData = () => { 
-            const u = document.getElementById('userDropdown').value;
-            if(u) switchUser(u); 
-            else alert("กรุณาเลือก User ก่อนรีเฟรช");
         };
         window.resetIDToMax = (idx) => { if(confirm("Reset ID?")) { appData.ids[idx].characters.forEach(c => { c.stamina=840; c.nm=14; c.fb=35; c.rc=14; c.fbT=28; c.rcT=7; c.duty=c.asc=false; c.checkC=false; c.checkT=false; }); renderUI(); syncDataFromUI(); } };
         setInterval(() => { if(currentUser) updateCalcs(); }, 60000);
