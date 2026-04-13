@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AION2 Check List v1.81 (User Login Fixed)</title>
+    <title>AION2 Check List v1.83 (Weekly Tracker)</title>
     
     <script>
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768) {
@@ -23,31 +23,34 @@
         .user-select { background: #161b22; color: var(--neon-blue); border: 1px solid var(--neon-blue); padding: 5px 12px; border-radius: 4px; font-family: 'Prompt'; min-width: 150px; }
         .id-container { background-color: var(--panel-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 20px; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(0, 243, 255, 0.1); position: relative; backdrop-filter: blur(5px); }
         .id-header { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid var(--border-color); flex-wrap: wrap; }
-        .id-header input[type="text"].id-name-input { background: transparent; border: none; color: var(--neon-blue); font-size: 1.4rem; font-weight: bold; outline: none; border-bottom: 1px dashed var(--border-color); width: 150px; font-family: 'Prompt', sans-serif; }
+        .id-header input[type="text"].id-name-input { background: transparent; border: none; color: var(--neon-blue); font-size: 1.4rem; font-weight: bold; outline: none; border-bottom: 1px dashed var(--border-color); width: 130px; font-family: 'Prompt', sans-serif; }
         .stamina-alert-icon { display: none; background: var(--danger-red); color: white; width: 22px; height: 22px; border-radius: 50%; font-weight: bold; align-items: center; justify-content: center; font-size: 14px; box-shadow: 0 0 10px var(--danger-red); animation: pulse 1.5s infinite; }
         @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.2); opacity: 0.8; } 100% { transform: scale(1); opacity: 1; } }
-        .kinah-id-wrapper { margin-left: auto; display: flex; align-items: center; gap: 10px; font-size: 0.85rem; padding-right: 120px; }
-        .kinah-total-id { background: rgba(13, 17, 23, 0.8); border: 1px solid var(--neon-blue); color: #fff; padding: 5px 10px; border-radius: 4px; width: 160px; text-align: right; }
+        .kinah-id-wrapper { margin-left: auto; display: flex; align-items: center; gap: 10px; font-size: 0.85rem; padding-right: 110px; }
+        .kinah-total-id { background: rgba(13, 17, 23, 0.8); border: 1px solid var(--neon-blue); color: #fff; padding: 5px 10px; border-radius: 4px; width: 150px; text-align: right; }
         .vip-status { font-size: 0.9rem; font-weight: bold; width: 100%; margin-top: 5px; }
         .vip-green { color: #00ff00; } .vip-red { color: #ff4444; }
         .btn-reset-id { position: absolute; top: 20px; right: 20px; background-color: transparent; color: var(--bonus-color); border: 1px solid var(--bonus-color); padding: 6px 12px; font-size: 0.9rem; border-radius: 4px; cursor: pointer; transition: 0.2s; font-weight: bold; }
-        table { width: 100%; border-collapse: collapse; text-align: center; font-size: 0.85rem; margin-bottom: 15px; }
-        th, td { border: 1px solid var(--border-color); padding: 8px 4px; }
+        table { width: 100%; border-collapse: collapse; text-align: center; font-size: 0.82rem; margin-bottom: 15px; }
+        th, td { border: 1px solid var(--border-color); padding: 6px 2px; }
         th { background-color: rgba(33, 38, 45, 0.8); color: #ffffff; }
         input[type="number"], input[type="text"], select { background: rgba(13, 17, 23, 0.8); color: white; border: 1px solid #444; border-radius: 4px; padding: 4px; text-align: center; font-family: 'Prompt', sans-serif; }
         .split-input { display: flex; align-items: center; justify-content: flex-end; gap: 2px; }
-        .total-white { color: #fff; font-weight: bold; min-width: 35px; text-align: right; }
+        .total-white { color: #fff; font-weight: bold; min-width: 25px; text-align: right; }
+        
         input[type="number"].bonus-input { color: var(--bonus-color) !important; border-color: #664400; width: 55px; padding: 2px; }
-        input[type="number"].standard-num { width: 55px; }
-        input[type="number"].rc-box-fix { width: 35px; color: white; }
-        input[type="number"].rc-bonus-fix { width: 35px; color: var(--bonus-color) !important; border-color: #664400; }
+        input[type="number"].standard-num { width: 50px; }
+        input[type="number"].rc-box-fix { width: 32px; color: white; }
+        input[type="number"].rc-bonus-fix { width: 32px; color: var(--bonus-color) !important; border-color: #664400; }
+
         input[type="checkbox"] { accent-color: #00ff00; width: 18px; height: 18px; cursor: pointer; appearance: none; border: 2px solid #ff4444; border-radius: 3px; position: relative; background: rgba(255,0,0,0.1); }
         input[type="checkbox"]:checked { background-color: #00ff00; border-color: #00ff00; appearance: auto; }
+        
         .summary-table-container { display: flex; justify-content: center; width: 100%; margin-top: 15px; }
         .summary-table { width: 550px !important; border: 1px solid var(--border-color); }
         .summary-table td { text-align: left; padding: 8px 15px; }
         .summary-val { color: var(--neon-blue); font-weight: bold; text-align: center !important; }
-        button { background-color: transparent; color: var(--neon-blue); border: 1px solid var(--neon-blue); padding: 6px 10px; cursor: pointer; border-radius: 4px; font-weight: bold; font-family: 'Prompt', sans-serif; font-size: 0.8rem; }
+        button { background-color: transparent; color: var(--neon-blue); border: 1px solid var(--neon-blue); padding: 6px 10px; cursor: pointer; border-radius: 4px; font-weight: bold; font-family: 'Prompt', sans-serif; font-size: 0.75rem; }
         button:hover { background-color: var(--neon-blue); color: #000; }
         .btn-danger { color: #ff4444; border-color: #ff4444; }
         .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); justify-content: center; align-items: center; }
@@ -58,14 +61,14 @@
     </style>
 </head>
 <body>
-    <div id="loading">กำลังซิงค์ข้อมูล v1.81...</div>
+    <div id="loading">กำลังซิงค์ข้อมูล v1.83...</div>
 
     <div id="vipModal" class="modal"><div class="modal-content"><h3>ตั้งค่า VIP คงเหลือ</h3><div style="display:flex; gap:10px; justify-content:center; margin-bottom:15px;"><input type="number" id="vDay" placeholder="วัน" style="width:60px"><input type="number" id="vHour" placeholder="ชม" style="width:60px"><input type="number" id="vMin" placeholder="นาที" style="width:60px"></div><button onclick="window.confirmVIP()">ตกลง</button> <button class="btn-danger" onclick="closeModal('vipModal')">ยกเลิก</button></div></div>
     <div id="userModal" class="modal"><div class="modal-content"><h3>เพิ่ม User ใหม่</h3><input type="text" id="newUserName" placeholder="ชื่อ"><br><br><input type="password" id="newUserPass" placeholder="รหัสผ่าน"><br><br><button onclick="window.confirmAddUser()">ตกลง</button> <button class="btn-danger" onclick="closeModal('userModal')">ยกเลิก</button></div></div>
     <div id="passModal" class="modal"><div class="modal-content"><h3 id="passModalTitle">ใส่รหัสผ่าน</h3><input type="password" id="checkPass"><br><br><label style="color:#fff"><input type="checkbox" id="rememberMe"> จดจำรหัสผ่าน</label><br><br><button onclick="validateUser()">ตกลง</button> <button class="btn-danger" onclick="cancelLogin()">ยกเลิก</button></div></div>
     <div id="dunModal" class="modal"><div class="modal-content"><h3 id="dunTitle">ลงดันเจี้ยน</h3><input type="number" id="dunCount" value="1" min="1"><br><br><button onclick="confirmDun()">ตกลง</button> <button class="btn-danger" onclick="closeModal('dunModal')">ยกเลิก</button></div></div>
 
-    <div class="header-container"><img src="pic/logo.png" alt="Logo" class="logo-img"><h1>AION2 Check List v1.81 by VANS</h1></div>
+    <div class="header-container"><img src="pic/logo.png" alt="Logo" class="logo-img"><h1>AION2 Check List v1.83 by VANS</h1></div>
 
     <div class="user-menu-bar">
         <select id="userDropdown" class="user-select" onchange="handleUserSelect(this.value)"></select>
@@ -106,9 +109,9 @@
                     let iPS = (Math.floor((c4AM-l4S)/86400000)*8) + Math.floor((now-c4AM)/10800000) - Math.floor((last-l4S)/10800000);
                     if (iPS > 0) { c.stamina = Math.min(840, (parseInt(c.stamina)||0)+(iPS*(id.isVIP?15:10))); changed = true; }
                     let iPR_Con = Math.floor((now - l4S)/43200000) - Math.floor((last - l4S)/43200000);
-                    if (iPR_Con > 0) { c.rc = Math.min(14, (parseInt(c.rc)||0) + iPR_Con); changed = true; }
+                    if (iPR_Con > 0 && (parseInt(c.rc)||0) < 14) { c.rc = Math.min(14, (parseInt(c.rc)||0) + iPR_Con); changed = true; }
                     let iPR_Tra = Math.floor((now - l4S)/86400000) - Math.floor((last - l4S)/86400000);
-                    if (iPR_Tra > 0) { c.rcT = Math.min(7, (parseInt(c.rcT)||0) + iPR_Tra); changed = true; }
+                    if (iPR_Tra > 0 && (parseInt(c.rcT)||0) < 7) { c.rcT = Math.min(7, (parseInt(c.rcT)||0) + iPR_Tra); changed = true; }
                     if (changed) c.lastUpdate = now;
                 });
             });
@@ -203,6 +206,7 @@
             const now = getThaiTime().getTime();
             appData.ids.forEach((id, idx) => {
                 const b = document.querySelectorAll('.id-container')[idx]; if(!b) return;
+                
                 let vS = "", vC = "vip-red";
                 if(id.vipExpiry > now) {
                     const diff = id.vipExpiry - now;
@@ -218,21 +222,37 @@
                 let tRunsCon = 0, tRunsTra = 0, hasFullStam = false;
                 (id.characters || []).forEach((c, ci) => {
                     const row = b.querySelectorAll('.char-row')[ci]; if(!row) return;
+                    
                     const mainS = parseInt(row.querySelector('.stam-main').value)||0; 
                     const totalS = mainS + (parseInt(row.querySelector('.c-stam-b').value)||0);
-                    if (mainS >= 840) { row.querySelector('.stam-main').classList.add('glow-red'); hasFullStam = true; } else { row.querySelector('.stam-main').classList.remove('glow-red'); }
+                    if (mainS >= 840) { row.querySelector('.stam-main').classList.add('glow-red'); hasFullStam = true; } 
+                    else { row.querySelector('.stam-main').classList.remove('glow-red'); }
                     
-                    const totalRC = (parseInt(row.querySelector('.c-rc').value)||0) + (parseInt(row.querySelector('.c-rc-b').value)||0);
-                    const runsCon = Math.min(Math.floor(totalS/80), (parseInt(row.querySelector('.c-fb').value)||35), totalRC); 
+                    // Conquest Tracker (35 - current FB)
+                    const fbC = parseInt(row.querySelector('.c-fb').value)||0;
+                    const usedCon = Math.max(0, 35 - fbC);
+                    row.querySelector('.track-con').innerText = usedCon;
+
+                    // Trancendense Tracker (28 - current FB-T)
+                    const fbT = parseInt(row.querySelector('.c-fb-t').value)||0;
+                    const usedTra = Math.max(0, 28 - fbT);
+                    row.querySelector('.track-tra').innerText = usedTra;
+                    
+                    // Grand Total (Used C + Used T)
+                    row.querySelector('.track-total').innerText = usedCon + usedTra;
+
+                    const totalRCCon = (parseInt(row.querySelector('.c-rc').value)||0) + (parseInt(row.querySelector('.c-rc-b').value)||0);
+                    const runsCon = Math.min(Math.floor(totalS/80), fbC, totalRCCon); 
                     tRunsCon += runsCon;
-                    row.querySelector('.total-white-stam').innerText = totalS;
-                    row.querySelector('.rc-total').innerText = totalRC;
-                    row.querySelector('.run-count-con').innerText = runsCon;
                     
-                    const totalRCT = (parseInt(row.querySelector('.c-rc-t').value)||0) + (parseInt(row.querySelector('.c-rc-b-t').value)||0);
-                    const runsTra = Math.min(Math.floor(totalS/80), (parseInt(row.querySelector('.c-fb-t').value)||28), totalRCT);
+                    const totalRCTra = (parseInt(row.querySelector('.c-rc-t').value)||0) + (parseInt(row.querySelector('.c-rc-b-t').value)||0);
+                    const runsTra = Math.min(Math.floor(totalS/80), fbT, totalRCTra);
                     tRunsTra += runsTra;
-                    row.querySelector('.rc-total-t').innerText = totalRCT;
+
+                    row.querySelector('.total-white-stam').innerText = totalS;
+                    row.querySelector('.rc-total').innerText = totalRCCon;
+                    row.querySelector('.rc-total-t').innerText = totalRCTra;
+                    row.querySelector('.run-count-con').innerText = runsCon;
                     row.querySelector('.run-count-tra').innerText = runsTra;
                 });
                 const alertIcon = b.querySelector('.stamina-alert-icon'); if(alertIcon) alertIcon.style.display = hasFullStam ? 'flex' : 'none';
@@ -252,20 +272,26 @@
                 const rows = (id.characters || []).map((c, ci) => `<tr class="char-row">
                     <td><input type="checkbox" class="c-check-c" ${c.checkC ? 'checked' : ''} onchange="syncDataFromUI()"></td>
                     <td><input type="checkbox" class="c-check-t" ${c.checkT ? 'checked' : ''} onchange="syncDataFromUI()"></td>
-                    <td><input type="text" class="c-name" value="${c.name||''}" style="width:80px" onchange="syncDataFromUI()"></td>
+                    <td><input type="text" class="c-name" value="${c.name||''}" style="width:75px" onchange="syncDataFromUI()"></td>
                     <td><select class="c-class" onchange="syncDataFromUI()"><option value="">อาชีพ</option>${['Templar','Gladiator','Assassin','Sorceror','Elementalist','Cleric','Ranger','Chanter'].map(cls=>`<option value="${cls}" ${c.class===cls?'selected':''}>${cls}</option>`).join('')}</select></td>
                     <td><div class="split-input"><input type="number" class="standard-num stam-main" value="${c.stamina||0}" onchange="syncDataFromUI()">+<input type="number" class="bonus-input c-stam-b" value="${c.staminaBonus||0}" onchange="syncDataFromUI()"><span class="total-white total-white-stam">0</span></div></td>
                     <td><input type="checkbox" class="c-duty" ${c.duty?'checked':''} onchange="syncDataFromUI()"></td>
                     <td><input type="checkbox" class="c-asc" ${c.asc?'checked':''} onchange="syncDataFromUI()"></td>
-                    <td><div class="split-input"><input type="number" style="width:35px" class="c-nm" value="${c.nm||14}" onchange="syncDataFromUI()">+<input type="number" class="bonus-input c-nm-b" value="${c.nmBonus||0}" onchange="syncDataFromUI()"></div></td>
+                    <td><div class="split-input"><input type="number" style="width:32px" class="c-nm" value="${c.nm||14}" onchange="syncDataFromUI()">+<input type="number" class="bonus-input c-nm-b" value="${c.nmBonus||0}" style="width:32px" onchange="syncDataFromUI()"></div></td>
+                    
                     <td class="group-con"><div class="split-input"><input type="number" class="rc-box-fix c-rc" value="${c.rc||0}" onchange="syncDataFromUI()">+<input type="number" class="rc-bonus-fix c-rc-b" value="${c.rcBonus||0}" onchange="syncDataFromUI()"><span class="total-white rc-total">0</span></div></td>
                     <td class="group-con"><input type="number" class="rc-box-fix c-fb" value="${c.fb===undefined?35:c.fb}" onchange="syncDataFromUI()"></td>
                     <td class="group-con run-count-con total-white">0</td>
                     <td class="group-con"><button onclick="openDunModal(${idx}, ${ci}, 'CON')">ดัน C</button></td>
+                    <td class="group-con track-con total-white">0</td>
+
                     <td class="group-tra"><div class="split-input"><input type="number" class="rc-box-fix c-rc-t" value="${c.rcT||0}" onchange="syncDataFromUI()">+<input type="number" class="rc-bonus-fix c-rc-b-t" value="${c.rcBonusT||0}" onchange="syncDataFromUI()"><span class="total-white rc-total-t">0</span></div></td>
                     <td class="group-tra"><input type="number" class="rc-box-fix c-fb-t" value="${c.fbT===undefined?28:c.fbT}" onchange="syncDataFromUI()"></td>
                     <td class="group-tra run-count-tra total-white">0</td>
                     <td class="group-tra"><button onclick="openDunModal(${idx}, ${ci}, 'TRA')">ดัน T</button></td>
+                    <td class="group-tra track-tra total-white">0</td>
+
+                    <td class="track-total total-white" style="font-size:1rem; color:var(--neon-blue);">0</td>
                     <td><button class="btn-danger" onclick="removeChar(${idx}, ${ci})">ลบ</button></td>
                 </tr>`).join('');
                 b.innerHTML = `
@@ -285,8 +311,8 @@
                     </div>
                     <table class="char-t">
                         <thead>
-                            <tr><th rowspan="2">C</th><th rowspan="2">T</th><th rowspan="2">ชื่อ</th><th rowspan="2">อาชีพ</th><th rowspan="2">Stamina</th><th colspan="3">General</th><th colspan="4" class="group-con">Conquest</th><th colspan="4" class="group-tra">Trancendense</th><th rowspan="2">จัดการ</th></tr>
-                            <tr><th>Duty</th><th>Asc</th><th>Nightmare</th><th class="group-con">RC</th><th class="group-con">FB</th><th class="group-con">รอบ</th><th class="group-con">ดัน</th><th class="group-tra">RC</th><th class="group-tra">FB</th><th class="group-tra">รอบ</th><th class="group-tra">ดัน</th></tr>
+                            <tr><th rowspan="2">C</th><th rowspan="2">T</th><th rowspan="2">ชื่อ</th><th rowspan="2">อาชีพ</th><th rowspan="2">Stamina</th><th colspan="3">General</th><th colspan="5" class="group-con">Conquest</th><th colspan="5" class="group-tra">Trancendense</th><th rowspan="2">รวม</th><th rowspan="2">จัดการ</th></tr>
+                            <tr><th>Duty</th><th>Asc</th><th>Nightmare</th><th class="group-con">RC</th><th class="group-con">FB</th><th class="group-con">รอบ</th><th class="group-con">ดัน</th><th class="group-con">ลงไป</th><th class="group-tra">RC</th><th class="group-tra">FB</th><th class="group-tra">รอบ</th><th class="group-tra">ดัน</th><th class="group-tra">ลงไป</th></tr>
                         </thead>
                         <tbody>${rows}</tbody>
                     </table>
